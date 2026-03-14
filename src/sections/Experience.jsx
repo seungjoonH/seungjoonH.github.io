@@ -30,9 +30,10 @@ export function Experience() {
   const longPressFiredRef = useRef(false);
   const longPressTimerRef = useRef(null);
   const touchStartPosRef = useRef({ x: 0, y: 0 });
+  const touchWasScrollRef = useRef(false);
 
   const isMobile = breakpointType === 'mobile';
-  const LONG_PRESS_MS = 3000;
+  const LONG_PRESS_MS = 2000;
   const LONG_PRESS_SCROLL_THRESHOLD_PX = 10;
 
   const centerCardInView = (card) => {
@@ -129,6 +130,7 @@ export function Experience() {
       setFocusedCardIndex(nearestIndex);
 
       if (nearestDistance < 8) return;
+      if (breakpointType === 'mobile') return;
 
       const targetCard = cards[nearestIndex];
       if (!targetCard) return;
@@ -153,7 +155,7 @@ export function Experience() {
       container.removeEventListener('scroll', handleHorizontalScroll);
       if (idleSnapTimeoutRef.current) clearTimeout(idleSnapTimeoutRef.current);
     };
-  }, [experiences]);
+  }, [experiences, breakpointType]);
 
   useEffect(() => {
     if (!experienceIdToFocus || experiences.length === 0) return;
@@ -170,6 +172,21 @@ export function Experience() {
       }, 400);
     } else clearExperienceIdToFocus();
   }, [experienceIdToFocus, experiences, clearExperienceIdToFocus]);
+
+  useEffect(() => {
+    if (!isMobile) return;
+    const clearHoverIfOutside = (e) => {
+      const container = scrollContainerRef.current;
+      if (!container || container.contains(e.target)) return;
+      setMobileHoveredCardIndex(null);
+    };
+    document.addEventListener('touchstart', clearHoverIfOutside, true);
+    document.addEventListener('mousedown', clearHoverIfOutside, true);
+    return () => {
+      document.removeEventListener('touchstart', clearHoverIfOutside, true);
+      document.removeEventListener('mousedown', clearHoverIfOutside, true);
+    };
+  }, [isMobile]);
 
   return (
     <div className={styles.experienceSection} data-breakpoint={breakpointType}>
@@ -196,6 +213,7 @@ export function Experience() {
                 ref={(el) => (cardRefs.current[index] = el)}
                 onTouchStart={(e) => {
                   longPressFiredRef.current = false;
+                  touchWasScrollRef.current = false;
                   const t = e.touches?.[0];
                   if (t) touchStartPosRef.current = { x: t.clientX, y: t.clientY };
                   longPressTimerRef.current = window.setTimeout(() => {
@@ -207,14 +225,17 @@ export function Experience() {
                   }, LONG_PRESS_MS);
                 }}
                 onTouchMove={(e) => {
-                  if (!longPressTimerRef.current) return;
                   const t = e.touches?.[0];
-                  if (!t) return;
-                  const dx = t.clientX - touchStartPosRef.current.x;
-                  const dy = t.clientY - touchStartPosRef.current.y;
-                  if (Math.hypot(dx, dy) > LONG_PRESS_SCROLL_THRESHOLD_PX) {
-                    clearTimeout(longPressTimerRef.current);
-                    longPressTimerRef.current = null;
+                  if (t) {
+                    const dx = t.clientX - touchStartPosRef.current.x;
+                    const dy = t.clientY - touchStartPosRef.current.y;
+                    if (Math.hypot(dx, dy) > LONG_PRESS_SCROLL_THRESHOLD_PX) {
+                      touchWasScrollRef.current = true;
+                      if (longPressTimerRef.current) {
+                        clearTimeout(longPressTimerRef.current);
+                        longPressTimerRef.current = null;
+                      }
+                    }
                   }
                 }}
                 onTouchEnd={() => {
@@ -235,6 +256,11 @@ export function Experience() {
                     return;
                   }
                   if (isMobile) {
+                    if (touchWasScrollRef.current) {
+                      touchWasScrollRef.current = false;
+                      setFocusedCardIndex(index);
+                      return;
+                    }
                     if (mobileHoveredCardIndex === index) {
                       experienceReturnFocusRef.current = cardRefs.current[index];
                       setPopupExperience(experience);

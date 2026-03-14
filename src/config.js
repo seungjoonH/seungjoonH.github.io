@@ -44,7 +44,7 @@ const language = {
 };
 
 const version = {
-  number: '1.0.2',
+  number: '1.0.3',
   buildDate: '20260315',
 };
 

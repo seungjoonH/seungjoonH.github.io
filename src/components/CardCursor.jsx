@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './cardCursor.module.css';
+import { useBreakpoint } from '../hooks/useBreakpoint';
 
 const CARD_SELECTOR = '[data-interactive-card]';
 
@@ -10,6 +11,7 @@ function isOverCard(clientX, clientY) {
 }
 
 export function CardCursor() {
+  const { type: breakpointType } = useBreakpoint();
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [visible, setVisible] = useState(false);
   const posRef = useRef({ x: 0, y: 0 });
@@ -42,7 +44,7 @@ export function CardCursor() {
     };
   }, []);
 
-  if (!visible) return null;
+  if (breakpointType === 'mobile' || !visible) return null;
 
   return (
     <div

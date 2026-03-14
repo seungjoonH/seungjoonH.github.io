@@ -13,7 +13,7 @@ import { parseQuery } from './search/parseQuery';
 import { normalizeStackToken } from './search/stackMapping';
 import { getHighlightTerms, getTagsToHighlight, getEffectiveTagsSorted, getEffectiveStacksSorted, highlightText } from './search/highlight';
 
-const LONG_PRESS_MS = 3000;
+const LONG_PRESS_MS = 2000;
 const LONG_PRESS_SCROLL_THRESHOLD_PX = 10;
 
 export function ProjectCard({ project, showAll = false }) {

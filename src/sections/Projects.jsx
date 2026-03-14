@@ -9,6 +9,7 @@ import { useBreakpoint } from '../hooks/useBreakpoint';
 import { Icon } from '@components/shared/icon/Icon';
 import { useConfigStore } from '../stores/configStore';
 import { useProjectSearchStore } from '../stores/projectSearchStore';
+import { useProjectCardFlipStore } from '../stores/projectCardFlipStore';
 import { parseQuery } from '@sections/projects/search/parseQuery';
 import { normalizeStackToken } from '@sections/projects/search/stackMapping';
 import { filterProjects, getShowValue } from '@sections/projects/search/filterProjects';
@@ -18,9 +19,10 @@ const MIN_CARD_WIDTH = 300;
 const BASE_GAP = 12;
 
 export function Projects() {
-  const { projectsGridBounds: columnBounds } = useBreakpoint();
+  const { type: breakpointType, projectsGridBounds: columnBounds } = useBreakpoint();
   const language = useConfigStore((s) => s.language);
   const rawQuery = useProjectSearchStore((s) => s.rawQuery);
+  const setFlippedProjectId = useProjectCardFlipStore((s) => s.setFlippedProjectId);
   const setQuery = useProjectSearchStore((s) => s.setQuery);
   const setQueryFromShortcut = useProjectSearchStore((s) => s.setQueryFromShortcut);
   const [projects, setProjects] = useState([]);
@@ -178,6 +180,22 @@ export function Projects() {
   const onChangeColumn = (next) => {
     setColumnCount(Math.min(effectiveBounds.max, Math.max(effectiveBounds.min, next)));
   };
+
+  const isMobile = breakpointType === 'mobile';
+  useEffect(() => {
+    if (!isMobile) return;
+    const clearFlipIfOutside = (e) => {
+      const container = rowsContainerRef.current;
+      if (!container || container.contains(e.target)) return;
+      setFlippedProjectId(null);
+    };
+    document.addEventListener('touchstart', clearFlipIfOutside, true);
+    document.addEventListener('mousedown', clearFlipIfOutside, true);
+    return () => {
+      document.removeEventListener('touchstart', clearFlipIfOutside, true);
+      document.removeEventListener('mousedown', clearFlipIfOutside, true);
+    };
+  }, [isMobile, setFlippedProjectId]);
 
   return (
     <div className={styles.projectsContainer} ref={sectionRef}>
