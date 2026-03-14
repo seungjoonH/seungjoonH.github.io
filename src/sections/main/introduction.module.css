@@ -83,11 +83,12 @@
 
 @media (max-width: 768px) {
   .introContainer {
+    --intro-scale: clamp(0.8, calc(0.4 * var(--font-scale, 1) + 0.6), 1.2);
     margin-right: 16px;
     font-size: clamp(
-      calc(14px * var(--font-scale, 1)),
-      calc(3.2vw * var(--font-scale, 1)),
-      calc(28px * var(--font-scale, 1))
+      calc(14px * var(--intro-scale)),
+      calc(3.2vw * var(--intro-scale)),
+      28px
     );
   }
 }

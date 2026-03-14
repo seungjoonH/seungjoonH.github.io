@@ -19,10 +19,17 @@
   -webkit-mask-repeat: no-repeat;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 900px) and (min-width: 769px) {
   .panoLine {
     mask-image: url('/assets/images/pano-line-tablet.svg');
     -webkit-mask-image: url('/assets/images/pano-line-tablet.svg');
+  }
+}
+
+@media (max-width: 768px) {
+  .panoLine {
+    mask-image: url('/assets/images/pano-line-mobile.svg');
+    -webkit-mask-image: url('/assets/images/pano-line-mobile.svg');
   }
 }
 
