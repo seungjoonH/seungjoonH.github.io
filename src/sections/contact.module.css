@@ -32,17 +32,15 @@
 }
 
 .card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto auto;
   gap: 10px;
+  align-items: start;
   padding: 20px;
   background: var(--color-bg-card);
   border: 1px solid var(--color-border);
   border-radius: 8px;
-  color: inherit;
-  text-decoration: none;
-  cursor: pointer;
   box-shadow: 0 14px 34px rgba(0, 0, 0, 0.12);
   transition: var(--hover-transition);
 }
@@ -53,9 +51,57 @@
   box-shadow: 0 20px 38px rgba(0, 0, 0, 0.18);
 }
 
-.card:focus-visible {
+.cardLink {
+  grid-column: 1;
+  grid-row: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.cardLink:focus-visible {
   outline: 2px solid var(--color-text-muted);
   outline-offset: 2px;
+}
+
+.copyBtn {
+  grid-column: 2;
+  grid-row: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  margin: -6px -6px -6px 0;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.copyBtn:hover:not(:disabled) {
+  color: var(--color-text);
+  background: var(--color-bg-elevated, rgba(0, 0, 0, 0.06));
+}
+
+.copyBtn:focus-visible {
+  outline: 2px solid var(--color-text-muted);
+  outline-offset: 2px;
+}
+
+.copyBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.copyIcon {
+  width: 18px;
+  height: 18px;
 }
 
 .cardIcon {
@@ -66,14 +112,14 @@
 }
 
 .cardLabel {
-  font-size: clamp(var(--clamp-font-xs-min), 1vw, var(--clamp-font-xs-max));
+  font-size: calc(clamp(var(--clamp-font-xs-min), 1vw, var(--clamp-font-xs-max)) * 1.12);
   font-weight: 400;
   color: var(--color-text-muted);
   letter-spacing: 0.06em;
 }
 
 .cardValue {
-  font-size: clamp(var(--clamp-font-sm-min), 1.1vw, var(--clamp-font-sm-max));
+  font-size: calc(clamp(var(--clamp-font-sm-min), 1.1vw, var(--clamp-font-sm-max)) * 1.12);
   font-weight: 400;
   color: var(--color-text);
 }

@@ -37,13 +37,27 @@
   box-shadow: 0 20px 38px rgba(0, 0, 0, 0.18);
 }
 
+.card.mobileHovered {
+  transform: translateY(-2px);
+  border-color: var(--color-text);
+  box-shadow: 0 20px 38px rgba(0, 0, 0, 0.18);
+}
+
+.card.mobileHovered .experienceThumbWrap.hasHovered .experienceThumbDefault {
+  opacity: 0;
+}
+
+.card.mobileHovered .experienceThumbWrap.hasHovered .experienceThumbHovered {
+  opacity: 1;
+}
+
 .card img,
 .card .placeholderImage,
 .card .experienceThumbWrap {
   border-radius: 13px;
   width: 100%;
   aspect-ratio: 2 / 1;
-  min-height: 4rem;
+  min-height: 3.25rem;
   margin-bottom: 4px;
 }
 

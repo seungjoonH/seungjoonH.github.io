@@ -74,24 +74,21 @@
 }
 
 .zoomSettingsTooltip {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  margin-top: 8px;
+  position: fixed;
   width: max-content;
   max-width: min(400px, 85vw);
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 10px 8px 12px;
-  background: var(--color-bg-elevated);
-  border: 1px solid var(--color-border);
+  padding: 12px 16px;
+  background: var(--zoom-tooltip-bg);
+  border: 1px solid var(--zoom-tooltip-border);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   font-size: 0.85em;
   color: var(--color-text);
   animation: zoomSettingsTooltipFloat 2.2s ease-in-out infinite;
-  z-index: 10;
+  z-index: 1001;
 }
 
 .zoomSettingsTooltipArrow {
@@ -102,9 +99,9 @@
   height: 0;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-bottom: 10px solid var(--color-bg-elevated);
+  border-bottom: 10px solid var(--zoom-tooltip-bg);
   box-sizing: border-box;
-  filter: drop-shadow(0 -1px 0 var(--color-border));
+  filter: drop-shadow(0 -1px 0 var(--zoom-tooltip-border));
 }
 
 .zoomSettingsTooltipText {

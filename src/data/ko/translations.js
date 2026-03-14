@@ -12,6 +12,8 @@ export default {
     github: 'GITHUB',
     linkedin: 'LINKEDIN',
     tel: 'TEL',
+    copy: '복사',
+    copied: '복사됨',
   },
   main: {
     title: 'Seungjoon\nHyeon\'s\nPortfolio',

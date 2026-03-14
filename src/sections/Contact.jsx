@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Header } from '@components/layout/Header';
 import { Icon } from '@components/shared/icon/Icon';
@@ -12,26 +12,19 @@ const LABEL_KEYS = { email: 'email', github: 'github', linkedin: 'linkedin', tel
 
 function decode(value) {
   if (typeof value !== 'string') return value;
-  try {
-    return decodeURIComponent(value);
-  } catch {
-    return value;
-  }
+  try { return decodeURIComponent(value); } 
+  catch { return value; }
 }
 
 function getContactHref(key, value) {
   const raw = decode(value);
   if (!raw) return '#';
   switch (key) {
-    case 'email':
-      return `mailto:${raw}`;
-    case 'tel':
-      return `tel:${raw.replace(/\s/g, '')}`;
+    case 'email': return `mailto:${raw}`;
+    case 'tel': return `tel:${raw.replace(/\s/g, '')}`;
     case 'github':
-    case 'linkedin':
-      return raw.startsWith('http') ? raw : `https://${raw}`;
-    default:
-      return raw;
+    case 'linkedin': return raw.startsWith('http') ? raw : `https://${raw}`;
+    default: return raw;
   }
 }
 
@@ -47,10 +40,39 @@ function getDisplayValue(key, value, language) {
   return raw;
 }
 
+function getCopyText(key, value) {
+  const raw = decode(value);
+  if (!raw) return '';
+  if (key === 'github' && !raw.startsWith('http')) return `https://github.com/${raw.replace(/^\/+/, '')}`;
+  if (key === 'linkedin' && !raw.startsWith('http')) return `https://${raw}`;
+  return raw;
+}
+
 export function Contact() {
   const { t } = useTranslation();
   const language = useConfigStore((s) => s.language) ?? config.language?.initial ?? 'en';
   const contact = config.contact || {};
+  const [copiedKeys, setCopiedKeys] = useState({});
+  const copyTimeoutsRef = useRef({});
+
+  const handleCopy = useCallback((key, text) => {
+    if (!text) return;
+    if (copyTimeoutsRef.current[key] != null) {
+      clearTimeout(copyTimeoutsRef.current[key]);
+      copyTimeoutsRef.current[key] = null;
+    }
+    navigator.clipboard?.writeText(text).then(() => {
+      setCopiedKeys((prev) => ({ ...prev, [key]: true }));
+      copyTimeoutsRef.current[key] = setTimeout(() => {
+        setCopiedKeys((prev) => {
+          const next = { ...prev };
+          delete next[key];
+          return next;
+        });
+        copyTimeoutsRef.current[key] = null;
+      }, 1500);
+    });
+  }, []);
 
   return (
     <div className={styles.contactContainer}>
@@ -59,28 +81,39 @@ export function Contact() {
           <Header text={t('nav.contact')} align="center" className={styles.contactTitle} />
         </div>
         <div className={styles.cardGrid} role="list">
-        {CONTACT_KEYS.map((key) => {
-          const value = contact[key];
-          const href = getContactHref(key, value);
-          const displayValue = getDisplayValue(key, value, language);
-          const label = t(`contact.${LABEL_KEYS[key]}`);
+          {CONTACT_KEYS.map((key) => {
+            const value = contact[key];
+            const href = getContactHref(key, value);
+            const displayValue = getDisplayValue(key, value, language);
+            const copyText = getCopyText(key, value);
+            const label = t(`contact.${LABEL_KEYS[key]}`);
 
-          return (
-            <a
-              key={key}
-              href={href}
-              className={styles.card}
-              role="listitem"
-              target="_blank"
-              rel="noreferrer"
-              aria-label={`${label}: ${displayValue}`}
-            >
-              <Icon name={ICON_MAP[key]} className={styles.cardIcon} aria-hidden="true" />
-              <span className={styles.cardLabel}>{label}</span>
-              <span className={styles.cardValue}>{displayValue}</span>
-            </a>
-          );
-        })}
+            return (
+              <div key={key} className={styles.card} role="listitem">
+                <a
+                  href={href}
+                  className={styles.cardLink}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`${label}: ${displayValue}`}
+                >
+                  <Icon name={ICON_MAP[key]} className={styles.cardIcon} aria-hidden="true" />
+                  <span className={styles.cardLabel}>{label}</span>
+                  <span className={styles.cardValue}>{displayValue}</span>
+                </a>
+                <button
+                  type="button"
+                  className={styles.copyBtn}
+                  onClick={() => handleCopy(key, copyText)}
+                  disabled={!copyText}
+                  aria-label={copiedKeys[key] ? t('contact.copied') : t('contact.copy')}
+                  title={t('contact.copy')}
+                >
+                  <Icon name={copiedKeys[key] ? 'check' : 'copy'} className={styles.copyIcon} aria-hidden="true" />
+                </button>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

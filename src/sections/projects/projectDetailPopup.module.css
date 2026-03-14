@@ -118,3 +118,14 @@
   white-space: nowrap;
   border: 0;
 }
+
+@media (max-width: 768px) {
+  .overlay {
+    padding: 12px;
+  }
+  .panel,
+  .panelContentFit {
+    height: min(72vh, 32rem);
+    max-height: min(72vh, 32rem);
+  }
+}

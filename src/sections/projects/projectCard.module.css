@@ -31,8 +31,10 @@
   transition: transform calc(0.62s / var(--speed-scale, 1)) cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-.card:hover .cardInner {
-  transform: rotateY(180deg);
+@media (min-width: 861px) {
+  .card:hover .cardInner {
+    transform: rotateY(180deg);
+  }
 }
 
 .card:focus-within .cardInner,

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Nav } from '@components/layout/Nav';
 import { Main } from '@sections/Main';
 import { Education } from '@sections/Education';
@@ -22,6 +22,17 @@ function App() {
   const { type: breakpointType } = useBreakpoint();
   useZoomDetection();
   const [narrow, setNarrow] = React.useState(typeof window !== 'undefined' ? window.innerWidth <= NARROW_MAX_WIDTH : false);
+  const [educationFadeInTriggered, setEducationFadeInTriggered] = useState(false);
+
+  useEffect(() => {
+    if (narrow) {
+      setEducationFadeInTriggered(false);
+      const t = setTimeout(() => setEducationFadeInTriggered(true), 2000);
+      return () => clearTimeout(t);
+    }
+    setEducationFadeInTriggered(true);
+  }, [narrow]);
+
   React.useEffect(() => {
     const m = window.matchMedia(`(max-width: ${NARROW_MAX_WIDTH}px)`);
     const update = () => setNarrow(m.matches);
@@ -64,8 +75,8 @@ function App() {
       <CardCursor />
       <Nav/>
 
-      <div className="section" id="main"><Main/></div>
-      <div className="section" id="education"><Education/></div>
+      <div className="section" id="main"><Main /></div>
+      <div className="section" id="education"><Education narrow={narrow} shouldFadeIn={educationFadeInTriggered} /></div>
       <div className="section" id="experience"><Experience/></div>
       <div className="section" id="skills"><Skills/></div>
       <div className="section" id="project"><Projects/></div>
@@ -73,7 +84,7 @@ function App() {
       <div className="section" id="contact"><Contact/></div>
 
       <span className="versionLabel" aria-hidden="true">
-        v{config.version?.number ?? '1.0.0'} - {config.version?.buildDate ?? '20260314'}
+        v{config.version?.number} - {config.version?.buildDate}
       </span>
     </div>
   );

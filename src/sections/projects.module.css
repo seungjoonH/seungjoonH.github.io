@@ -247,6 +247,7 @@
 .searchAppliedTooltipArrow {
   position: absolute;
   left: 10px;
+  right: auto;
   bottom: -10px;
   width: 0;
   height: 0;
@@ -258,6 +259,17 @@
   transform-origin: 50% 0;
   transform: rotate(0deg);
   z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .searchAppliedTooltip {
+    right: 0;
+    left: auto;
+  }
+  .searchAppliedTooltipArrow {
+    left: auto;
+    right: 10px;
+  }
 }
 
 .searchAppliedTooltipText {
@@ -395,6 +407,10 @@
     width: 100%;
     min-width: 0;
     max-width: none;
+  }
+
+  .sliderWrap {
+    display: none;
   }
 
   .row {

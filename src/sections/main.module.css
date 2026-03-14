@@ -25,14 +25,18 @@
   opacity: var(--parallax-intro-opacity, 1);
 }
 
+@keyframes mainSequenceFadeIn {
+  to { opacity: 1; }
+}
+
 :global(body[data-narrow="true"]) .mainHero {
   margin-top: 82px;
+  opacity: 0;
+  animation: mainSequenceFadeIn 0.4s ease 0s forwards;
 }
-
-:global(body[data-narrow="true"]) .parallaxTitle {
-  padding-left: 16px;
-}
-
+:global(body[data-narrow="true"]) .parallaxTitle { padding-left: 16px; }
 :global(body[data-narrow="true"]) .parallaxIntro {
   margin-top: 14px;
+  opacity: 0;
+  animation: mainSequenceFadeIn 0.4s ease 0.4s forwards;
 }

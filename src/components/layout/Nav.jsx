@@ -13,6 +13,26 @@ import '../../i18n';
 
 const SCROLL_DURATION_BASE_MS = 2000;
 
+function useTooltipPosition(anchorRef, visible) {
+  const [position, setPosition] = useState(null);
+  useEffect(() => {
+    if (!visible || !anchorRef.current) return;
+    const update = () => {
+      if (!anchorRef.current) return;
+      const rect = anchorRef.current.getBoundingClientRect();
+      setPosition({ top: rect.bottom + 8, right: window.innerWidth - rect.right });
+    };
+    update();
+    window.addEventListener('scroll', update, true);
+    window.addEventListener('resize', update);
+    return () => {
+      window.removeEventListener('scroll', update, true);
+      window.removeEventListener('resize', update);
+    };
+  }, [visible, anchorRef]);
+  return position;
+}
+
 export function Nav() {
   const speedScale = useConfigStore((s) => s.speedScale ?? 1);
   const duration = Math.round(SCROLL_DURATION_BASE_MS / speedScale);
@@ -21,10 +41,33 @@ export function Nav() {
   const settingsBtnRef = useRef(null);
   const zoomHintVisible = useZoomHintStore((s) => s.visible);
   const dismissZoomHint = useZoomHintStore((s) => s.dismissZoomHint);
+  const tooltipPosition = useTooltipPosition(settingsBtnRef, zoomHintVisible);
 
   useEffect(() => {
     if (zoomHintVisible) markZoomHintShownThisSession();
   }, [zoomHintVisible]);
+
+  const zoomTooltipEl = zoomHintVisible && tooltipPosition && (
+    <div
+      className={styles.zoomSettingsTooltip}
+      role="status"
+      aria-live="polite"
+      style={{ top: tooltipPosition.top, right: tooltipPosition.right }}
+    >
+      <span className={styles.zoomSettingsTooltipArrow} aria-hidden="true" />
+      <span className={styles.zoomSettingsTooltipText}>
+        {t('zoom.tooltipMessage')}
+      </span>
+      <button
+        type="button"
+        className={styles.zoomSettingsTooltipClose}
+        onClick={dismissZoomHint}
+        aria-label={t('zoom.close', '닫기')}
+      >
+        <Icon name="close" aria-hidden="true" />
+      </button>
+    </div>
+  );
 
   return (
     <nav className={buildCls(styles.navbar)}>
@@ -67,22 +110,6 @@ export function Nav() {
           </li>
         </ul>
         <div className={styles.settingsWrap}>
-          {zoomHintVisible ? (
-            <div className={styles.zoomSettingsTooltip} role="status" aria-live="polite">
-              <span className={styles.zoomSettingsTooltipArrow} aria-hidden="true" />
-              <span className={styles.zoomSettingsTooltipText}>
-                {t('zoom.tooltipMessage')}
-              </span>
-              <button
-                type="button"
-                className={styles.zoomSettingsTooltipClose}
-                onClick={dismissZoomHint}
-                aria-label={t('zoom.close', '닫기')}
-              >
-                <Icon name="close" aria-hidden="true" />
-              </button>
-            </div>
-          ) : null}
           <button
             ref={settingsBtnRef}
             type="button"
@@ -99,6 +126,7 @@ export function Nav() {
         <SettingsPopup onClose={() => setSettingsOpen(false)} returnFocusRef={settingsBtnRef} />,
         document.body
       )}
+      {zoomTooltipEl && createPortal(zoomTooltipEl, document.body)}
     </nav>
   );
 }

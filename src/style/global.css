@@ -197,6 +197,8 @@
   --color-bullet: #d0d0d0;
   --docs-folder-hover-bg: rgba(255, 255, 255, 0.05);
   --docs-folder-hover-overlay: rgba(255, 255, 255, 0.05);
+  --zoom-tooltip-bg: #0f0f0f;
+  --zoom-tooltip-border: #fff;
 }
 
 [data-theme="light"] {
@@ -243,6 +245,8 @@
   --color-bullet: #555;
   --docs-folder-hover-bg: rgba(0, 0, 0, 0.05);
   --docs-folder-hover-overlay: rgba(0, 0, 0, 0.04);
+  --zoom-tooltip-bg: #ffffff;
+  --zoom-tooltip-border: #999;
 }
 
 html {
