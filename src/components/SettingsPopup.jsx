@@ -68,17 +68,17 @@ export function SettingsPopup({ onClose, returnFocusRef }) {
         <div className={styles.section}>
           <label>{t('settings.speed') || '전체 속도'}</label>
           <div className={styles.sliderWrap}>
-            <button type="button" onClick={() => setSpeedScale(Math.max(0.5, speedScale - 0.5))}>−</button>
+            <button type="button" onClick={() => setSpeedScale(Math.max(0.5, speedScale - 0.25))}>−</button>
             <input
               type="range"
               min={0.5}
               max={1.5}
-              step={0.5}
+              step={0.25}
               value={speedScale}
               onChange={(e) => setSpeedScale(Number(e.target.value))}
               aria-label={t('settings.speed')}
             />
-            <button type="button" onClick={() => setSpeedScale(Math.min(1.5, speedScale + 0.5))}>+</button>
+            <button type="button" onClick={() => setSpeedScale(Math.min(1.5, speedScale + 0.25))}>+</button>
           </div>
           <span className={styles.sliderValue}>{speedScale}x</span>
         </div>
