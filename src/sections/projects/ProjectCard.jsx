@@ -13,7 +13,8 @@ import { parseQuery } from './search/parseQuery';
 import { normalizeStackToken } from './search/stackMapping';
 import { getHighlightTerms, getTagsToHighlight, getEffectiveTagsSorted, getEffectiveStacksSorted, highlightText } from './search/highlight';
 
-const LONG_PRESS_MS = 500;
+const LONG_PRESS_MS = 3000;
+const LONG_PRESS_SCROLL_THRESHOLD_PX = 10;
 
 export function ProjectCard({ project, showAll = false }) {
   const rawQuery = useProjectSearchStore((s) => s.rawQuery);
@@ -49,16 +50,31 @@ export function ProjectCard({ project, showAll = false }) {
   const cardRef = useRef(null);
   const longPressFiredRef = useRef(false);
   const longPressTimerRef = useRef(null);
+  const touchStartPosRef = useRef({ x: 0, y: 0 });
 
   const isFlipped = isMobile ? flippedProjectId === project.id : popupOpen;
 
-  const handleTouchStart = () => {
+  const handleTouchStart = (e) => {
     longPressFiredRef.current = false;
+    const t = e.touches?.[0];
+    if (t) touchStartPosRef.current = { x: t.clientX, y: t.clientY };
     longPressTimerRef.current = window.setTimeout(() => {
       longPressTimerRef.current = null;
       longPressFiredRef.current = true;
       setPopupOpen(true);
     }, LONG_PRESS_MS);
+  };
+
+  const handleTouchMove = (e) => {
+    if (!longPressTimerRef.current) return;
+    const t = e.touches?.[0];
+    if (!t) return;
+    const dx = t.clientX - touchStartPosRef.current.x;
+    const dy = t.clientY - touchStartPosRef.current.y;
+    if (Math.hypot(dx, dy) > LONG_PRESS_SCROLL_THRESHOLD_PX) {
+      clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
   };
 
   const handleTouchEnd = () => {
@@ -115,6 +131,7 @@ export function ProjectCard({ project, showAll = false }) {
         aria-label={isMobile ? `${project.title}, 클릭 시 뒤집기 또는 길게 누르면 상세 팝업` : `${project.title}, 클릭 시 상세 팝업`}
         onClick={handleCardClick}
         onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         onTouchCancel={handleTouchEnd}
         onContextMenu={(e) => isMobile && e.preventDefault()}

@@ -29,9 +29,11 @@ export function Experience() {
   const idleSnapTimeoutRef = useRef(null);
   const longPressFiredRef = useRef(false);
   const longPressTimerRef = useRef(null);
+  const touchStartPosRef = useRef({ x: 0, y: 0 });
 
   const isMobile = breakpointType === 'mobile';
-  const LONG_PRESS_MS = 500;
+  const LONG_PRESS_MS = 3000;
+  const LONG_PRESS_SCROLL_THRESHOLD_PX = 10;
 
   const centerCardInView = (card) => {
     const container = scrollContainerRef.current;
@@ -192,8 +194,10 @@ export function Experience() {
                   focusedCardIndex === index && styles.focused
                 )}
                 ref={(el) => (cardRefs.current[index] = el)}
-                onTouchStart={() => {
+                onTouchStart={(e) => {
                   longPressFiredRef.current = false;
+                  const t = e.touches?.[0];
+                  if (t) touchStartPosRef.current = { x: t.clientX, y: t.clientY };
                   longPressTimerRef.current = window.setTimeout(() => {
                     longPressTimerRef.current = null;
                     longPressFiredRef.current = true;
@@ -201,6 +205,17 @@ export function Experience() {
                     experienceReturnFocusRef.current = cardRefs.current[index];
                     setPopupExperience(experience);
                   }, LONG_PRESS_MS);
+                }}
+                onTouchMove={(e) => {
+                  if (!longPressTimerRef.current) return;
+                  const t = e.touches?.[0];
+                  if (!t) return;
+                  const dx = t.clientX - touchStartPosRef.current.x;
+                  const dy = t.clientY - touchStartPosRef.current.y;
+                  if (Math.hypot(dx, dy) > LONG_PRESS_SCROLL_THRESHOLD_PX) {
+                    clearTimeout(longPressTimerRef.current);
+                    longPressTimerRef.current = null;
+                  }
                 }}
                 onTouchEnd={() => {
                   if (longPressTimerRef.current) {
@@ -215,11 +230,11 @@ export function Experience() {
                   }
                 }}
                 onClick={() => {
+                  if (isMobile && longPressFiredRef.current) {
+                    longPressFiredRef.current = false;
+                    return;
+                  }
                   if (isMobile) {
-                    if (longPressFiredRef.current) {
-                      longPressFiredRef.current = false;
-                      return;
-                    }
                     if (mobileHoveredCardIndex === index) {
                       experienceReturnFocusRef.current = cardRefs.current[index];
                       setPopupExperience(experience);
@@ -229,12 +244,12 @@ export function Experience() {
                       setFocusedCardIndex(index);
                       centerCardInView(cardRefs.current[index]);
                     }
-                  } else {
-                    setFocusedCardIndex(index);
-                    centerCardInView(cardRefs.current[index]);
-                    experienceReturnFocusRef.current = cardRefs.current[index];
-                    setPopupExperience(experience);
+                    return;
                   }
+                  setFocusedCardIndex(index);
+                  centerCardInView(cardRefs.current[index]);
+                  experienceReturnFocusRef.current = cardRefs.current[index];
+                  setPopupExperience(experience);
                 }}
                 role="button"
                 tabIndex={0}
