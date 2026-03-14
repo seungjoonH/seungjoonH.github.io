@@ -84,7 +84,7 @@ function App() {
       <div className="section" id="contact"><Contact/></div>
 
       <span className="versionLabel" aria-hidden="true">
-        v{config.version?.number ?? '1.0.0'} - {config.version?.buildDate ?? '20260314'}
+        v{config.version?.number} - {config.version?.buildDate}
       </span>
     </div>
   );
