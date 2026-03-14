@@ -247,7 +247,7 @@ export function ProjectCard({ project, showAll = false }) {
         </div>
 
         <div className={styles.cardBack}>
-          <ProjectDetailContent project={project} variant="card" />
+          <ProjectDetailContent project={project} variant="card" isMobile={isMobile} />
         </div>
       </div>
     </div>

@@ -74,23 +74,32 @@ export function Experience() {
   }, [language]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (!scrollContainerRef.current) return;
-      const windowHeight = window.innerHeight;
+    const container = scrollContainerRef.current;
+    if (!container) return;
 
+    const handleScroll = () => {
+      if (breakpointType === 'mobile') {
+        const rect = container.getBoundingClientRect();
+        const inView = rect.top < window.innerHeight * 0.95;
+        const opacity = inView ? 1 : 0;
+        cardRefs.current.forEach((card) => {
+          if (card) card.style.opacity = opacity;
+        });
+        setHidden(!inView);
+        return;
+      }
+
+      const windowHeight = window.innerHeight;
       cardRefs.current.forEach((card) => {
         if (!card) return;
-
         const cardRect = card.getBoundingClientRect();
         const cardTop = cardRect.top;
-
-        const startFade = windowHeight * 0.7; 
+        const startFade = windowHeight * 0.7;
         const endFade = windowHeight * 0.5;
         let opacity = 0;
-
-        if (cardTop <= endFade) { opacity = 1; setHidden(false); }
-        else if (cardTop > startFade) { opacity = 0; setHidden(true); }
-        else opacity = 1 - (cardTop - endFade) / (startFade - endFade);
+        if (cardTop <= endFade) { opacity = 1; setHidden(false); } 
+        else if (cardTop > startFade) { opacity = 0; setHidden(true); } 
+        else { opacity = 1 - (cardTop - endFade) / (startFade - endFade); }
         card.style.opacity = opacity;
       });
     };
@@ -101,7 +110,7 @@ export function Experience() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [experiences]);
+  }, [experiences, breakpointType]);
 
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -130,7 +139,6 @@ export function Experience() {
       setFocusedCardIndex(nearestIndex);
 
       if (nearestDistance < 8) return;
-      if (breakpointType === 'mobile') return;
 
       const targetCard = cards[nearestIndex];
       if (!targetCard) return;
@@ -200,8 +208,12 @@ export function Experience() {
           <div className="stackItem">
           <div className={styles.experienceScrollContainer} ref={scrollContainerRef}>
             <div className={styles.experienceScroll}>
-              <div className={buildCls(styles.experienceCard, styles.ghost)} aria-hidden="true"></div>
-              <div className={buildCls(styles.experienceCard, styles.ghost)} aria-hidden="true"></div>
+              {!isMobile && (
+                <>
+                  <div className={buildCls(styles.experienceCard, styles.ghost)} aria-hidden="true"></div>
+                  <div className={buildCls(styles.experienceCard, styles.ghost)} aria-hidden="true"></div>
+                </>
+              )}
               {experiences.map((experience, index) => (
                 <div
                 key={experience.id ?? index}
@@ -295,8 +307,12 @@ export function Experience() {
                   <ExperienceCard experience={experience} mobileHovered={isMobile && mobileHoveredCardIndex === index} />
                 </div>
               ))}
-              <div className={buildCls(styles.experienceCard, styles.ghost)} aria-hidden="true"></div>
-              <div className={buildCls(styles.experienceCard, styles.ghost)} aria-hidden="true"></div>
+              {!isMobile && (
+                <>
+                  <div className={buildCls(styles.experienceCard, styles.ghost)} aria-hidden="true"></div>
+                  <div className={buildCls(styles.experienceCard, styles.ghost)} aria-hidden="true"></div>
+                </>
+              )}
             </div>
           </div>
           </div>

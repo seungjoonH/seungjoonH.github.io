@@ -42,7 +42,7 @@ export default {
     searchAppliedHint: 'A search filter is applied.',
     searchAppliedTooltipClose: 'Close tooltip',
     deploy: {
-      deploy: 'Deployment link',
+      deploy: 'Web',
       appstore: 'AppStore',
       pubdev: 'pub.dev',
       npm: 'npm',

@@ -68,7 +68,7 @@ function renderSectionItem(item, sectionTitle, itemIndex, descTerms, cardStyles,
   );
 }
 
-export function ProjectDetailContent({ project, variant }) {
+export function ProjectDetailContent({ project, variant, isMobile = false }) {
   const { t } = useTranslation();
   const docs = useDocs();
   const rawQuery = useProjectSearchStore((s) => s.rawQuery);
@@ -192,9 +192,11 @@ export function ProjectDetailContent({ project, variant }) {
                       title={r.title || label}
                     >
                       <Icon name="link" className={cardStyles.deployLinkIcon} />
-                      <span className={buildCls(cardStyles.deployLinkText, isDiscontinued && cardStyles.discontinued)}>
-                        {label}
-                      </span>
+                      {!(variant === 'card' && isMobile) && (
+                        <span className={buildCls(cardStyles.deployLinkText, isDiscontinued && cardStyles.discontinued)}>
+                          {label}
+                        </span>
+                      )}
                       {isDiscontinued ? <span className={cardStyles.linkStatus}>{t('project.linkStatus')}</span> : null}
                     </a>
                   ) : (
@@ -204,9 +206,11 @@ export function ProjectDetailContent({ project, variant }) {
                       title={r.title || label}
                     >
                       <Icon name="link" className={cardStyles.deployLinkIcon} />
-                      <span className={buildCls(cardStyles.deployLinkText, isDiscontinued && cardStyles.discontinued)}>
-                        {label}
-                      </span>
+                      {!(variant === 'card' && isMobile) && (
+                        <span className={buildCls(cardStyles.deployLinkText, isDiscontinued && cardStyles.discontinued)}>
+                          {label}
+                        </span>
+                      )}
                       {isDiscontinued ? <span className={cardStyles.linkStatus}>{t('project.linkStatus')}</span> : null}
                     </span>
                   );

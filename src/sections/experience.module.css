@@ -52,7 +52,9 @@
   align-items: center;
   gap: 6vw;
   padding-bottom: 10px;
+  padding-inline: calc((100% - var(--experience-card-width)) / 2);
   min-width: max-content;
+  box-sizing: content-box;
 }
 
 .experienceNav {
@@ -227,6 +229,8 @@
   }
 
   .experienceScrollContainer {
+    width: 100%;
     padding: 16px 0;
+    scroll-padding-inline-start: 0;
   }
 }

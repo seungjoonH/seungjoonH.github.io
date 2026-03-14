@@ -37,7 +37,7 @@ export function ExperienceDetailPopup({ experience, onClose, returnFocusRef }) {
       aria-labelledby="experience-detail-title"
       aria-label={t('experience.detailAria', { company: experience.company })}
     >
-      <div ref={panelRef} className={popupStyles.panel} onClick={(e) => e.stopPropagation()}>
+      <div ref={panelRef} className={popupStyles.panel} data-popup="experience" onClick={(e) => e.stopPropagation()}>
         <button
           type="button"
           className={popupStyles.closeBtn}
