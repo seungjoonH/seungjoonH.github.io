@@ -4,8 +4,9 @@ import { Header } from '@components/layout/Header';
 import { useConfigStore } from '../stores/configStore';
 import { History } from './education/History';
 import styles from './education.module.css';
+import { buildCls } from '../utils/cssUtil';
 
-export function Education() {
+export function Education({ narrow = false, shouldFadeIn = false }) {
   const language = useConfigStore((s) => s.language);
   const [educations, setEducations] = useState([]);
   const historyRefs = useRef([]);
@@ -51,7 +52,7 @@ export function Education() {
   }, [educations]);
 
   return (
-    <div className={styles.educationContainer}>
+    <div className={buildCls(styles.educationContainer, narrow && styles.educationFadeIn, narrow && shouldFadeIn && styles.educationFadeInVisible)}>
       <div className={styles.educationLayout}>
         <Header text="Education" align="left" className={styles.educationTitle} />
         <div className={styles.educationContent}>
