@@ -1,0 +1,44 @@
+.educationContainer {
+  margin-top: var(--section-gap, 200px);
+  padding: 0 100px var(--section-gap, 200px);
+}
+
+.educationLayout {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 100px;
+}
+
+.educationContent {
+  width: 100%;
+}
+
+.educationList {
+  width: min(32vw, 560px);
+}
+
+.historyItem {
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+@media (max-width: 768px) {
+  .educationContainer {
+    margin-top: var(--section-gap, 120px);
+    padding: 0 28px var(--section-gap, 120px);
+  }
+
+  .educationTitle {
+    margin-left: 0;
+  }
+
+  .educationLayout {
+    flex-direction: column;
+    gap: 34px;
+  }
+
+  .educationList {
+    width: 100%;
+  }
+}

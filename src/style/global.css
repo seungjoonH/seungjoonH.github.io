@@ -1,0 +1,307 @@
+@font-face {
+  font-family: 'Neue Haas';
+  src: url('/assets/fonts/Neue Haas/NeueHaasDisplayXXThin.ttf') format('truetype');
+  font-weight: 50;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Neue Haas';
+  src: url('/assets/fonts/Neue Haas/NeueHaasDisplayXXThinItalic.ttf') format('truetype');
+  font-weight: 50;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Neue Haas';
+  src: url('/assets/fonts/Neue Haas/NeueHaasDisplayXThin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Neue Haas';
+  src: url('/assets/fonts/Neue Haas/NeueHaasDisplayXThinItalic.ttf') format('truetype');
+  font-weight: 100;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Neue Haas';
+  src: url('/assets/fonts/Neue Haas/NeueHaasDisplayThin.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Neue Haas';
+  src: url('/assets/fonts/Neue Haas/NeueHaasDisplayThinItalic.ttf') format('truetype');
+  font-weight: 200;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Neue Haas';
+  src: url('/assets/fonts/Neue Haas/NeueHaasDisplayLight.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Neue Haas';
+  src: url('/assets/fonts/Neue Haas/NeueHaasDisplayLightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Neue Haas';
+  src: url('/assets/fonts/Neue Haas/NeueHaasDisplayRoman.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Neue Haas';
+  src: url('/assets/fonts/Neue Haas/NeueHaasDisplayItalic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Neue Haas';
+  src: url('/assets/fonts/Neue Haas/NeueHaasDisplayMedium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Neue Haas';
+  src: url('/assets/fonts/Neue Haas/NeueHaasDisplayMediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Neue Haas';
+  src: url('/assets/fonts/Neue Haas/NeueHaasDisplayBold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Neue Haas';
+  src: url('/assets/fonts/Neue Haas/NeueHaasDisplayBoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Neue Haas';
+  src: url('/assets/fonts/Neue Haas/NeueHaasDisplayBlack.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Neue Haas';
+  src: url('/assets/fonts/Neue Haas/NeueHaasDisplayBlackItalic.ttf') format('truetype');
+  font-weight: 900;
+  font-style: italic;
+}
+
+* {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  z-index: 0;
+  font-family: 'Neue Haas';
+}
+
+:root {
+  --pano-ratio: 3.39;
+  --font-scale: 1;
+  --speed-scale: 1;
+  --hover-duration: calc(0.2s / var(--speed-scale, 1));
+  --hover-ease: ease;
+  --hover-transition: background var(--hover-duration) var(--hover-ease), color var(--hover-duration) var(--hover-ease), opacity var(--hover-duration) var(--hover-ease), border-color var(--hover-duration) var(--hover-ease), transform var(--hover-duration) var(--hover-ease);
+  --clamp-font-xs-min: calc(9px * var(--font-scale, 1));
+  --clamp-font-xs-max: calc(12px * var(--font-scale, 1));
+  --clamp-font-sm-min: calc(11px * var(--font-scale, 1));
+  --clamp-font-sm-max: calc(15px * var(--font-scale, 1));
+  --clamp-font-md-min: calc(12px * var(--font-scale, 1));
+  --clamp-font-md-max: calc(16px * var(--font-scale, 1));
+  --clamp-font-lg-min: calc(18px * var(--font-scale, 1));
+  --clamp-font-lg-max: calc(32px * var(--font-scale, 1));
+  --clamp-font-card-title-min: calc(14px * var(--font-scale, 1));
+  --clamp-font-card-title-max: calc(26px * var(--font-scale, 1));
+  --clamp-space-xs-min: 4px;
+  --clamp-space-xs-max: 8px;
+  --clamp-space-sm-min: 6px;
+  --clamp-space-sm-max: 10px;
+  --clamp-space-md-min: 10px;
+  --clamp-space-md-max: 18px;
+  --section-gap: 200px;
+  --section-padding-x: 100px;
+  --section-content-max-width: 1200px;
+  overflow-x: hidden;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --section-gap: 120px;
+    --section-padding-x: 28px;
+  }
+}
+
+:root,
+[data-theme="dark"] {
+  --color-bg: #000;
+  --color-bg-subtle: #050505;
+  --color-bg-card: #0a0a0a;
+  --color-bg-elevated: #0b0b0b;
+  --color-surface: #f2f2f2;
+  --color-surface-dim: #f4f4f4;
+  --color-text: #f2f2f2;
+  --color-text-inverse: #000;
+  --color-text-muted: #b9b9b9;
+  --color-text-dim: #bdbdbd;
+  --color-text-soft: #bcbcbc;
+  --color-text-softer: #b8b8b8;
+  --color-text-secondary: #d7d7d7;
+  --color-text-tertiary: #d8d8d8;
+  --color-border: #f2f2f2;
+  --color-white: #fff;
+  --color-gray-1: #d0d0d0;
+  --color-gray-2: #d7d7d7;
+  --color-gray-3: #d8d8d8;
+  --color-gray-4: #d9d9d9;
+  --color-gray-5: #dcdcdc;
+  --color-gray-6: #cfcfcf;
+  --color-gray-7: #bfbfbf;
+  --color-ink: #333;
+  --color-slider-track: #f2f2f2;
+  --color-slider-thumb: #f2f2f2;
+  --nav-circle-bg: rgba(255, 255, 255, 0.28);
+  --nav-circle-bg-hover: rgba(255, 255, 255, 0.4);
+  --svg-bg: #0a0a0a;
+  --svg-fg: #f2f2f2;
+  --settings-panel-border: #2a2a2a;
+  --settings-panel-bg: rgba(12, 12, 12, 0.68);
+  --settings-panel-shadow: 0 8px 32px rgba(255, 255, 255, 0.06);
+  --project-popup-bg: rgba(14, 14, 14, 0.68);
+  --project-popup-border: rgba(255, 255, 255, 0.12);
+  --segmented-active-bg: #e0e0e0;
+  --color-link: #b8b8b8;
+  --color-link-hover: #e8e8e8;
+  --color-bullet: #d0d0d0;
+  --docs-folder-hover-bg: rgba(255, 255, 255, 0.05);
+  --docs-folder-hover-overlay: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="light"] {
+  --color-bg: #e4e4e4;
+  --color-bg-subtle: #eee;
+  --color-bg-card: #fff;
+  --color-bg-elevated: #fff;
+  --color-surface: #e0e0e0;
+  --color-surface-dim: #d5d5d5;
+  --color-text: #1a1a1a;
+  --color-text-inverse: #fff;
+  --color-text-muted: #333;
+  --color-text-dim: #383838;
+  --color-text-soft: #404040;
+  --color-text-softer: #444;
+  --color-text-secondary: #333;
+  --color-text-tertiary: #383838;
+  --color-border: #999;
+  --color-white: #fff;
+  --color-gray-1: #1a1a1a;
+  --color-gray-2: #333;
+  --color-gray-3: #404040;
+  --color-gray-4: #444;
+  --color-gray-5: #555;
+  --color-gray-6: #666;
+  --color-gray-7: #777;
+  --color-ink: #1a1a1a;
+  --color-slider-track: #333;
+  --color-slider-thumb: #333;
+  --nav-circle-bg: rgba(0, 0, 0, 0.08);
+  --nav-circle-bg-hover: rgba(0, 0, 0, 0.14);
+  --svg-bg: #f8f8f8;
+  --svg-fg: #222;
+  --settings-panel-border: #d0d0d0;
+  --settings-panel-bg: rgba(255, 255, 255, 0.82);
+  --settings-panel-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --project-popup-bg: var(--color-bg-elevated);
+  --project-popup-border: rgba(0, 0, 0, 0.12);
+
+  --segmented-active-bg: #2a2a2a;
+
+  --color-link: #666;
+  --color-link-hover: #000;
+  --color-bullet: #555;
+  --docs-folder-hover-bg: rgba(0, 0, 0, 0.05);
+  --docs-folder-hover-overlay: rgba(0, 0, 0, 0.04);
+}
+
+html {
+  font-size: calc(16px * var(--font-scale, 1));
+}
+
+html,
+body {
+  background-color: var(--color-bg);
+}
+
+body {
+  color: var(--color-text);
+  overflow-x: hidden;
+  transition: background-color 0.25s ease, color 0.2s ease;
+}
+
+html,
+body,
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--color-text-muted) 55%, transparent) transparent;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-text-muted) 55%, transparent);
+  border-radius: 999px;
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+.versionLabel {
+  position: fixed;
+  bottom: 10px;
+  right: 14px;
+  z-index: 0;
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  user-select: none;
+}

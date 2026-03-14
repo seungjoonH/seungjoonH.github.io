@@ -1,0 +1,7 @@
+.row-container {
+  display: flex;
+  width: calc(90vw - 60px);
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}

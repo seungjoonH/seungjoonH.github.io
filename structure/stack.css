@@ -1,0 +1,11 @@
+.stack-container {
+  position: relative;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.stack-item {
+  position: absolute;
+}

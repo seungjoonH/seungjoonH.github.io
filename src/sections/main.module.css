@@ -1,0 +1,38 @@
+.parallaxContainer button {
+  border: 0;
+  background-color: transparent;
+  text-align: left;
+}
+
+.mainHero {
+  margin-top: 130px;
+}
+
+.parallaxTitle {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 6.5vw;
+  pointer-events: none;
+}
+
+.parallaxIntro {
+  position: relative;
+  z-index: 10;
+  margin-top: 2.5vw;
+  opacity: var(--parallax-intro-opacity, 1);
+}
+
+:global(body[data-narrow="true"]) .mainHero {
+  margin-top: 82px;
+}
+
+:global(body[data-narrow="true"]) .parallaxTitle {
+  padding-left: 16px;
+}
+
+:global(body[data-narrow="true"]) .parallaxIntro {
+  margin-top: 14px;
+}

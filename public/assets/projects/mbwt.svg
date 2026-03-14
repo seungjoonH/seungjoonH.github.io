@@ -1,0 +1,42 @@
+<svg width="2500" height="2500" viewBox="0 0 2500 2500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="2500" height="2500" />
+
+  <path
+    d="M816.463 1115.57C946.24 944.374 1117.54 673.344 1176.44 431.596C1176.44 431.596 1881.13 962.262 1857.14 1457.55C1857.14 1799.48 1587.54 2076.66 1254.99 2076.66C922.427 2076.66 585.93 1903.58 652.836 1457.55C674.653 1312.11 755.375 1196.15 816.463 1115.57Z"
+    stroke="var(--svg-fg, currentColor)"
+    stroke-width="31.275"
+    stroke-linejoin="round"
+  />
+  
+  <path
+    d="M1222.61 1346.45V1484.81"
+    stroke="var(--svg-fg, currentColor)"
+    stroke-width="37.53"
+    stroke-linecap="round"
+  />
+
+  <path
+    d="M1591.77 1346.45V1484.81"
+    stroke="var(--svg-fg, currentColor)"
+    stroke-width="37.53"
+    stroke-linecap="round"
+  />
+
+  <ellipse
+    cx="1063.35"
+    cy="1573.14"
+    rx="62.55"
+    ry="34.4025"
+    stroke="var(--svg-fg, currentColor)"
+    stroke-width="20"
+  />
+
+  <ellipse
+    cx="1695.1"
+    cy="1591.9"
+    rx="56.295"
+    ry="34.4025"
+    stroke="var(--svg-fg, currentColor)"
+    stroke-width="20"
+  />
+</svg>

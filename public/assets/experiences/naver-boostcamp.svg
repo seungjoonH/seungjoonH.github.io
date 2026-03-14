@@ -1,0 +1,8 @@
+<svg width="350" height="350" viewBox="0 0 350 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M293.5 239.579V103.215L175 171.715V308.415L293.5 239.579Z" stroke="var(--svg-fg, currentColor)" stroke-width="8" stroke-linejoin="bevel"/>
+<path d="M174.5 34.5351L56 102.717L175 171.717L293.5 103.217L174.5 34.5351Z" stroke="var(--svg-fg, currentColor)" stroke-width="8" stroke-linejoin="bevel"/>
+<path d="M56.3545 239.717L56 102.717L175 171.717V308.421L56.3545 239.717Z" stroke="var(--svg-fg, currentColor)" stroke-width="8" stroke-linejoin="bevel"/>
+<path d="M175 275.1L86 223.716V120.109L175 171.716V275.1Z" stroke="var(--svg-fg, currentColor)" stroke-width="8"/>
+<path d="M116 205.716V137.494L175 171.715V239.779L116 205.716Z" stroke="var(--svg-fg, currentColor)" stroke-width="8"/>
+<path d="M146 189.036V155.215L175 172.036V205.779L146 189.036Z" stroke="var(--svg-fg, currentColor)" stroke-width="8"/>
+</svg>

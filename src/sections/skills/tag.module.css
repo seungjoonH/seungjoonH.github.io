@@ -1,0 +1,29 @@
+.tagContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.45em;
+  background-color: var(--color-surface-dim);
+  padding: 0.4em 0.75em;
+  border-radius: 0.25em;
+  color: var(--color-ink);
+  white-space: nowrap;
+  border: none;
+  cursor: pointer;
+  font-size: calc(clamp(13px, 0.9vw, 17px) * var(--font-scale, 1));
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.tagContainer:hover {
+  filter: brightness(0.82);
+  transform: translateY(-3px);
+}
+
+.tagIcon {
+  width: 1.15em;
+  height: 1.15em;
+}
+
+.tagText {
+  font-size: inherit;
+  font-weight: 400;
+}

@@ -1,0 +1,38 @@
+.segmentedButton {
+  display: inline-flex;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--color-bg);
+  transform: translateZ(0);
+}
+
+.segment {
+  box-sizing: border-box;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--hover-transition);
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.segment:hover {
+  color: var(--color-text);
+  background: var(--color-bg-subtle);
+  opacity: 1;
+}
+
+.segment.active {
+  background: var(--segmented-active-bg, var(--color-surface));
+  color: var(--color-text-inverse);
+  font-weight: 500;
+}
+
+.segment + .segment {
+  border-left: 1px solid var(--color-border);
+  margin-left: 0;
+}

@@ -1,0 +1,37 @@
+.titleContainer {
+  position: relative;
+  width: fit-content;
+  max-width: min(92vw, 1100px);
+  margin-left: 0;
+  font-size: clamp(
+    calc(20px * var(--font-scale, 1)),
+    calc(7.2vw * var(--font-scale, 1)),
+    calc(120px * var(--font-scale, 1))
+  );
+  font-weight: 500;
+  color: var(--color-bg);
+  white-space: pre-line;
+  line-height: 1.03;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out, color 0.2s ease;
+  z-index: 1;
+}
+
+.fadeIn {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .titleContainer {
+    width: fit-content;
+    max-width: calc(100vw - 32px);
+    margin-top: 0;
+    margin-left: 0;
+    font-size: clamp(
+      calc(16px * var(--font-scale, 1)),
+      calc(6.2vw * var(--font-scale, 1)),
+      calc(48px * var(--font-scale, 1))
+    );
+    line-height: 1.08;
+  }
+}

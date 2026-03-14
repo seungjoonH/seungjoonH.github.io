@@ -1,0 +1,5 @@
+<svg width="350" height="350" viewBox="0 0 350 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M75 201.5L50 176.5L176.5 50L201.5 75L75 201.5Z" stroke="var(--svg-fg, currentColor)" stroke-width="8"/>
+<path d="M173 299.5L148 274.5L274.5 148L299.5 173L173 299.5Z" stroke="var(--svg-fg, currentColor)" stroke-width="8"/>
+<path d="M124 250.5L99 225.5L225.5 99L250.5 124L124 250.5Z" stroke="var(--svg-fg, currentColor)" stroke-width="8"/>
+</svg>

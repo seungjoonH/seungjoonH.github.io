@@ -1,0 +1,101 @@
+.contactContainer {
+  margin-top: var(--section-gap, 200px);
+  padding: 0 var(--section-padding-x, 100px) var(--section-gap, 200px);
+  color: var(--color-text);
+}
+
+.contactContent {
+  max-width: var(--section-content-max-width, 720px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contactHeaderWrap {
+  margin-bottom: 36px;
+}
+
+.contactTitle {
+  bottom: 0;
+  left: 0;
+  margin-top: 0;
+  transform: none;
+  text-align: center;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 20px;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.12);
+  transition: var(--hover-transition);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-text);
+  box-shadow: 0 20px 38px rgba(0, 0, 0, 0.18);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--color-text-muted);
+  outline-offset: 2px;
+}
+
+.cardIcon {
+  width: 24px;
+  height: 24px;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.cardLabel {
+  font-size: clamp(var(--clamp-font-xs-min), 1vw, var(--clamp-font-xs-max));
+  font-weight: 400;
+  color: var(--color-text-muted);
+  letter-spacing: 0.06em;
+}
+
+.cardValue {
+  font-size: clamp(var(--clamp-font-sm-min), 1.1vw, var(--clamp-font-sm-max));
+  font-weight: 400;
+  color: var(--color-text);
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+  .cardGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .contactContainer {
+    margin-top: var(--section-gap, 120px);
+    padding: 0 var(--section-padding-x, 28px) var(--section-gap, 120px);
+  }
+
+  .cardGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .card {
+    padding: 18px;
+  }
+}

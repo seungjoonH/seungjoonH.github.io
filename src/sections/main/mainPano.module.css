@@ -1,0 +1,78 @@
+.mainPanoContainer {
+  margin-top: 0;
+  width: 15vw;
+  height: 15vw;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  z-index: auto;
+}
+
+.animation1 {
+  --width: 37.5vw;
+  --frame-count: 15;
+  --curve: cubic-bezier(0.7, 0.23, 0.71, 0.67);
+
+  width: var(--width);
+  height: calc(var(--width) / var(--pano-ratio));
+  background-color: var(--color-text);
+  mask-image: url('/assets/images/pano.svg');
+  mask-size: calc(var(--frame-count) * 100%) 100%;
+  mask-repeat: no-repeat;
+  mask-position: 0 0;
+  -webkit-mask-image: url('/assets/images/pano.svg');
+  -webkit-mask-size: calc(var(--frame-count) * 100%) 100%;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: 0 0;
+  transition: width calc(0.35s / var(--speed-scale, 1)) var(--curve), height calc(0.35s / var(--speed-scale, 1)) var(--curve);
+}
+
+.animation2 {
+  --frame-count: 15;
+  --ratio: 3.39;
+  --max-width: 100vw;
+  --curve: cubic-bezier(0.37, 0.38, 0.69, 0.27);
+
+  width: var(--max-width);
+  height: calc(var(--max-width) / var(--pano-ratio));
+
+  background-color: var(--color-text);
+  mask-image: url('/assets/images/pano.svg');
+  mask-size: calc(var(--frame-count) * 100%) 100%;
+  mask-repeat: no-repeat;
+  -webkit-mask-image: url('/assets/images/pano.svg');
+  -webkit-mask-size: calc(var(--frame-count) * 100%) 100%;
+  -webkit-mask-repeat: no-repeat;
+
+  transition: width calc(0.5s / var(--speed-scale, 1)) var(--curve), height calc(0.5s / var(--speed-scale, 1)) var(--curve);
+  animation: slideSprite calc(0.4s / var(--speed-scale, 1)) steps(calc(var(--frame-count) - 1));
+  animation-fill-mode: forwards;
+}
+
+@keyframes slideSprite {
+  from {
+    mask-position: 0% 0;
+    -webkit-mask-position: 0% 0;
+  }
+  to {
+    mask-position: 100% 0;
+    -webkit-mask-position: 100% 0;
+  }
+}
+
+.noTransition {
+  --frame-count: 15;
+  --max-width: 100vw;
+
+  width: var(--max-width);
+  height: calc(var(--max-width) / var(--pano-ratio));
+  background-color: var(--color-text);
+  mask-image: url('/assets/images/pano.svg');
+  mask-size: calc(var(--frame-count) * 100%) 100%;
+  mask-repeat: no-repeat;
+  mask-position-x: 100%;
+  -webkit-mask-image: url('/assets/images/pano.svg');
+  -webkit-mask-size: calc(var(--frame-count) * 100%) 100%;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position-x: 100%;
+  transition-duration: 0s;
+}

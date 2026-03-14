@@ -1,0 +1,88 @@
+.introContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  width: max-content;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: 6.5vw;
+  color: var(--color-text);
+  font-size: clamp(
+    calc(12px * var(--font-scale, 1)),
+    calc(2.8vw * var(--font-scale, 1)),
+    calc(26px * var(--font-scale, 1))
+  );
+  font-weight: 400;
+  margin-top: 0;
+  bottom: 0;
+  right: 0;
+  opacity: 0;
+  z-index: 10;
+  overflow: visible;
+  padding-right: 0;
+  transition: all 0.8s ease-in-out;
+}
+
+.fadeIn {
+  bottom: 0;
+  opacity: 1;
+}
+
+.noTransition {
+  bottom: 0;
+  opacity: 1;
+  transition-duration: 0s;
+}
+
+.intro {
+  line-height: 1.48em;
+  margin-bottom: 0;
+}
+
+.intro + .intro {
+  margin-top: 0.08em;
+}
+
+.introSecondary {
+  font-size: 0.88em;
+}
+
+.introList {
+  list-style-type: disc;
+  list-style-position: outside;
+  padding-left: 1.2em;
+  margin: 0.6em 0 0;
+  font-size: 0.72em;
+}
+
+.introListItem {
+  line-height: 1.48em;
+  margin-top: 0.25em;
+}
+
+.introListItem::marker {
+  color: var(--color-bullet);
+}
+
+.highlight {
+  border-radius: 3px;
+  padding: 2px 5px;
+}
+
+:global([data-theme="dark"]) .highlight {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+:global([data-theme="light"]) .highlight {
+  background: var(--color-text);
+  color: var(--color-bg-card);
+}
+
+@media (max-width: 768px) {
+  .introContainer {
+    margin-right: 16px;
+  }
+}

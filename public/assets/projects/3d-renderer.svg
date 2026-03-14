@@ -1,0 +1,12 @@
+<svg width="598" height="598" viewBox="0 0 598 598" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M401.499 277.969V501.837L97.4988 340.03V116.162L401.499 277.969Z" stroke="var(--svg-fg, currentColor)" stroke-width="5"/>
+<path d="M440.499 186.696L403.999 103.875L498.725 92L545.999 172.696L440.499 186.696Z" stroke="var(--svg-fg, currentColor)" stroke-width="5" stroke-linejoin="bevel"/>
+<path d="M403.999 177.918V104L440.999 187.044V270.196L403.999 177.918Z" stroke="var(--svg-fg, currentColor)" stroke-width="5" stroke-linejoin="bevel"/>
+<path d="M440.999 270V186.726L545.999 173L541.434 248.038L440.999 270Z" stroke="var(--svg-fg, currentColor)" stroke-width="5" stroke-linejoin="bevel"/>
+<path d="M208.499 311.5L211.499 270.5L248.499 310L244.999 354.5L208.499 311.5Z" stroke="var(--svg-fg, currentColor)" stroke-width="5" stroke-linejoin="bevel"/>
+<path d="M248.499 310L211.499 270.5L252.999 267L291.999 305.5L248.499 310Z" stroke="var(--svg-fg, currentColor)" stroke-width="5" stroke-linejoin="bevel"/>
+<path d="M244.999 354.5L248.499 310L291.999 305.5L287.499 346.5L244.999 354.5Z" stroke="var(--svg-fg, currentColor)" stroke-width="5" stroke-linejoin="bevel"/>
+<line x1="209.344" y1="271.244" x2="403.344" y2="103.244" stroke="var(--svg-fg, currentColor)" stroke-width="2"/>
+<line x1="291.535" y1="306.114" x2="547.535" y2="172.114" stroke="var(--svg-fg, currentColor)" stroke-width="2"/>
+<line x1="286.639" y1="347.067" x2="540.639" y2="249.067" stroke="var(--svg-fg, currentColor)" stroke-width="2"/>
+</svg>

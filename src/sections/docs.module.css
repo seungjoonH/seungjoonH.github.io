@@ -1,0 +1,268 @@
+.docsContainer {
+  margin-top: var(--section-gap, 200px);
+  padding: 0 var(--section-padding-x, 100px) var(--section-gap, 200px);
+  color: var(--color-text);
+}
+
+.docsHeaderBlock {
+  pointer-events: auto;
+  overflow: visible;
+}
+
+.docsHeaderBlockHidden {
+  pointer-events: none;
+}
+
+.docsHeaderWrap {
+  margin-bottom: 36px;
+}
+
+.docsTitle {
+  bottom: 0;
+  left: 0;
+  margin-top: 0;
+  transform: none;
+  text-align: center;
+}
+
+.docsNav {
+  max-width: var(--section-content-max-width, 720px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.folderBlock {
+  position: relative;
+}
+
+.folderBlock + .folderBlock {
+  margin-top: 20px;
+}
+
+.folderRow {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 10px;
+  border: none;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.25s ease;
+}
+
+.folderRow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  background: linear-gradient(
+    135deg,
+    var(--docs-folder-hover-overlay) 0%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.folderRow:hover::before {
+  opacity: 1;
+}
+
+.folderRow:hover {
+  background: var(--docs-folder-hover-bg);
+}
+
+.folderRow:focus-visible {
+  outline: 2px solid var(--color-text-muted, currentColor);
+  outline-offset: 2px;
+}
+
+.chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: var(--color-text-muted, rgba(255, 255, 255, 0.7));
+  transition: transform 0.2s ease;
+}
+
+.chevron::before {
+  content: '\25B8';
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+.chevronOpen {
+  transform: rotate(90deg);
+}
+
+.folderIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--color-text-muted, currentColor);
+}
+
+.platformIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: var(--color-text-muted, currentColor);
+}
+
+.folderLabel {
+  flex: 1;
+  min-width: 0;
+}
+
+.docListWrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s ease;
+}
+
+.docListWrapOpen {
+  grid-template-rows: 1fr;
+}
+
+.docListTrack {
+  min-height: 0;
+  overflow: hidden;
+  padding-left: 44px;
+  position: relative;
+  border-left: 1px solid var(--color-border);
+  margin-left: 46px;
+  margin-bottom: 4px;
+}
+
+.docRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 0;
+  font-size: 0.95em;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  border-radius: 4px;
+}
+
+.docRowLink {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color var(--hover-duration, 0.2s) var(--hover-ease, ease);
+}
+
+.docRowLink:hover {
+  color: var(--color-text);
+}
+
+:global([data-theme="light"]) .docRowLink {
+  color: var(--color-link);
+}
+
+:global([data-theme="light"]) .docRowLink:hover {
+  color: var(--color-link-hover);
+}
+
+.docRowLink:focus-visible {
+  outline: 2px solid var(--color-text-muted, currentColor);
+  outline-offset: 2px;
+}
+
+.docIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: inherit;
+}
+
+.docChip {
+  flex-shrink: 0;
+  margin-right: 12px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-subtle, rgba(255, 255, 255, 0.06));
+  color: var(--color-text-muted);
+  font: inherit;
+  font-size: 0.75em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.docChip:hover {
+  background: var(--color-bg-card, rgba(255, 255, 255, 0.08));
+  color: var(--color-text);
+  border-color: var(--color-text-muted);
+}
+
+.docChip:focus-visible {
+  outline: 2px solid var(--color-text-muted, currentColor);
+  outline-offset: 2px;
+}
+
+.docTitle {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.docRowIconWrapper {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  line-height: 0;
+  transition: transform var(--hover-duration, 0.2s) var(--hover-ease, ease);
+}
+
+.docRowIconWrapper [role="img"],
+.docRowIconWrapper > span {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.docRowArrow {
+  width: 12px;
+  height: 12px;
+  color: inherit;
+}
+
+.docRowLink:hover .docRowIconWrapper {
+  transform: translateX(4px);
+}
+
+@media (max-width: 768px) {
+  .docsContainer {
+    margin-top: var(--section-gap, 120px);
+    padding: 0 var(--section-padding-x, 28px) var(--section-gap, 120px);
+  }
+
+  .docListTrack {
+    padding-left: 36px;
+    margin-left: 38px;
+  }
+}

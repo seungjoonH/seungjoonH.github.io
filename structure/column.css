@@ -1,0 +1,9 @@
+.column-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}

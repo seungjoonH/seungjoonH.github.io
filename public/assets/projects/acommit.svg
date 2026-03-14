@@ -1,0 +1,20 @@
+<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .term-text { font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Monaco, "Liberation Mono", Consolas, monospace; }
+    </style>
+    <mask id="header-dots">
+      <rect x="39" y="130" width="322" height="26" fill="white"/>
+      <circle cx="66" cy="142" r="5" fill="black"/>
+      <circle cx="83" cy="142" r="5" fill="black"/>
+      <circle cx="100" cy="142" r="5" fill="black"/>
+    </mask>
+  </defs>
+  <g transform="translate(200,199) scale(1.2) translate(-200,-199)">
+    <path d="M41 139a8 8 0 0 1 8-8h303a8 8 0 0 1 8 8v17H41z" fill="var(--svg-fg, currentColor)" mask="url(#header-dots)"/>
+    <rect x="40" y="131" width="320" height="137" rx="8" ry="8" fill="transparent" stroke="var(--svg-fg, currentColor)" stroke-width="2"/>
+    <g fill="var(--svg-fg, currentColor)" font-size="18" font-weight="500">
+      <text x="57" y="219" class="term-text">&gt; npm install -g acommit _</text>
+    </g>
+  </g>
+</svg>

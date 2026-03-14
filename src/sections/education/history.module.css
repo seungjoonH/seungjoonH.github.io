@@ -1,0 +1,32 @@
+.historyContainer {
+  font-weight: 200;
+  color: var(--color-text);
+  margin-top: 12px;
+}
+
+.year {
+  font-size: calc(clamp(24px, 2.2vw, 34px) * var(--font-scale, 1));
+}
+
+.content {
+  font-family: 'Pretendard';
+  font-size: calc(clamp(18px, 1.45vw, 24px) * var(--font-scale, 1));
+  font-weight: 200;
+  opacity: 0.8;
+  line-height: 1.35;
+}
+
+@media (max-width: 768px) {
+  .historyContainer {
+    margin-top: 0;
+  }
+
+  .year {
+    font-size: calc(22px * var(--font-scale, 1));
+  }
+
+  .content {
+    font-size: calc(16px * var(--font-scale, 1));
+    line-height: 1.45;
+  }
+}

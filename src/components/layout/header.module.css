@@ -1,0 +1,30 @@
+.headerContainer {
+  color: var(--color-text);
+  font-weight: 200;
+  font-size: calc(48px * var(--font-scale, 1));
+  width: 100%;
+}
+
+.alignLeft {
+  margin-left: 5vw;
+}
+
+.alignCenter {
+  bottom: -7vw;
+  left: 50%;
+  margin-top: 150px;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+@media (max-width: 1200px) {
+  .headerContainer {
+    font-size: calc(40px * var(--font-scale, 1));
+  }
+}
+
+@media (max-width: 768px) {
+  .headerContainer {
+    font-size: calc(32px * var(--font-scale, 1));
+  }
+}
