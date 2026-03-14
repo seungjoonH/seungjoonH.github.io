@@ -7,17 +7,13 @@ function isDesktop() {
 }
 
 function hasAlreadyShownThisSession() {
-  try {
-    return sessionStorage.getItem(ZOOM_HINT_SESSION_KEY) === '1';
-  } catch {
-    return false;
-  }
+  try { return sessionStorage.getItem(ZOOM_HINT_SESSION_KEY) === '1'; } 
+  catch { return false; }
 }
 
 export function markZoomHintShownThisSession() {
-  try {
-    sessionStorage.setItem(ZOOM_HINT_SESSION_KEY, '1');
-  } catch {}
+  try { sessionStorage.setItem(ZOOM_HINT_SESSION_KEY, '1'); } 
+  catch {}
 }
 
 export function setupZoomDetection(onZoomDetected) {
@@ -28,10 +24,9 @@ export function setupZoomDetection(onZoomDetected) {
     if (!isDesktop()) return;
     if (hasAlreadyShownThisSession()) return;
     const currentZoom = window.devicePixelRatio;
-    if (currentZoom !== lastZoom) {
-      lastZoom = currentZoom;
-      onZoomDetected();
-    }
+    if (currentZoom === lastZoom) return;
+    lastZoom = currentZoom;
+    onZoomDetected();
   };
 
   window.addEventListener('resize', handleResize);

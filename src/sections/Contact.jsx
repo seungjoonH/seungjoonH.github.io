@@ -12,8 +12,12 @@ const LABEL_KEYS = { email: 'email', github: 'github', linkedin: 'linkedin', tel
 
 function decode(value) {
   if (typeof value !== 'string') return value;
-  try { return decodeURIComponent(value); } 
-  catch { return value; }
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    // 잘못된 인코딩이면 원본 그대로 사용
+    return value;
+  }
 }
 
 function getContactHref(key, value) {
