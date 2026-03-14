@@ -7,13 +7,22 @@ import { Icon } from '@components/shared/icon/Icon';
 import { toHashTag } from './utils/tagUtil';
 import { buildCls } from '../../utils/cssUtil';
 import { useProjectSearchStore } from '../../stores/projectSearchStore';
+import { useProjectCardFlipStore } from '../../stores/projectCardFlipStore';
+import { useBreakpoint } from '../../hooks/useBreakpoint';
 import { parseQuery } from './search/parseQuery';
 import { normalizeStackToken } from './search/stackMapping';
 import { getHighlightTerms, getTagsToHighlight, getEffectiveTagsSorted, getEffectiveStacksSorted, highlightText } from './search/highlight';
 
+const LONG_PRESS_MS = 500;
+
 export function ProjectCard({ project, showAll = false }) {
   const rawQuery = useProjectSearchStore((s) => s.rawQuery);
   const setQueryFromShortcut = useProjectSearchStore((s) => s.setQueryFromShortcut);
+  const { type: breakpointType } = useBreakpoint();
+  const isMobile = breakpointType === 'mobile';
+  const flippedProjectId = useProjectCardFlipStore((s) => s.flippedProjectId);
+  const setFlippedProjectId = useProjectCardFlipStore((s) => s.setFlippedProjectId);
+
   const parsedClauses = useMemo(
     () => (rawQuery ? parseQuery(String(rawQuery).trim(), normalizeStackToken) : []),
     [rawQuery]
@@ -38,6 +47,44 @@ export function ProjectCard({ project, showAll = false }) {
 
   const [popupOpen, setPopupOpen] = useState(false);
   const cardRef = useRef(null);
+  const longPressFiredRef = useRef(false);
+  const longPressTimerRef = useRef(null);
+
+  const isFlipped = isMobile ? flippedProjectId === project.id : popupOpen;
+
+  const handleTouchStart = () => {
+    longPressFiredRef.current = false;
+    longPressTimerRef.current = window.setTimeout(() => {
+      longPressTimerRef.current = null;
+      longPressFiredRef.current = true;
+      setPopupOpen(true);
+    }, LONG_PRESS_MS);
+  };
+
+  const handleTouchEnd = () => {
+    if (longPressTimerRef.current) {
+      clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
+  };
+
+  const handleCardClick = () => {
+    if (!isMobile) return setPopupOpen(true);
+    if (longPressFiredRef.current) {
+      longPressFiredRef.current = false;
+      return;
+    }
+    if (!isFlipped) return setFlippedProjectId(project.id);
+    
+    setPopupOpen(true);
+    setFlippedProjectId(null);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (longPressTimerRef.current) clearTimeout(longPressTimerRef.current);
+    };
+  }, []);
 
   const frontTagsWrapRef = useRef(null);
   const [frontTagsOverflow, setFrontTagsOverflow] = useState(false);
@@ -64,15 +111,24 @@ export function ProjectCard({ project, showAll = false }) {
       <div
         ref={cardRef}
         data-interactive-card="project"
-        className={buildCls(styles.card, popupOpen && styles.flipped)}
-        aria-label={`${project.title}, 클릭 시 상세 팝업`}
-        onClick={() => setPopupOpen(true)}
+        className={buildCls(styles.card, isFlipped && styles.flipped)}
+        aria-label={isMobile ? `${project.title}, 클릭 시 뒤집기 또는 길게 누르면 상세 팝업` : `${project.title}, 클릭 시 상세 팝업`}
+        onClick={handleCardClick}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={handleTouchEnd}
+        onContextMenu={(e) => isMobile && e.preventDefault()}
         role="button"
         tabIndex={0}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            setPopupOpen(true);
+            if (isMobile && isFlipped) {
+              setPopupOpen(true);
+              setFlippedProjectId(null);
+            } else {
+              setPopupOpen(true);
+            }
           }
         }}
       >
