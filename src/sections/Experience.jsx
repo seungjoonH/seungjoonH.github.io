@@ -22,10 +22,16 @@ export function Experience() {
   const [hidden, setHidden] = useState([true]);
   const [focusedCardIndex, setFocusedCardIndex] = useState(0);
   const [popupExperience, setPopupExperience] = useState(null);
+  const [mobileHoveredCardIndex, setMobileHoveredCardIndex] = useState(null);
   const scrollContainerRef = useRef(null);
   const cardRefs = useRef([]);
   const experienceReturnFocusRef = useRef(null);
   const idleSnapTimeoutRef = useRef(null);
+  const longPressFiredRef = useRef(false);
+  const longPressTimerRef = useRef(null);
+
+  const isMobile = breakpointType === 'mobile';
+  const LONG_PRESS_MS = 500;
 
   const centerCardInView = (card) => {
     const container = scrollContainerRef.current;
@@ -46,6 +52,12 @@ export function Experience() {
   };
   const hasPrev = focusedCardIndex > 0;
   const hasNext = focusedCardIndex < experiences.length - 1;
+
+  useEffect(() => {
+    return () => {
+      if (longPressTimerRef.current) clearTimeout(longPressTimerRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     const repository = new ExperienceRepository();
@@ -175,25 +187,71 @@ export function Experience() {
                 <div
                 key={experience.id ?? index}
                 data-interactive-card="experience"
-                className={buildCls(styles.experienceCard, focusedCardIndex === index && styles.focused)}
+                className={buildCls(
+                  styles.experienceCard,
+                  focusedCardIndex === index && styles.focused
+                )}
                 ref={(el) => (cardRefs.current[index] = el)}
+                onTouchStart={() => {
+                  longPressFiredRef.current = false;
+                  longPressTimerRef.current = window.setTimeout(() => {
+                    longPressTimerRef.current = null;
+                    longPressFiredRef.current = true;
+                    setMobileHoveredCardIndex(null);
+                    experienceReturnFocusRef.current = cardRefs.current[index];
+                    setPopupExperience(experience);
+                  }, LONG_PRESS_MS);
+                }}
+                onTouchEnd={() => {
+                  if (longPressTimerRef.current) {
+                    clearTimeout(longPressTimerRef.current);
+                    longPressTimerRef.current = null;
+                  }
+                }}
+                onTouchCancel={() => {
+                  if (longPressTimerRef.current) {
+                    clearTimeout(longPressTimerRef.current);
+                    longPressTimerRef.current = null;
+                  }
+                }}
                 onClick={() => {
-                  setFocusedCardIndex(index);
-                  centerCardInView(cardRefs.current[index]);
-                  experienceReturnFocusRef.current = cardRefs.current[index];
-                  setPopupExperience(experience);
+                  if (isMobile) {
+                    if (longPressFiredRef.current) {
+                      longPressFiredRef.current = false;
+                      return;
+                    }
+                    if (mobileHoveredCardIndex === index) {
+                      experienceReturnFocusRef.current = cardRefs.current[index];
+                      setPopupExperience(experience);
+                      setMobileHoveredCardIndex(null);
+                    } else {
+                      setMobileHoveredCardIndex(index);
+                      setFocusedCardIndex(index);
+                      centerCardInView(cardRefs.current[index]);
+                    }
+                  } else {
+                    setFocusedCardIndex(index);
+                    centerCardInView(cardRefs.current[index]);
+                    experienceReturnFocusRef.current = cardRefs.current[index];
+                    setPopupExperience(experience);
+                  }
                 }}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    setPopupExperience(experience);
+                    if (isMobile && mobileHoveredCardIndex === index) {
+                      setPopupExperience(experience);
+                      setMobileHoveredCardIndex(null);
+                    } else {
+                      setPopupExperience(experience);
+                    }
                   }
                 }}
-                aria-label={`${experience.company}, ${experience.position}. 세부 정보 보기`}
+                aria-label={isMobile ? `${experience.company}, ${experience.position}. 한 번 더 누르면 상세` : `${experience.company}, ${experience.position}. 세부 정보 보기`}
                 >
-                  <ExperienceCard experience={experience} />
+                  <ExperienceCard experience={experience} mobileHovered={isMobile && mobileHoveredCardIndex === index} />
                 </div>
               ))}
               <div className={buildCls(styles.experienceCard, styles.ghost)} aria-hidden="true"></div>

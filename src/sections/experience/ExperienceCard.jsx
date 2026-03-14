@@ -16,7 +16,7 @@ const DefaultImage = () => (
   </div>
 );
 
-export function ExperienceCard({ experience }) {
+export function ExperienceCard({ experience, mobileHovered = false }) {
   const { t } = useTranslation();
   const setQueryFromShortcut = useProjectSearchStore((s) => s.setQueryFromShortcut);
   const [imageError, setImageError] = useState(false);
@@ -34,7 +34,7 @@ export function ExperienceCard({ experience }) {
   const hasProjectShortcut = experience.hasProjectShortcut;
 
   return (
-    <div className={styles.card}>
+    <div className={buildCls(styles.card, mobileHovered && styles.mobileHovered)}>
       <div className="columnContainer">
         {showSvg ? (
           <div className={buildCls(styles.experienceThumbWrap, hoveredReady && styles.hasHovered)}>
