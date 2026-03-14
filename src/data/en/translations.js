@@ -12,6 +12,8 @@ export default {
     github: 'GITHUB',
     linkedin: 'LINKEDIN',
     tel: 'TEL',
+    copy: 'Copy',
+    copied: 'Copied',
   },
   main: {
     title: "Seungjoon\nHyeon's\nPortfolio",
