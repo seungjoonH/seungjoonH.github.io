@@ -371,8 +371,9 @@
 .row {
   --project-columns: 3;
   --project-gap: 20px;
+  --project-card-min-width: 220px;
   display: grid;
-  grid-template-columns: repeat(var(--project-columns), minmax(0, 1fr));
+  grid-template-columns: repeat(var(--project-columns), minmax(var(--project-card-min-width), 1fr));
   gap: var(--project-gap);
   opacity: 0;
   transform: translateY(18px);

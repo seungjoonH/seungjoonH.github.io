@@ -12,6 +12,7 @@
   padding: 0;
   color: var(--color-text);
   width: 100%;
+  min-width: 220px;
   min-height: 0;
   text-align: left;
   transition: var(--hover-transition);
@@ -86,7 +87,7 @@
 .frontMeta {
   margin-top: clamp(4px, 0.35vw, 8px);
   min-width: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .thumbnailWrap {
@@ -149,17 +150,9 @@
   --line-height: 1.22;
   font-size: calc(clamp(11px, 3.5cqw, 15px) * var(--font-scale, 1));
   color: var(--color-text-muted);
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  line-clamp: 1;
-  gap: 8px;
   line-height: var(--line-height);
-  min-height: calc(1em * var(--line-height));
-  max-height: calc(1em * var(--line-height));
-  white-space: normal;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 }
 
 .frontTags {
@@ -184,10 +177,10 @@
 }
 
 .languageStacks {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: clip;
-  overflow-wrap: anywhere;
+  display: inline-block;
+  min-width: max-content;
+  max-width: 100%;
+  white-space: nowrap;
 }
 
 .languageChip {

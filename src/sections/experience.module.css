@@ -207,3 +207,20 @@
     display: none;
   }
 }
+
+@media (max-width: 768px) {
+  .experienceContainer {
+    --experience-pano-ratio: 0.6866091954;
+    --experience-card-width: 62.4vw;
+    --experience-card-min-width: 224px;
+    --experience-card-max-width: 336px;
+  }
+
+  .experienceScroll {
+    gap: 8vw;
+  }
+
+  .experienceScrollContainer {
+    padding: 16px 0;
+  }
+}
