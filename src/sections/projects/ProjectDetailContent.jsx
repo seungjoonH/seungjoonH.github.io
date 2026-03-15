@@ -9,7 +9,7 @@ import { renderRichText, renderLinkTitle } from './utils/richText';
 import { useProjectSearchStore } from '../../stores/projectSearchStore';
 import { parseQuery } from './search/parseQuery';
 import { normalizeStackToken } from './search/stackMapping';
-import { getHighlightTerms, getTagsToHighlight, getEffectiveTagsSorted, getEffectiveStacksSorted, highlightText, highlightRichText } from './search/highlight';
+import { getHighlightTerms, getTagsToHighlight, getEffectiveTagsSorted, getEffectiveStacksSorted, highlightText, highlightStackText, highlightRichText } from './search/highlight';
 import { useDocs } from '../../hooks/useDocs';
 import { getDocById } from '../../utils/docs';
 
@@ -289,7 +289,7 @@ export function ProjectDetailContent({ project, variant, isMobile = false }) {
                     aria-label={`기술스택 ${stack}로 검색`}
                   >
                     {stackTerms.length
-                      ? highlightText(stack, stackTerms, cardStyles.highlight)
+                      ? highlightStackText(stack, stackTerms, cardStyles.highlight, normalizeStackToken)
                       : stack}
                   </button>
                 </span>

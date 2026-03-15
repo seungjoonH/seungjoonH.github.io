@@ -7,7 +7,7 @@ function stackContainsQuery(stackLower, queryLower) {
 
 function matchesStack(project, condValue, normalizeStack, exactMatch = false) {
   const stacks = project.techStackNames || project.techStacks || [];
-  const normalizedStacks = stacks.map((s) => String(s).toLowerCase());
+  const normalizedStacks = stacks.map((s) => normalizeStack(String(s)).toLowerCase());
 
   const matchOne = (queryNorm) => {
     if (exactMatch) {

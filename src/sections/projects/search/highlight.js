@@ -155,6 +155,21 @@ function getHighlightRanges(text, terms) {
   return mergeRanges(ranges);
 }
 
+export function highlightStackText(text, terms, markClassName, normalizeStack) {
+  if (!text || typeof text !== 'string') return [text];
+  const safe = terms.filter((t) => t && String(t).length > 0);
+  if (safe.length === 0) return [text];
+
+  const norm = (normalizeStack && typeof normalizeStack === 'function' ? normalizeStack(text) : text).toLowerCase();
+  for (const term of safe) {
+    if (String(term).toLowerCase() === norm) {
+      return [React.createElement('mark', { key: 'stack', className: markClassName }, text)];
+    }
+  }
+
+  return highlightText(text, terms, markClassName);
+}
+
 export function highlightText(text, terms, markClassName) {
   if (!text || typeof text !== 'string') return [text];
   const safe = terms.filter((t) => t && String(t).length > 0);

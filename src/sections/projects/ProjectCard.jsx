@@ -11,7 +11,7 @@ import { useProjectCardFlipStore } from '../../stores/projectCardFlipStore';
 import { useBreakpoint } from '../../hooks/useBreakpoint';
 import { parseQuery } from './search/parseQuery';
 import { normalizeStackToken } from './search/stackMapping';
-import { getHighlightTerms, getTagsToHighlight, getEffectiveTagsSorted, getEffectiveStacksSorted, highlightText } from './search/highlight';
+import { getHighlightTerms, getTagsToHighlight, getEffectiveTagsSorted, getEffectiveStacksSorted, highlightText, highlightStackText } from './search/highlight';
 
 const LONG_PRESS_MS = 2000;
 const LONG_PRESS_SCROLL_THRESHOLD_PX = 10;
@@ -236,7 +236,7 @@ export function ProjectCard({ project, showAll = false }) {
                       <span key={stack}>
                         {i > 0 ? ' / ' : ''}
                         {stackTerms.length
-                          ? highlightText(stack, stackTerms, styles.highlight)
+                          ? highlightStackText(stack, stackTerms, styles.highlight, normalizeStackToken)
                           : stack}
                       </span>
                     ))
