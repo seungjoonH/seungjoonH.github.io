@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useA11y } from '../../hooks/useA11y';
 import { Icon } from '@components/shared/icon/Icon';
 import { useProjectSearchStore } from '../../stores/projectSearchStore';
 import { SearchPlaceholderOverlay } from './SearchPlaceholderOverlay';
@@ -7,6 +8,7 @@ import styles from '../projects.module.css';
 
 export function ProjectSearchBar() {
   const { t } = useTranslation();
+  const a11y = useA11y();
   const rawQuery = useProjectSearchStore((s) => s.rawQuery);
   const queryAppliedByShortcut = useProjectSearchStore((s) => s.queryAppliedByShortcut);
   const shortcutHintDismissed = useProjectSearchStore((s) => s.shortcutHintDismissed);
@@ -30,23 +32,23 @@ export function ProjectSearchBar() {
             onFocus={() => setIsSearchFocused(true)}
             onBlur={() => setIsSearchFocused(false)}
             placeholder=""
-            aria-label="프로젝트 검색"
+            aria-label={a11y('project.searchInput')}
             autoComplete="off"
           />
-          {!rawQuery ? <SearchPlaceholderOverlay paused={isSearchFocused} /> : null}
+          {!rawQuery && <SearchPlaceholderOverlay paused={isSearchFocused} />}
         </div>
-        {rawQuery ? (
+        {rawQuery && (
           <button
             type="button"
             className={styles.searchClear}
             onClick={() => setQuery('')}
-            aria-label="검색어 지우기"
+            aria-label={a11y('project.searchClear')}
           >
             <Icon name="close" aria-hidden="true" />
           </button>
-        ) : null}
+        )}
       </div>
-      {showTooltip ? (
+      {showTooltip && (
         <div
           className={styles.searchAppliedTooltip}
           role="status"
@@ -54,18 +56,18 @@ export function ProjectSearchBar() {
         >
           <span className={styles.searchAppliedTooltipArrow} aria-hidden="true" />
           <span className={styles.searchAppliedTooltipText}>
-            {t('project.searchAppliedHint', '검색어가 적용된 상태예요!')}
+            {t('project.searchAppliedHint')}
           </span>
           <button
             type="button"
             className={styles.searchAppliedTooltipClose}
             onClick={dismissShortcutHint}
-            aria-label={t('project.searchAppliedTooltipClose', '툴팁 닫기')}
+            aria-label={a11y('project.searchTooltipClose')}
           >
             <Icon name="close" aria-hidden="true" />
           </button>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }

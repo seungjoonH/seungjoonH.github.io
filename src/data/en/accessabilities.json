@@ -1,0 +1,76 @@
+{
+  "common": {
+    "close": "Close"
+  },
+  "contact": {
+    "rowLink": "{{label}}: {{value}}",
+    "copy": "Copy {{label}} to clipboard",
+    "copied": "{{label}} copied to clipboard"
+  },
+  "docs": {
+    "nav": "Documentation links by platform",
+    "folderRegion": "{{label}} document list",
+    "chipNavigate": "Jump to related section for {{chip}}"
+  },
+  "experience": {
+    "detailDialog": "Experience details: {{company}}",
+    "cardMobile": "{{company}}, {{position}}. Activate again to open full details.",
+    "cardDesktop": "{{company}}, {{position}}. Open full details.",
+    "prev": "Show previous experience card",
+    "next": "Show next experience card",
+    "sectionList": "Related document sections for this role",
+    "toProjects": "Open projects filtered for this company",
+    "logo": "{{company}} logo",
+    "detailLogo": "{{company}} logo, experience detail"
+  },
+  "nav": {
+    "zoomDismiss": "Dismiss font size hint",
+    "settingsOpen": "Open settings"
+  },
+  "project": {
+    "detailDialog": "Project details: {{title}}",
+    "cardMobile": "{{title}}. Flip card on first activation, open detail dialog on second.",
+    "cardDesktop": "{{title}}. Open detail dialog.",
+    "thumbnail": "Thumbnail for {{title}}",
+    "titleLink": "Open {{title}} in a new tab",
+    "deployLink": "{{label}}: {{title}}",
+    "sectionDocLink": "{{type}} link: {{title}}, opens in new window",
+    "searchInput": "Search projects by title, tag, stack, or query",
+    "searchClear": "Clear project search",
+    "searchTooltipClose": "Dismiss search filter notice",
+    "showHidden": "Include hidden projects in results. Shortcut: show:all",
+    "visibilityToolbar": "Hidden projects and list sort",
+    "sortCycle": "Change project list sort. Current: {{current}}. Next: {{next}}.",
+    "searchByTag": "Add tag filter {{tag}} to project search",
+    "searchByStack": "Add tech stack filter {{stack}} to project search",
+    "gridDecrease": "Fewer project columns per row",
+    "gridIncrease": "More project columns per row",
+    "gridSlider": "Number of project card columns per row",
+    "gridValue": "{{count}} columns per row"
+  },
+  "settings": {
+    "dialog": "Settings",
+    "close": "Close settings",
+    "speedDecrease": "Slow down animations one step",
+    "speedIncrease": "Speed up animations one step",
+    "speedSlider": "Global animation speed. Range {{min}} to {{max}} times, currently {{value}} times",
+    "speedValue": "{{value}} times speed",
+    "fontDecrease": "Decrease text size one step",
+    "fontIncrease": "Increase text size one step",
+    "fontSlider": "Base text size scale. Range {{min}} to {{max}}, currently {{value}}",
+    "fontValue": "Text scale {{value}}",
+    "languageGroup": "Interface language",
+    "langKo": "Korean",
+    "langEn": "English",
+    "themeToDark": "Switch to dark theme",
+    "themeToLight": "Switch to light theme"
+  },
+  "introLink": {
+    "openHint": "Open related projects and docs hint",
+    "popupLabel": "Related projects and section guidance"
+  },
+  "skills": {
+    "tagSearch": "Search projects that use {{name}}",
+    "icon": "{{name}} skill icon"
+  }
+}

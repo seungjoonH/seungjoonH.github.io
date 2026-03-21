@@ -10,6 +10,7 @@ export function getHighlightTerms(parsedClauses) {
 
   for (const conditions of parsedClauses) {
     for (const c of conditions) {
+      if (c.type === 'sort') continue;
       if (c.type === 'title' && c.value && !isSingleChoseong(String(c.value))) titleTerms.push(String(c.value));
       if (c.type === 'desc' && c.value && !isSingleChoseong(String(c.value))) descTerms.push(String(c.value));
       if (c.type === 'fullText' && c.value && !isSingleChoseong(String(c.value))) {
@@ -129,11 +130,8 @@ function mergeRanges(ranges) {
   for (let i = 1; i < sorted.length; i++) {
     const [s, e] = sorted[i];
     const last = out[out.length - 1];
-    if (s <= last[1]) {
-      if (e > last[1]) last[1] = e;
-    } else {
-      out.push([s, e]);
-    }
+    if (s > last[1]) out.push([s, e]);
+    else if (e > last[1]) last[1] = e;
   }
   return out;
 }
@@ -142,15 +140,13 @@ function getHighlightRanges(text, terms) {
   const ranges = [];
   const safe = terms.filter((t) => t && String(t).length > 0);
   for (const term of safe) {
-    if (hasHangeul(term) && !isSingleChoseong(term)) {
-      ranges.push(...findPuleossugiMatchRanges(text, term));
-    } else {
+    if (!hasHangeul(term) || isSingleChoseong(term)) {
       const re = new RegExp(escapeRegex(term), 'gi');
       let m;
-      while ((m = re.exec(text)) !== null) {
-        ranges.push([m.index, m.index + m[0].length]);
-      }
+      while ((m = re.exec(text)) !== null) ranges.push([m.index, m.index + m[0].length]);
+      continue;
     }
+    ranges.push(...findPuleossugiMatchRanges(text, term));
   }
   return mergeRanges(ranges);
 }
@@ -162,9 +158,8 @@ export function highlightStackText(text, terms, markClassName, normalizeStack) {
 
   const norm = (normalizeStack && typeof normalizeStack === 'function' ? normalizeStack(text) : text).toLowerCase();
   for (const term of safe) {
-    if (String(term).toLowerCase() === norm) {
-      return [React.createElement('mark', { key: 'stack', className: markClassName }, text)];
-    }
+    if (String(term).toLowerCase() !== norm) continue;
+    return [React.createElement('mark', { key: 'stack', className: markClassName }, text)];
   }
 
   return highlightText(text, terms, markClassName);

@@ -1,0 +1,50 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 0.2em 0.55em;
+  border-radius: 999px;
+  font-size: calc(clamp(9px, 2.4cqw, 11px) * var(--font-scale, 1));
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+  white-space: nowrap;
+  pointer-events: none;
+  flex-shrink: 0;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--color-text) 8%, transparent);
+}
+
+.chipOnImage {
+  font-size: calc(clamp(9px, 2.5cqw, 11px) * var(--font-scale, 1));
+  z-index: 2;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.chipPopup {
+  margin-left: 8px;
+  font-size: calc(clamp(10px, 2.8cqw, 12px) * var(--font-scale, 1));
+}
+
+.inDevelopment,
+.live,
+.maintained {
+  border: 1px solid transparent;
+  background: color-mix(in srgb, var(--color-text) 88%, var(--color-bg-card) 12%);
+  color: var(--color-bg-card);
+}
+
+.supportEnded,
+.contributionEnded,
+.ended {
+  border: 1px solid color-mix(in srgb, var(--color-text-muted) 40%, var(--color-border));
+  background: transparent;
+  color: var(--color-text);
+}
+
+.unknown {
+  border: 1px solid color-mix(in srgb, var(--color-text) 22%, transparent);
+  background: transparent;
+  color: var(--color-text);
+  opacity: 0.85;
+}

@@ -1,21 +1,17 @@
 const svgContentCache = new Map();
 
-export function fetchSvgContent(src) {
+export async function fetchSvgContent(src) {
   if (!src || !String(src).toLowerCase().endsWith('.svg')) {
     return Promise.reject(new Error('Invalid SVG src'));
   }
-  if (svgContentCache.has(src)) {
-    return Promise.resolve(svgContentCache.get(src));
-  }
-  return fetch(src)
-    .then((res) => {
-      if (!res.ok) throw new Error(res.statusText);
-      return res.text();
-    })
-    .then((text) => {
-      svgContentCache.set(src, text);
-      return text;
-    });
+  if (svgContentCache.has(src)) return Promise.resolve(svgContentCache.get(src));
+
+  const res = await fetch(src);
+  if (!res.ok) throw new Error(res.statusText);
+  const text = await res.text();
+  svgContentCache.set(src, text);
+
+  return text;
 }
 
 export function injectSvgSize(svgText) {

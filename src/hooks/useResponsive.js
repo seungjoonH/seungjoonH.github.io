@@ -3,15 +3,12 @@ import config from '../config.js';
 
 const { widths, screenSizeTypes, projectsGrid } = config.breakpoints;
 
-export function useBreakpoint() {
-  const [width, setWidth] = useState(
-    typeof window !== 'undefined' ? window.innerWidth : 0
-  );
+export function useResponsive() {
+  const [width, setWidth] = useState(window.innerWidth);
 
   useEffect(() => {
     const handleResize = () => setWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
-    handleResize();
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
@@ -21,8 +18,20 @@ export function useBreakpoint() {
   }
   const type = screenSizeTypes[index] ?? screenSizeTypes[0];
   const projectsGridBounds = projectsGrid[type] ?? projectsGrid[screenSizeTypes[0]];
+  const isMobile = type === 'mobile';
+  const isTablet = type === 'tablet';
+  const isDesktop = type === 'desktop' || type === 'wide';
 
-  return { index, type, projectsGridBounds };
+  return {
+    width,
+    index,
+    type,
+    projectsGridBounds,
+    isMobile,
+    isTablet,
+    isDesktop,
+    a11yCardSuffix: isMobile ? 'Mobile' : 'Desktop',
+  };
 }
 
-export default useBreakpoint;
+export default useResponsive;

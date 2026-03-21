@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useA11y } from '../../hooks/useA11y';
 import { Icon } from '@components/shared/icon/Icon';
 import { buildCls } from '../../utils/cssUtil';
 import { useProjectSearchStore } from '../../stores/projectSearchStore';
@@ -18,6 +19,7 @@ const DefaultImage = () => (
 
 export function ExperienceCard({ experience, mobileHovered = false }) {
   const { t } = useTranslation();
+  const a11y = useA11y();
   const setQueryFromShortcut = useProjectSearchStore((s) => s.setQueryFromShortcut);
   const [imageError, setImageError] = useState(false);
   const [hoveredReady, setHoveredReady] = useState(false);
@@ -33,15 +35,28 @@ export function ExperienceCard({ experience, mobileHovered = false }) {
   const projectSearchQuery = experience.projectSearchQuery;
   const hasProjectShortcut = experience.hasProjectShortcut;
 
+  const handleProjectShortcutClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (projectSearchQuery) setQueryFromShortcut(projectSearchQuery);
+    const el = document.getElementById('project');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   return (
     <div className={buildCls(styles.card, mobileHovered && styles.mobileHovered)}>
       <div className="columnContainer">
         {showSvg ? (
           <div className={buildCls(styles.experienceThumbWrap, hoveredReady && styles.hasHovered)}>
             <span className={styles.experienceThumbDefault}>
-              <Icon src={imageUrl} className={styles.experienceThumbSvg} onError={() => setImageError(true)} alt="" />
+              <Icon
+                src={imageUrl}
+                className={styles.experienceThumbSvg}
+                onError={() => setImageError(true)}
+                alt={a11y('experience.logo', { company: experience.company })}
+              />
             </span>
-            {hoveredUrl ? (
+            {hoveredUrl && (
               <span className={styles.experienceThumbHovered} aria-hidden="true">
                 <Icon
                   src={hoveredUrl}
@@ -50,10 +65,14 @@ export function ExperienceCard({ experience, mobileHovered = false }) {
                   alt=""
                 />
               </span>
-            ) : null}
+            )}
           </div>
         ) : showImg ? (
-          <img src={imageUrl} alt="" onError={() => setImageError(true)} />
+          <img
+            src={imageUrl}
+            alt={a11y('experience.logo', { company: experience.company })}
+            onError={() => setImageError(true)}
+          />
         ) : (
           <DefaultImage />
         )}
@@ -63,33 +82,27 @@ export function ExperienceCard({ experience, mobileHovered = false }) {
             <span className={styles.position}>{experience.position}</span>
             <span className={styles.duration}>{formatExperienceDateShort(experience.startDate)} ~ {formatExperienceDateShort(experience.endDate)}</span>
           </div>
-          {sections.length > 0 ? (
-            <ul className={styles.sectionTitles} aria-label={t('experience.sectionTitles', '관련 섹션')}>
+          {sections.length > 0 && (
+            <ul className={styles.sectionTitles} aria-label={a11y('experience.sectionList')}>
               {sections.map((sec, i) => (
                 <li key={i} title={sec.title}>{sec.title}</li>
               ))}
             </ul>
-          ) : null}
+          )}
         </div>
-        {hasProjectShortcut ? (
+        {hasProjectShortcut && (
           <a
             href="#project"
             className={styles.shortcutLink}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              if (projectSearchQuery) setQueryFromShortcut(projectSearchQuery);
-              const el = document.getElementById('project');
-              if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }}
-            aria-label={t('experience.toProject', '프로젝트 바로가기')}
+            onClick={handleProjectShortcutClick}
+            aria-label={a11y('experience.toProjects')}
           >
-            <span className={styles.shortcutText}>{t('experience.toProject', '프로젝트 바로가기')}</span>
+            <span className={styles.shortcutText}>{t('experience.toProjectLink')}</span>
             <div className={styles.iconWrapper}>
               <Icon name="angle-right" className={styles.shortcutIcon} aria-hidden="true" />
             </div>
           </a>
-        ) : null}
+        )}
       </div>
     </div>
   );

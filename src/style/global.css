@@ -115,7 +115,7 @@
   margin: 0;
   padding: 0;
   z-index: 0;
-  font-family: 'Neue Haas';
+  font-family: 'Neue Haas', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
 
 :root {
@@ -199,6 +199,8 @@
   --docs-folder-hover-overlay: rgba(255, 255, 255, 0.05);
   --zoom-tooltip-bg: #0f0f0f;
   --zoom-tooltip-border: #fff;
+  --color-code-bg: rgba(255, 255, 255, 0.1);
+  --color-code-border: rgba(255, 255, 255, 0.2);
 }
 
 [data-theme="light"] {
@@ -247,6 +249,41 @@
   --docs-folder-hover-overlay: rgba(0, 0, 0, 0.04);
   --zoom-tooltip-bg: #ffffff;
   --zoom-tooltip-border: #999;
+  --color-code-bg: rgba(0, 0, 0, 0.08);
+  --color-code-border: rgba(0, 0, 0, 0.18);
+}
+
+.richTextKatex--inline .katex {
+  font-size: .95em;
+  padding: 0 .2em;
+}
+
+.richTextKatex--inline {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0.06em;
+}
+
+.richTextKatex--display {
+  display: block;
+  margin: 0.75em 0;
+  text-align: center;
+}
+
+.richTextKatex--display .katex-display {
+  margin: 0;
+}
+
+code {
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+  font-size: 0.75em;
+  font-weight: 500;
+  padding: 0.1em 0.3em;
+  margin: 0 .1em;
+  border-radius: 4px;
+  background: var(--color-code-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-code-border);
 }
 
 html {
@@ -302,10 +339,18 @@ body::-webkit-scrollbar-thumb:hover,
   bottom: 10px;
   right: 14px;
   z-index: 0;
+  width: max-content;
+  max-width: min(100vw - 28px, 280px);
   font-size: 0.7rem;
   font-weight: 400;
-  color: var(--color-text-tertiary);
+  color: color-mix(in srgb, var(--color-text-tertiary) 38%, transparent);
   letter-spacing: 0.02em;
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: default;
   user-select: none;
+  transition: color 0.22s ease;
+}
+
+.versionLabel:hover {
+  color: var(--color-text-muted);
 }

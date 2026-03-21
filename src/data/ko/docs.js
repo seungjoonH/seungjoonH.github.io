@@ -1,4 +1,63 @@
 export const docs = {
+  tistory: [
+    {
+      id: 'flutter-hangeul',
+      link: 'https://seungjoonh.tistory.com/entry/flutter-hangeul',
+      title: '[Flutter] 한글 Utility 기능',
+      source: { type: 'project', searchQuery: 'title:Extify show:all' },
+      chipLabel: 'Extify',
+    },
+    {
+      id: 'flutter-string-case-converter',
+      link: 'https://seungjoonh.tistory.com/entry/flutter-string-case-converter',
+      title: '[Flutter] 문자열 명명 형식 변환기 (String Case Converter)',
+      source: { type: 'project', searchQuery: 'title:Extify show:all' },
+      chipLabel: 'Extify',
+    },
+    {
+      id: 'flutter-circular-carousel',
+      link: 'https://seungjoonh.tistory.com/entry/flutter-circular-carousel',
+      title: '[Flutter] 순환 캐러셀 (Circular Carousel) 위젯 만들기',
+      source: { type: 'project', searchQuery: 'title:Fitween show:all' },
+      chipLabel: 'Fitween',
+    },
+    {
+      id: 'project-3d-renderer',
+      link: 'https://seungjoonh.tistory.com/entry/project-3d-renderer',
+      title: '[Project] 3D Renderer',
+      source: { type: 'project', searchQuery: 'title:"3D Renderer" show:all' },
+      chipLabel: '3D Renderer',
+    },
+    {
+      id: 'web-dom',
+      link: 'https://seungjoonh.tistory.com/entry/web-dom',
+      title: '[Web] 여러 방식으로 DOM 조작하기 - createElement 에서 JSX 까지',
+      source: { type: 'experience', experienceId: 'naver-boostcamp' },
+      chipLabel: '부스트캠프',
+    },
+    {
+      id: 'web-observer-store',
+      link: 'https://seungjoonh.tistory.com/entry/web-observer-store',
+      title: '[Web] Observer 패턴과 Store - 직접 구현하며 이해한 상태 관리',
+      source: { type: 'experience', experienceId: 'naver-boostcamp' },
+      chipLabel: '부스트캠프',
+    },
+    {
+      id: 'web-responsive',
+      link: 'https://seungjoonh.tistory.com/entry/web-responsive',
+      title: '[Web] Responsive Web (반응형 웹) 개발하기',
+      source: { type: 'project', searchQuery: 'title:"한동대학교 글로컬 홈페이지" show:all' },
+      chipLabel: 'HGU Glocal',
+    },
+    {
+      id: 'web-i18n',
+      link: 'https://seungjoonh.tistory.com/entry/web-i18n',
+      title: '[Web] 다국어 웹(i18n Web) 개발하기',
+      source: { type: 'project', searchQuery: 'title:"한동대학교 글로컬 홈페이지" show:all' },
+      chipLabel: 'HGU Glocal',
+    },
+  ],
+
   notion: [
     {
       id: 'floating-component-spec',
@@ -58,51 +117,6 @@ export const docs = {
       title: '비커채우기 게임 실시간 입력 폭증 환경에서의 렌더링 최적화',
       source: { type: 'project', searchQuery: 'title:"물방울톡" show:all' },
       chipLabel: '물방울톡',
-    },
-  ],
-
-  tistory: [
-    {
-      id: 'flutter-hangeul',
-      link: 'https://seungjoonh.tistory.com/entry/flutter-hangeul',
-      title: '[Flutter] 한글 Utility 기능',
-      source: { type: 'project', searchQuery: 'title:Extify show:all' },
-      chipLabel: 'Extify',
-    },
-    {
-      id: 'flutter-string-case-converter',
-      link: 'https://seungjoonh.tistory.com/entry/flutter-string-case-converter',
-      title: '[Flutter] 문자열 명명 형식 변환기 (String Case Converter)',
-      source: { type: 'project', searchQuery: 'title:Extify show:all' },
-      chipLabel: 'Extify',
-    },
-    {
-      id: 'flutter-circular-carousel',
-      link: 'https://seungjoonh.tistory.com/entry/flutter-circular-carousel',
-      title: '[Flutter] 순환 캐러셀 (Circular Carousel) 위젯 만들기',
-      source: { type: 'project', searchQuery: 'title:Fitween show:all' },
-      chipLabel: 'Fitween',
-    },
-    {
-      id: 'project-3d-renderer',
-      link: 'https://seungjoonh.tistory.com/entry/project-3d-renderer',
-      title: '[Project] 3D Renderer',
-      source: { type: 'project', searchQuery: 'title:"3D Renderer" show:all' },
-      chipLabel: '3D Renderer',
-    },
-    {
-      id: 'web-dom',
-      link: 'https://seungjoonh.tistory.com/entry/web-dom',
-      title: '[Web] 여러 방식으로 DOM 조작하기 - createElement 에서 JSX 까지',
-      source: { type: 'experience', experienceId: 'naver-boostcamp' },
-      chipLabel: '부스트캠프',
-    },
-    {
-      id: 'web-observer-store',
-      link: 'https://seungjoonh.tistory.com/entry/web-observer-store',
-      title: '[Web] Observer 패턴과 Store - 직접 구현하며 이해한 상태 관리',
-      source: { type: 'experience', experienceId: 'naver-boostcamp' },
-      chipLabel: '부스트캠프',
     },
   ],
 };

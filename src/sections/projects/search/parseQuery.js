@@ -1,4 +1,4 @@
-const PREFIXES = ['title:', 'desc:', 'stack:', 'type:', 'team:', 'link:', 'tag:', 'show:'];
+const PREFIXES = ['title:', 'desc:', 'stack:', 'type:', 'team:', 'link:', 'tag:', 'show:', 'sort:'];
 
 function splitByOrKeepingQuotes(str) {
   const trimmed = str.trim();
@@ -76,6 +76,12 @@ function parseOneToken(token) {
       case 'show:': {
         const v = value.trim().toLowerCase();
         if (v === 'public' || v === 'hidden' || v === 'all') return { type: 'show', value: v };
+        return null;
+      }
+      case 'sort:': {
+        const v = value.trim().toLowerCase();
+        if (v === 'old') return { type: 'sort', value: 'oldest' };
+        if (v === 'recent' || v === 'oldest' || v === 'status') return { type: 'sort', value: v };
         return null;
       }
       default: return null;

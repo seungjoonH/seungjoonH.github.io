@@ -128,7 +128,8 @@ function composeJamosLeftToRight(str) {
       if (isMoeum(str[i])) {
         result += moassugiOne('ㅇ', str[i], ' ');
         i++;
-      } else {
+      }
+      else {
         result += str[i++];
       }
       continue;
@@ -144,19 +145,14 @@ function composeJamosLeftToRight(str) {
       if (REVERSE_IJUNG[two]) {
         jung = REVERSE_IJUNG[two];
         i += 2;
-      } else {
-        jung = str[i++];
       }
-    } else {
-      jung = str[i++];
+      else jung = str[i++];
     }
+    else jung = str[i++];
     let jong = ' ';
     if (i < str.length && isJaeum(str[i])) {
-      if (i + 1 < str.length && isMoeum(str[i + 1])) {
-        jong = ' ';
-      } else {
-        jong = str[i++];
-      }
+      if (i + 1 < str.length && isMoeum(str[i + 1])) jong = ' ';
+      else jong = str[i++];
     }
     const syllable = moassugiOne(cho, jung, jong);
     if (syllable) result += syllable;
@@ -176,12 +172,9 @@ export function getJamoSequenceForTyping(str) {
   str = str.normalize('NFC');
   const out = [];
   for (const c of str) {
-    if (isEumjeol(c)) {
-      const part = puleossugiOneForTyping(c);
-      for (let i = 0; i < part.length; i++) out.push(part[i]);
-    } else {
-      out.push(c);
-    }
+    if (!isEumjeol(c)) { out.push(c); continue; }
+    const part = puleossugiOneForTyping(c);
+    for (let i = 0; i < part.length; i++) out.push(part[i]);
   }
   return out;
 }

@@ -1,4 +1,63 @@
 export const docs = {
+  tistory: [
+    {
+      id: 'flutter-hangeul',
+      link: 'https://seungjoonh.tistory.com/entry/flutter-hangeul',
+      title: '[Flutter] Korean utility',
+      source: { type: 'project', searchQuery: 'title:Extify show:all' },
+      chipLabel: 'Extify',
+    },
+    {
+      id: 'flutter-string-case-converter',
+      link: 'https://seungjoonh.tistory.com/entry/flutter-string-case-converter',
+      title: '[Flutter] String Case Converter',
+      source: { type: 'project', searchQuery: 'title:Extify show:all' },
+      chipLabel: 'Extify',
+    },
+    {
+      id: 'flutter-circular-carousel',
+      link: 'https://seungjoonh.tistory.com/entry/flutter-circular-carousel',
+      title: '[Flutter] Circular Carousel widget',
+      source: { type: 'project', searchQuery: 'title:Fitween show:all' },
+      chipLabel: 'Fitween',
+    },
+    {
+      id: 'project-3d-renderer',
+      link: 'https://seungjoonh.tistory.com/entry/project-3d-renderer',
+      title: '[Project] 3D Renderer',
+      source: { type: 'project', searchQuery: 'title:"3D Renderer" show:all' },
+      chipLabel: '3D Renderer',
+    },
+    {
+      id: 'web-dom',
+      link: 'https://seungjoonh.tistory.com/entry/web-dom',
+      title: '[Web] DOM manipulation - createElement to JSX',
+      source: { type: 'experience', experienceId: 'naver-boostcamp' },
+      chipLabel: 'Boostcamp',
+    },
+    {
+      id: 'web-observer-store',
+      link: 'https://seungjoonh.tistory.com/entry/web-observer-store',
+      title: '[Web] Observer pattern and Store - state management',
+      source: { type: 'experience', experienceId: 'naver-boostcamp' },
+      chipLabel: 'Boostcamp',
+    },
+    {
+      id: 'web-responsive',
+      link: 'https://seungjoonh.tistory.com/entry/web-responsive',
+      title: '[Web] Building a Responsive Web Layout',
+      source: { type: 'project', searchQuery: 'title:"Handong Glocal Website" show:all' },
+      chipLabel: 'HGU Glocal',
+    },
+    {
+      id: 'web-i18n',
+      link: 'https://seungjoonh.tistory.com/entry/web-i18n',
+      title: '[Web] Implementing Multilingual Web (i18n)',
+      source: { type: 'project', searchQuery: 'title:"Handong Glocal Website" show:all' },
+      chipLabel: 'HGU Glocal',
+    },
+  ],
+
   notion: [
     {
       id: 'floating-component-spec',
@@ -58,51 +117,6 @@ export const docs = {
       title: 'Rendering Optimization under Input Burst',
       source: { type: 'project', searchQuery: 'title:"Moolbangwool Talk" show:all' },
       chipLabel: 'Mbwt',
-    },
-  ],
-
-  tistory: [
-    {
-      id: 'flutter-hangeul',
-      link: 'https://seungjoonh.tistory.com/entry/flutter-hangeul',
-      title: '[Flutter] Korean utility',
-      source: { type: 'project', searchQuery: 'title:Extify show:all' },
-      chipLabel: 'Extify',
-    },
-    {
-      id: 'flutter-string-case-converter',
-      link: 'https://seungjoonh.tistory.com/entry/flutter-string-case-converter',
-      title: '[Flutter] String Case Converter',
-      source: { type: 'project', searchQuery: 'title:Extify show:all' },
-      chipLabel: 'Extify',
-    },
-    {
-      id: 'flutter-circular-carousel',
-      link: 'https://seungjoonh.tistory.com/entry/flutter-circular-carousel',
-      title: '[Flutter] Circular Carousel widget',
-      source: { type: 'project', searchQuery: 'title:Fitween show:all' },
-      chipLabel: 'Fitween',
-    },
-    {
-      id: 'project-3d-renderer',
-      link: 'https://seungjoonh.tistory.com/entry/project-3d-renderer',
-      title: '[Project] 3D Renderer',
-      source: { type: 'project', searchQuery: 'title:"3D Renderer" show:all' },
-      chipLabel: '3D Renderer',
-    },
-    {
-      id: 'web-dom',
-      link: 'https://seungjoonh.tistory.com/entry/web-dom',
-      title: '[Web] DOM manipulation - createElement to JSX',
-      source: { type: 'experience', experienceId: 'naver-boostcamp' },
-      chipLabel: 'Boostcamp',
-    },
-    {
-      id: 'web-observer-store',
-      link: 'https://seungjoonh.tistory.com/entry/web-observer-store',
-      title: '[Web] Observer pattern and Store - state management',
-      source: { type: 'experience', experienceId: 'naver-boostcamp' },
-      chipLabel: 'Boostcamp',
     },
   ],
 };

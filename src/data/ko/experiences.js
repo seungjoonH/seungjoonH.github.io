@@ -1,7 +1,7 @@
 const experiences = [
   { 
     id: 'fitween', 
-    company: '피트윈', 
+    company: '피트윈',
     position: '사원', 
     startDate: '2023-06-01', 
     endDate: '2023-12-31',
@@ -83,22 +83,22 @@ const experiences = [
     details: {
       sections: [
         {
-          title: 'DOM 조작과 선언적 UI',
+          title: 'Vanilla JS 의 명령형 DOM 조작부터 React 의 선언적 렌더링까지 이어지는 DOM 렌더링 흐름 이해',
           items: [
-            'Vanilla JS 기반 DOM 조작과 선언적 UI 표현 방식 탐구',
-            'DOM 생성 로직을 자체 제작 헬퍼 함수로 캡슐화하여 선언적 UI로 개선',
-            'Vite 빌드 파일 분석으로 JSX가 jsx/jsxs 함수 호출로 변환되는 구조 확인',
+            'Vanilla JS 명령형 DOM 조립 과정에서 UI 계층 구조가 코드 흐름에 묻히는 가독성 문제 경험',
+            'DOM 생성 로직을 자체 제작 헬퍼 함수로 캡슐화하여 선언적 UI 표현 방식으로 개선',
+            'Vite 빌드 파일을 분석하며 JSX가 jsx / jsxs 함수 호출 형태로 변환되는 구조 확인',
           ],
           links: [
             { type: 'tistory', title: '[Web] 여러 방식으로 DOM 조작하기 - createElement 에서 JSX 까지', href: 'https://seungjoonh.tistory.com/entry/web-dom' },
           ],
         },
         {
-          title: '상태 관리',
+          title: 'Vanilla JS Store 부터 Zustand 까지 이어지는 상태 관리 흐름 이해',
           items: [
-            'Vanilla JS 기반 상태 관리 구조 구현 및 Observer 패턴 기반 Store 구조 구현',
+            'Vanilla JS 환경에서 UI 상태 관리 필요성을 경험하며 Observer 패턴 기반 Store 구조 구현',
             '상태 변경 → 구독 → DOM 갱신으로 이어지는 단방향 업데이트 흐름 구성',
-            'Store 구현을 객체/클래스/클로저(함수형) 형태로 비교하며 구조적 차이 정리',
+            'Store 구현 방식을 객체 / 클래스 / 클로저 형태로 비교하고, Zustand의 클로저 기반 Store 구조와 selector 기반 구독 방식까지 흐름 확장',
           ],
           links: [
             { type: 'tistory', title: '[Web] Observer 패턴과 Store - 직접 구현하며 이해한 상태 관리', href: 'https://seungjoonh.tistory.com/entry/web-observer-store' },

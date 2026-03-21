@@ -1,18 +1,42 @@
-.overlay {
+.modalRoot {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.28);
   z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: clamp(16px, 3vw, 40px);
-  animation: fadeIn calc(0.2s / var(--speed-scale, 1)) ease;
+  pointer-events: auto;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: rgba(0, 0, 0, 0.28);
+  animation: fadeIn calc(0.2s / var(--speed-scale, 1)) ease forwards;
+}
+
+.backdropClosing {
+  animation: fadeOut calc(0.25s / var(--speed-scale, 1)) ease forwards;
 }
 
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.panelWrap {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 3vw, 40px);
+  pointer-events: none;
+  box-sizing: border-box;
 }
 
 .panel {
@@ -22,17 +46,47 @@
   max-width: 32rem;
   height: min(85vh, 45rem);
   max-height: min(85vh, 45rem);
-  background: var(--project-popup-bg);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  box-sizing: border-box;
+  overflow: visible;
   border: 1px solid var(--project-popup-border, rgba(255, 255, 255, 0.12));
   border-radius: clamp(0.5rem, 0.7vw, 0.75rem);
   padding: clamp(1.5rem, 2vw, 2rem) var(--panel-padding-x) clamp(1.5rem, 1.2vw, 1.5rem) var(--panel-padding-x);
-  overflow: hidden;
   display: flex;
   flex-direction: column;
-  animation: slideUp calc(0.25s / var(--speed-scale, 1)) ease;
-  isolation: isolate;
+  color: var(--color-text);
+  background: var(--project-popup-bg);
+  pointer-events: auto;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .panel {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: var(--color-bg-card);
+  }
+}
+
+.panel[data-popup='experience'] {
+  max-width: min(36rem, 94vw);
+}
+
+.panelInner {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 0%;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: inherit;
+  animation: slideUp calc(0.25s / var(--speed-scale, 1)) ease forwards;
+}
+
+.panelInnerClosing {
+  animation: slideDown calc(0.25s / var(--speed-scale, 1)) ease forwards;
 }
 
 .panelContentFit {
@@ -64,6 +118,17 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(12px);
   }
 }
 
@@ -120,12 +185,14 @@
 }
 
 @media (max-width: 768px) {
-  .overlay {
+  .panelWrap {
     padding: 12px;
   }
-  .panel,
-  .panelContentFit {
+  .panel:not(.panelContentFit) {
     height: min(72vh, 32rem);
+    max-height: min(72vh, 32rem);
+  }
+  .panelContentFit {
     max-height: min(72vh, 32rem);
   }
 }

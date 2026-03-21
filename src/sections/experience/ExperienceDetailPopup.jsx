@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useA11y } from '../../hooks/useA11y';
 import popupStyles from '@sections/projects/projectDetailPopup.module.css';
 import { ExperienceDetailContent } from './ExperienceDetailContent';
 import { useFocusTrap } from '../../hooks/useFocusTrap';
@@ -7,7 +7,7 @@ import { Icon } from '@components/shared/icon/Icon';
 import { buildCls } from '../../utils/cssUtil';
 
 export function ExperienceDetailPopup({ experience, onClose, returnFocusRef }) {
-  const { t } = useTranslation();
+  const a11y = useA11y();
   const panelRef = useRef(null);
 
   useFocusTrap(panelRef, true);
@@ -29,30 +29,40 @@ export function ExperienceDetailPopup({ experience, onClose, returnFocusRef }) {
   };
 
   return (
-    <div
-      className={popupStyles.overlay}
-      onClick={(e) => e.target === e.currentTarget && handleClose()}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="experience-detail-title"
-      aria-label={t('experience.detailAria', { company: experience.company })}
-    >
-      <div ref={panelRef} className={popupStyles.panel} data-popup="experience" onClick={(e) => e.stopPropagation()}>
-        <button
-          type="button"
-          className={popupStyles.closeBtn}
-          onClick={handleClose}
-          aria-label={t('experience.close', '닫기')}
+    <div className={popupStyles.modalRoot}>
+      <div
+        className={popupStyles.backdrop}
+        onClick={(e) => e.target === e.currentTarget && handleClose()}
+        aria-hidden="true"
+      />
+      <div className={popupStyles.panelWrap}>
+        <div
+          ref={panelRef}
+          className={buildCls(popupStyles.panel, popupStyles.panelContentFit)}
+          data-popup="experience"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="experience-detail-title"
+          aria-label={a11y('experience.detailDialog', { company: experience.company })}
+          onClick={(e) => e.stopPropagation()}
         >
-          <Icon name="close" aria-hidden="true" />
-        </button>
+          <button
+            type="button"
+            className={popupStyles.closeBtn}
+            onClick={handleClose}
+            aria-label={a11y('common.close')}
+          >
+            <Icon name="close" aria-hidden="true" />
+          </button>
+          <div className={popupStyles.panelInner}>
+            <div id="experience-detail-title" className={popupStyles.srOnly}>
+              {a11y('experience.detailDialog', { company: experience.company })}
+            </div>
 
-        <div id="experience-detail-title" className={popupStyles.srOnly}>
-          {t('experience.detailAria', { company: experience.company })}
-        </div>
-
-        <div className={popupStyles.content}>
-          <ExperienceDetailContent experience={experience} />
+            <div className={buildCls(popupStyles.content, popupStyles.contentFit)}>
+              <ExperienceDetailContent experience={experience} />
+            </div>
+          </div>
         </div>
       </div>
     </div>

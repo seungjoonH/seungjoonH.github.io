@@ -1,3 +1,4 @@
+import { useA11y } from '../../hooks/useA11y';
 import { Icon } from '@components/shared/icon/Icon';
 import { renderRichText, renderLinkTitle } from '@sections/projects/utils/richText';
 import { getLinkTypeLabel } from '@sections/projects/utils/linkLabels';
@@ -6,8 +7,16 @@ import { buildCls } from '../../utils/cssUtil';
 import cardStyles from '@sections/projects/projectCard.module.css';
 
 export function ExperienceDetailContent({ experience }) {
+  const a11y = useA11y();
   const sections = experience.sections ?? [];
   const topLinks = experience.links ?? [];
+  const imageUrl = experience.getImageUrl();
+
+  const handleOpenExternal = (href) => (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    window.open(href, '_blank', 'noopener,noreferrer');
+  };
 
   return (
     <>
@@ -18,18 +27,21 @@ export function ExperienceDetailContent({ experience }) {
           </div>
           <div className={cardStyles.backTitleBlock}>
             <div className={cardStyles.backTitleRow}>
-              {experience.getImageUrl() ? (
-                <span className={cardStyles.experienceTitleIcon} aria-hidden="true">
-                  <Icon src={experience.getImageUrl()} alt="" />
+              {imageUrl && (
+                <span className={cardStyles.experienceTitleIcon}>
+                  <Icon
+                    src={imageUrl}
+                    alt={a11y('experience.detailLogo', { company: experience.company })}
+                  />
                 </span>
-              ) : null}
+              )}
               <h3>{experience.company}</h3>
             </div>
           </div>
         </div>
       </div>
       <div className={cardStyles.backMetaRow}>
-        {topLinks.length > 0 ? (
+        {topLinks.length > 0 && (
           <div className={cardStyles.backMetaBlock}>
             <div className={cardStyles.links}>
               {topLinks.map((link, idx) =>
@@ -39,19 +51,15 @@ export function ExperienceDetailContent({ experience }) {
                     href={link.href}
                     target="_blank"
                     rel="noreferrer"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      window.open(link.href, '_blank', 'noopener,noreferrer');
-                    }}
+                    onClick={handleOpenExternal(link.href)}
                   >
-                    <Icon name="link" />
+                    <Icon name="link" aria-hidden />
                     <strong className={cardStyles.linkType}>{getLinkTypeLabel(link.type)}</strong>
                     <span className={cardStyles.linkTitle}>{renderLinkTitle(link.title, cardStyles.linkSep)}</span>
                   </a>
                 ) : (
                   <span key={idx} className={cardStyles.linkDisabled}>
-                    <Icon name="link" />
+                    <Icon name="link" aria-hidden />
                     <strong className={cardStyles.linkType}>{getLinkTypeLabel(link?.type)}</strong>
                     <span className={cardStyles.linkTitle}>{renderLinkTitle(link?.title, cardStyles.linkSep)}</span>
                   </span>
@@ -59,7 +67,7 @@ export function ExperienceDetailContent({ experience }) {
               )}
             </div>
           </div>
-        ) : null}
+        )}
         <div className={cardStyles.periodRight}>
           {formatExperienceDateFull(experience.startDate)} ~ {formatExperienceDateFull(experience.endDate)}
         </div>
@@ -77,7 +85,7 @@ export function ExperienceDetailContent({ experience }) {
                   </li>
                 ))}
               </ul>
-              {(section.links || []).length > 0 ? (
+              {(section.links || []).length > 0 && (
                 <div className={cardStyles.sectionLinks}>
                   {(section.links || []).map((link, idx) =>
                     link?.href ? (
@@ -86,26 +94,22 @@ export function ExperienceDetailContent({ experience }) {
                         href={link.href}
                         target="_blank"
                         rel="noreferrer"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          window.open(link.href, '_blank', 'noopener,noreferrer');
-                        }}
+                        onClick={handleOpenExternal(link.href)}
                       >
-                        <Icon name="link" />
+                        <Icon name="link" aria-hidden />
                         <strong className={cardStyles.linkType}>{getLinkTypeLabel(link.type)}</strong>
                         <span className={cardStyles.linkTitle}>{renderLinkTitle(link.title, cardStyles.linkSep)}</span>
                       </a>
                     ) : (
                       <span key={idx} className={cardStyles.linkDisabled}>
-                        <Icon name="link" />
+                        <Icon name="link" aria-hidden />
                         <strong className={cardStyles.linkType}>{getLinkTypeLabel(link?.type)}</strong>
                         <span className={cardStyles.linkTitle}>{renderLinkTitle(link?.title, cardStyles.linkSep)}</span>
                       </span>
                     )
                   )}
                 </div>
-              ) : null}
+              )}
             </article>
           ))}
         </div>

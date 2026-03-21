@@ -15,7 +15,7 @@ export function SegmentedButton({ options, value, onChange, className, ariaLabel
           className={buildCls(styles.segment, value === opt.value && styles.active)}
           onClick={() => onChange(opt.value)}
           aria-pressed={value === opt.value}
-          aria-label={opt.label}
+          aria-label={opt.ariaLabel ?? opt.label}
         >
           {opt.label}
         </button>

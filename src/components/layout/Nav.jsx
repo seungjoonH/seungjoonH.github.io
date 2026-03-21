@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 import styles from './nav.module.css';
 import { buildCls } from '../../utils/cssUtil';
 import { useTranslation } from 'react-i18next';
+import { useA11y } from '../../hooks/useA11y';
 import { Icon } from '../shared/icon/Icon';
 import { SettingsPopup } from '../SettingsPopup';
 import { useConfigStore } from '../../stores/configStore';
@@ -37,6 +38,7 @@ export function Nav() {
   const speedScale = useConfigStore((s) => s.speedScale ?? 1);
   const duration = Math.round(SCROLL_DURATION_BASE_MS / speedScale);
   const { t } = useTranslation();
+  const a11y = useA11y();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const settingsBtnRef = useRef(null);
   const zoomHintVisible = useZoomHintStore((s) => s.visible);
@@ -62,7 +64,7 @@ export function Nav() {
         type="button"
         className={styles.zoomSettingsTooltipClose}
         onClick={dismissZoomHint}
-        aria-label={t('zoom.close', '닫기')}
+        aria-label={a11y('nav.zoomDismiss')}
       >
         <Icon name="close" aria-hidden="true" />
       </button>
@@ -115,7 +117,7 @@ export function Nav() {
             type="button"
             className={styles.settingsBtn}
             onClick={() => setSettingsOpen(true)}
-            aria-label={t('settings.open') || '설정'}
+            aria-label={a11y('nav.settingsOpen')}
             title={t('settings.open') || '설정'}
           >
             <Icon name="settings" aria-hidden="true" />

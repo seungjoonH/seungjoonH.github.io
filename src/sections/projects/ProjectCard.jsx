@@ -8,19 +8,25 @@ import { toHashTag } from './utils/tagUtil';
 import { buildCls } from '../../utils/cssUtil';
 import { useProjectSearchStore } from '../../stores/projectSearchStore';
 import { useProjectCardFlipStore } from '../../stores/projectCardFlipStore';
-import { useBreakpoint } from '../../hooks/useBreakpoint';
+import { useResponsive } from '../../hooks/useResponsive';
+import { useConfigStore } from '../../stores/configStore';
+import config from '../../config.js';
+import { getMaxVisibleChips } from '../../utils/getMaxVisibleChips.js';
 import { parseQuery } from './search/parseQuery';
-import { normalizeStackToken } from './search/stackMapping';
-import { getHighlightTerms, getTagsToHighlight, getEffectiveTagsSorted, getEffectiveStacksSorted, highlightText, highlightStackText } from './search/highlight';
-
-const LONG_PRESS_MS = 2000;
-const LONG_PRESS_SCROLL_THRESHOLD_PX = 10;
+import { normalizeStackToken, getStackIconName } from './search/stackMapping';
+import { getHighlightTerms, getEffectiveTagsSorted, getEffectiveStacksSorted, highlightText } from './search/highlight';
+import { isStackMatchedByQuery } from './search/filterProjects';
+import { useStackChipsOverflow } from './useStackChipsOverflow';
+import { useA11y } from '../../hooks/useA11y';
+import { StatusChip } from './StatusChip';
 
 export function ProjectCard({ project, showAll = false }) {
+  const a11y = useA11y();
   const rawQuery = useProjectSearchStore((s) => s.rawQuery);
-  const setQueryFromShortcut = useProjectSearchStore((s) => s.setQueryFromShortcut);
-  const { type: breakpointType } = useBreakpoint();
-  const isMobile = breakpointType === 'mobile';
+  const appendShortcutToQuery = useProjectSearchStore((s) => s.appendShortcutToQuery);
+  const { type: breakpointType, isMobile, a11yCardSuffix } = useResponsive();
+  const typographyScale = useConfigStore((s) => s.typographyScale) ?? config.typography.scale;
+  const { maxTags: maxVisibleTags, maxStacks: maxVisibleStacks } = getMaxVisibleChips(breakpointType, typographyScale);
   const flippedProjectId = useProjectCardFlipStore((s) => s.flippedProjectId);
   const setFlippedProjectId = useProjectCardFlipStore((s) => s.setFlippedProjectId);
 
@@ -28,7 +34,7 @@ export function ProjectCard({ project, showAll = false }) {
     () => (rawQuery ? parseQuery(String(rawQuery).trim(), normalizeStackToken) : []),
     [rawQuery]
   );
-  const { titleTerms, stackTerms } = useMemo(
+  const { titleTerms } = useMemo(
     () => getHighlightTerms(parsedClauses),
     [parsedClauses]
   );
@@ -40,6 +46,8 @@ export function ProjectCard({ project, showAll = false }) {
     () => getEffectiveStacksSorted(project.techStacks || [], project.techStackNames || [], parsedClauses),
     [project.techStacks, project.techStackNames, parsedClauses]
   );
+  const visibleStacks = effectiveStacks.stacks.slice(0, maxVisibleStacks);
+  const { useEvenSplit, lineRef, chipsContainerRef } = useStackChipsOverflow(visibleStacks.length);
 
   const [thumbnailError, setThumbnailError] = useState(false);
   useEffect(() => setThumbnailError(false), [project.coverImage]);
@@ -48,79 +56,15 @@ export function ProjectCard({ project, showAll = false }) {
 
   const [popupOpen, setPopupOpen] = useState(false);
   const cardRef = useRef(null);
-  const longPressFiredRef = useRef(false);
-  const longPressTimerRef = useRef(null);
-  const touchStartPosRef = useRef({ x: 0, y: 0 });
 
   const isFlipped = isMobile ? flippedProjectId === project.id : popupOpen;
 
-  const handleTouchStart = (e) => {
-    longPressFiredRef.current = false;
-    const t = e.touches?.[0];
-    if (t) touchStartPosRef.current = { x: t.clientX, y: t.clientY };
-    longPressTimerRef.current = window.setTimeout(() => {
-      longPressTimerRef.current = null;
-      longPressFiredRef.current = true;
-      setPopupOpen(true);
-    }, LONG_PRESS_MS);
-  };
-
-  const handleTouchMove = (e) => {
-    if (!longPressTimerRef.current) return;
-    const t = e.touches?.[0];
-    if (!t) return;
-    const dx = t.clientX - touchStartPosRef.current.x;
-    const dy = t.clientY - touchStartPosRef.current.y;
-    if (Math.hypot(dx, dy) > LONG_PRESS_SCROLL_THRESHOLD_PX) {
-      clearTimeout(longPressTimerRef.current);
-      longPressTimerRef.current = null;
-    }
-  };
-
-  const handleTouchEnd = () => {
-    if (longPressTimerRef.current) {
-      clearTimeout(longPressTimerRef.current);
-      longPressTimerRef.current = null;
-    }
-  };
-
   const handleCardClick = () => {
     if (!isMobile) return setPopupOpen(true);
-    if (longPressFiredRef.current) {
-      longPressFiredRef.current = false;
-      return;
-    }
     if (!isFlipped) return setFlippedProjectId(project.id);
-    
     setPopupOpen(true);
     setFlippedProjectId(null);
   };
-
-  useEffect(() => {
-    return () => {
-      if (longPressTimerRef.current) clearTimeout(longPressTimerRef.current);
-    };
-  }, []);
-
-  const frontTagsWrapRef = useRef(null);
-  const [frontTagsOverflow, setFrontTagsOverflow] = useState(false);
-  const frontTagsList = effectiveTags.tags;
-  useEffect(() => {
-    const el = frontTagsWrapRef.current;
-    if (!el || frontTagsList.length === 0) return;
-    const scroll = el.firstElementChild;
-    if (!scroll) return;
-    const check = () => {
-      if (!el.firstElementChild) return;
-      const contentW = el.firstElementChild.scrollWidth;
-      const visibleW = el.clientWidth;
-      setFrontTagsOverflow(contentW > visibleW);
-    };
-    check();
-    const ro = new ResizeObserver(check);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [frontTagsList.length, project.id]);
 
   return (
     <>
@@ -128,47 +72,35 @@ export function ProjectCard({ project, showAll = false }) {
         ref={cardRef}
         data-interactive-card="project"
         className={buildCls(styles.card, isFlipped && styles.flipped)}
-        aria-label={isMobile ? `${project.title}, 클릭 시 뒤집기 또는 길게 누르면 상세 팝업` : `${project.title}, 클릭 시 상세 팝업`}
+        aria-label={a11y(`project.card${a11yCardSuffix}`, { title: project.title || '' })}
         onClick={handleCardClick}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        onTouchCancel={handleTouchEnd}
         onContextMenu={(e) => isMobile && e.preventDefault()}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            if (isMobile && isFlipped) {
-              setPopupOpen(true);
-              setFlippedProjectId(null);
-            } else {
-              setPopupOpen(true);
-            }
-          }
-        }}
       >
       <div className={styles.cardInner}>
         <div className={styles.cardFront}>
-          {showAll && project.hidden ? (
+          {showAll && project.hidden && (
             <span className={styles.hiddenBadge} aria-hidden="true">
               <Icon name="eye-open" />
             </span>
-          ) : null}
+          )}
           <div className={styles.thumbnailWrap}>
+            {project.status ? (
+              <span className={styles.thumbnailStatusChip}>
+                <StatusChip status={project.status} variant="card" />
+              </span>
+            ) : null}
             {showThumbnail ? (
               project.coverImage.toLowerCase().endsWith('.svg') ? (
                 <Icon
                   src={project.coverImage}
                   className={styles.thumbnail}
                   onError={() => setThumbnailError(true)}
-                  alt=""
+                  alt={a11y('project.thumbnail', { title: project.title || 'project' })}
                 />
               ) : (
                 <img
                   src={project.coverImage}
-                  alt=""
+                  alt={a11y('project.thumbnail', { title: project.title || 'project' })}
                   className={styles.thumbnail}
                   onError={() => setThumbnailError(true)}
                 />
@@ -185,40 +117,15 @@ export function ProjectCard({ project, showAll = false }) {
               <h3>{titleTerms.length ? highlightText(project.title || '', titleTerms, styles.highlight) : (project.title || '')}</h3>
               <span>{project.yearLabel}</span>
             </div>
-            <div
-              ref={frontTagsWrapRef}
-              className={buildCls(styles.tagsWrap, styles.frontTagsWrap, frontTagsOverflow && styles.tagsOverflow)}
-              aria-hidden={frontTagsOverflow}
-            >
+            <div className={buildCls(styles.tagsWrap, styles.frontTagsWrap)}>
               <div className={styles.tagsScroll}>
-                {effectiveTags.tags.map((tag) => (
+                {effectiveTags.tags.slice(0, maxVisibleTags).map((tag) => (
                   <button
                     key={tag}
                     type="button"
                     className={styles.tagButton}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setQueryFromShortcut(`#${tag}`);
-                    }}
-                    aria-label={`태그 ${tag}로 검색`}
-                  >
-                    {effectiveTags.tagsToHighlight.includes(tag) ? (
-                      <mark className={styles.highlight}>{toHashTag(tag)}</mark>
-                    ) : (
-                      toHashTag(tag)
-                    )}
-                  </button>
-                ))}
-                {frontTagsOverflow && effectiveTags.tags.map((tag) => (
-                  <button
-                    key={`dup-${tag}`}
-                    type="button"
-                    className={styles.tagButton}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setQueryFromShortcut(`#${tag}`);
-                    }}
-                    aria-label={`태그 ${tag}로 검색`}
+                    onClick={(e) => (e.stopPropagation(), appendShortcutToQuery(`#${tag}`))}
+                    aria-label={a11y('project.searchByTag', { tag })}
                   >
                     {effectiveTags.tagsToHighlight.includes(tag) ? (
                       <mark className={styles.highlight}>{toHashTag(tag)}</mark>
@@ -229,19 +136,41 @@ export function ProjectCard({ project, showAll = false }) {
                 ))}
               </div>
             </div>
-            <div className={styles.languageLine}>
-              <span className={styles.languageStacks}>
-                {effectiveStacks.stacks.length > 0
-                  ? effectiveStacks.stacks.map((stack, i) => (
-                      <span key={stack}>
-                        {i > 0 ? ' / ' : ''}
-                        {stackTerms.length
-                          ? highlightStackText(stack, stackTerms, styles.highlight, normalizeStackToken)
-                          : stack}
-                      </span>
-                    ))
-                  : '-'}
-              </span>
+            <div className={styles.languageLine} ref={lineRef}>
+              {(() => {
+                const visible = visibleStacks;
+                const twoRows = useEvenSplit && visible.length >= 2;
+                const row1 = twoRows ? visible.slice(0, Math.floor(visible.length / 2)) : visible;
+                const row2 = twoRows ? visible.slice(Math.floor(visible.length / 2)) : [];
+                const renderChip = (stack) => (
+                  <button
+                    key={stack}
+                    type="button"
+                    className={buildCls(styles.stackChip, isStackMatchedByQuery(stack, parsedClauses, normalizeStackToken) && styles.stackChipHighlighted)}
+                    onClick={(e) => (e.stopPropagation(), appendShortcutToQuery(`stack:"${stack}"`))}
+                    aria-label={a11y('project.searchByStack', { stack })}
+                  >
+                    {getStackIconName(stack) && (
+                      <Icon name={getStackIconName(stack)} className={styles.stackChipIcon} aria-hidden />
+                    )}
+                    <span className={styles.stackChipText}>{stack}</span>
+                  </button>
+                );
+                if (visible.length === 0) return <span className={styles.languageStacks}>-</span>;
+                if (twoRows) {
+                  return (
+                    <span className={styles.languageStacksTwoRows}>
+                      <span className={styles.languageStacksRow}>{row1.map(renderChip)}</span>
+                      <span className={styles.languageStacksRow}>{row2.map(renderChip)}</span>
+                    </span>
+                  );
+                }
+                return (
+                  <span ref={chipsContainerRef} className={styles.languageStacks}>
+                    {row1.map(renderChip)}
+                  </span>
+                );
+              })()}
             </div>
           </div>
         </div>
@@ -255,10 +184,7 @@ export function ProjectCard({ project, showAll = false }) {
       {popupOpen && createPortal(
         <ProjectDetailPopup
           project={project}
-          onClose={() => {
-            setPopupOpen(false);
-            setTimeout(() => cardRef.current?.blur(), 0);
-          }}
+          onClose={() => setPopupOpen(false)}
           returnFocusRef={cardRef}
         />,
         document.body

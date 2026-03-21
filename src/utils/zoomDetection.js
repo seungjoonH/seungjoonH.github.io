@@ -2,7 +2,6 @@ const ZOOM_HINT_SESSION_KEY = 'portfolio-zoom-hint-shown';
 const DESKTOP_MIN_WIDTH = 768;
 
 function isDesktop() {
-  if (typeof window === 'undefined') return false;
   return window.innerWidth >= DESKTOP_MIN_WIDTH;
 }
 
@@ -17,7 +16,6 @@ export function markZoomHintShownThisSession() {
 }
 
 export function setupZoomDetection(onZoomDetected) {
-  if (typeof window === 'undefined') return () => {};
   let lastZoom = window.devicePixelRatio;
 
   const handleResize = () => {

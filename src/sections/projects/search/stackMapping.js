@@ -1,16 +1,16 @@
 const TO_STANDARD = {
-  ts: 'TypeScript',
-  typescript: 'TypeScript',
-  typescrit: 'TypeScript',
-  typesciprt: 'TypeScript',
-  typscript: 'TypeScript',
-  typsciprt: 'TypeScript',
-  tsx: 'TypeScript',
-  javascript: 'JavaScript',
-  js: 'JavaScript',
-  javscript: 'JavaScript',
-  javasript: 'JavaScript',
-  jscript: 'JavaScript',
+  ts: 'Typescript',
+  typescript: 'Typescript',
+  typescrit: 'Typescript',
+  typesciprt: 'Typescript',
+  typscript: 'Typescript',
+  typsciprt: 'Typescript',
+  tsx: 'Typescript',
+  javascript: 'Javascript',
+  js: 'Javascript',
+  javscript: 'Javascript',
+  javasript: 'Javascript',
+  jscript: 'Javascript',
   next: 'Next.js',
   nextjs: 'Next.js',
   'next.js': 'Next.js',
@@ -62,6 +62,49 @@ const TO_STANDARD = {
   github: 'GitHub',
   'git-hub': 'GitHub',
 };
+
+const STACK_ICON_NAMES = {
+  typescript: 'typescript',
+  nextjs: 'nextjs',
+  'next.js': 'nextjs',
+  nestjs: 'nestjs',
+  'nest.js': 'nestjs',
+  'node.js': 'nodejs',
+  nodejs: 'nodejs',
+  react: 'react',
+  flutter: 'flutter',
+  dart: 'dart',
+  firebase: 'firebase',
+  mysql: 'mysql',
+  python: 'python',
+  java: 'java',
+  c: 'c',
+  'c++': 'cpp',
+  cpp: 'cpp',
+  html: 'html5',
+  html5: 'html5',
+  css: 'css',
+  javascript: 'javascript',
+  mariadb: 'mariadb',
+  redis: 'redis',
+  spring: 'spring',
+  springboot: 'springboot',
+  'spring-boot': 'springboot',
+  'spring boot': 'springboot',
+  postgresql: 'postgresql',
+  aws: 'aws',
+  s3: 's3',
+  docker: 'docker',
+  'socket.io': 'socketio',
+};
+function toIconKey(name) {
+  if (!name || typeof name !== 'string') return '';
+  return name.trim().toLowerCase().replace(/\./g, '').replace(/\s+/g, '-');
+}
+export function getStackIconName(displayName) {
+  const key = toIconKey(displayName);
+  return STACK_ICON_NAMES[key] ?? (STACK_ICON_NAMES[toIconKey(normalizeStackToken(displayName))] || null);
+}
 
 export function normalizeStackToken(token) {
   if (!token || typeof token !== 'string') return token || '';

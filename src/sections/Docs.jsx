@@ -6,20 +6,22 @@ import { useProjectSearchStore } from '../stores/projectSearchStore';
 import { useExperienceFocusStore } from '../stores/experienceFocusStore';
 import styles from './docs.module.css';
 import { buildCls } from '../utils/cssUtil';
+import { useA11y } from '../hooks/useA11y';
 
-const CATEGORY_KEYS = ['notion', 'githubWiki', 'tistory'];
+const CATEGORY_KEYS = ['tistory', 'notion', 'githubWiki'];
 const CATEGORY_LABELS = {
+  tistory: 'Tistory',
   notion: 'Notion',
   githubWiki: 'Github Wiki',
-  tistory: 'Tistory',
 };
 const PLATFORM_ICON = {
+  tistory: 'tistory',
   notion: 'notion',
   githubWiki: 'github',
-  tistory: 'tistory',
 };
 
 export function Docs() {
+  const a11y = useA11y();
   const docs = useDocs();
   const setQueryFromShortcut = useProjectSearchStore((s) => s.setQueryFromShortcut);
   const setExperienceIdToFocus = useExperienceFocusStore((s) => s.setExperienceIdToFocus);
@@ -78,7 +80,8 @@ export function Docs() {
       setExperienceIdToFocus(src.experienceId);
       const el = document.getElementById('experience');
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else if (src.type === 'project' && src.searchQuery) {
+    }
+    else if (src.type === 'project' && src.searchQuery) {
       setQueryFromShortcut(src.searchQuery);
       const el = document.getElementById('project');
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -99,7 +102,7 @@ export function Docs() {
       <nav
         ref={contentRef}
         className={styles.docsNav}
-        aria-label="Documentation"
+        aria-label={a11y('docs.nav')}
         style={{ opacity: contentOpacity, transform: `translateY(${(1 - contentOpacity) * 18}px)`, transition: 'opacity 0.35s ease-in-out, transform 0.35s ease-in-out' }}
       >
         {categories.map(({ key, label, platformIcon, items }) => {
@@ -122,22 +125,25 @@ export function Docs() {
                 id={`docs-list-${key}`}
                 className={buildCls(styles.docListWrap, isOpen && styles.docListWrapOpen)}
                 role="region"
-                aria-label={`${label} documents`}
+                aria-label={a11y('docs.folderRegion', { label })}
               >
                 <div className={styles.docListTrack}>
                   {items.map((doc) => (
                     <div key={doc.id} className={styles.docRow}>
                       <Icon name="document" className={styles.docIcon} aria-hidden="true" />
-                      {doc.source && doc.chipLabel ? (
+                      {doc.source && doc.chipLabel && (
                         <button
                           type="button"
                           className={styles.docChip}
                           onClick={(e) => handleChipClick(e, doc)}
-                          aria-label={`${doc.chipLabel}로 이동`}
+                          aria-label={a11y('docs.chipNavigate', { chip: doc.chipLabel })}
                         >
+                          <span className={styles.docChipIcon} aria-hidden="true">
+                            <Icon name="search" />
+                          </span>
                           {doc.chipLabel}
                         </button>
-                      ) : null}
+                      )}
                       <a
                         href={doc.link}
                         target="_blank"

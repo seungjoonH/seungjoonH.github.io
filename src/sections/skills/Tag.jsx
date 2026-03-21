@@ -1,13 +1,13 @@
+import { useA11y } from '../../hooks/useA11y';
 import { useProjectSearchStore } from '../../stores/projectSearchStore';
 import styles from './tag.module.css';
 
 export function Tag({ skill }) {
+  const a11y = useA11y();
   const setQueryFromShortcut = useProjectSearchStore((s) => s.setQueryFromShortcut);
 
   const handleClick = () => {
     setQueryFromShortcut(`stack:"${skill.name}"`);
-    const el = document.getElementById('project');
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
@@ -15,9 +15,9 @@ export function Tag({ skill }) {
       type="button"
       className={styles.tagContainer}
       onClick={handleClick}
-      aria-label={`${skill.name} 사용 프로젝트 검색`}
+      aria-label={a11y('skills.tagSearch', { name: skill.name })}
     >
-      <img src={skill.imageUrl} alt="" className={styles.tagIcon} aria-hidden="true" />
+      <img src={skill.imageUrl} alt={a11y('skills.icon', { name: skill.name })} className={styles.tagIcon} />
       <span className={styles.tagText}>{skill.name}</span>
     </button>
   );

@@ -18,6 +18,7 @@ export default class ProjectModel {
     type,
     hidden = false,
     title = '',
+    status = null,
     period = {},
     summary = '',
     tags = [],
@@ -37,6 +38,7 @@ export default class ProjectModel {
     this.type = type ?? null;
     this.hidden = Boolean(hidden);
     this.title = title;
+    this.status = status ?? null;
     this.period = period || {};
     this.summary = summary;
     this.links = Array.isArray(links) ? links : [];

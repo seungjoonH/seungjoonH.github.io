@@ -5,6 +5,34 @@ function stackContainsQuery(stackLower, queryLower) {
   return stackLower.includes(queryLower) || queryLower.includes(stackLower);
 }
 
+function singleStackMatchesCondValue(stackName, condValue, normalizeStack, exactMatch = false) {
+  const norm = normalizeStack(String(stackName)).toLowerCase();
+  const matchOne = (queryNorm) => {
+    if (exactMatch) return norm === queryNorm;
+    return stackContainsQuery(norm, queryNorm);
+  };
+  if (typeof condValue === 'string') return matchOne(normalizeStack(condValue).toLowerCase());
+  if (condValue.and) return condValue.and.every((t) => matchOne(normalizeStack(t).toLowerCase()));
+  if (condValue.or) return condValue.or.some((t) => matchOne(normalizeStack(t).toLowerCase()));
+  return false;
+}
+
+export function isStackMatchedByQuery(stackName, parsedClauses, normalizeStack) {
+  if (!parsedClauses || parsedClauses.length === 0) return false;
+  const stackNorm = normalizeStack(String(stackName)).toLowerCase();
+  for (const conditions of parsedClauses) {
+    for (const cond of conditions) {
+      if (cond.type === 'stack' && singleStackMatchesCondValue(stackName, cond.value, normalizeStack, cond.exact))
+        return true;
+      if (cond.type === 'fullText' && cond.value && !isSingleChoseong(String(cond.value))) {
+        const queryNorm = normalizeStack(cond.value).toLowerCase();
+        if (stackContainsQuery(stackNorm, queryNorm)) return true;
+      }
+    }
+  }
+  return false;
+}
+
 function matchesStack(project, condValue, normalizeStack, exactMatch = false) {
   const stacks = project.techStackNames || project.techStacks || [];
   const normalizedStacks = stacks.map((s) => normalizeStack(String(s)).toLowerCase());
@@ -75,7 +103,8 @@ function projectMatchesConditions(project, conditions, normalizeStack) {
       const qLower = q.toLowerCase();
       if (cond.exact) {
         if (!tags.some((t) => String(t).toLowerCase() === qLower)) return false;
-      } else {
+      }
+      else {
         if (!tags.some((t) => tagMatchesQuery(String(t), q))) return false;
       }
       continue;
@@ -85,7 +114,8 @@ function projectMatchesConditions(project, conditions, normalizeStack) {
       const title = project.title || '';
       if (cond.exact) {
         if (title.toLowerCase() !== cond.value.toLowerCase()) return false;
-      } else {
+      }
+      else {
         if (!stringContains(title, cond.value)) return false;
       }
       continue;
@@ -94,7 +124,8 @@ function projectMatchesConditions(project, conditions, normalizeStack) {
       if (isSingleChoseong(cond.value)) continue;
       if (cond.exact) {
         if (!stringContains(descText, cond.value)) return false;
-      } else {
+      }
+      else {
         if (!stringContains(descText, cond.value)) return false;
       }
       continue;
@@ -126,6 +157,7 @@ function projectMatchesConditions(project, conditions, normalizeStack) {
       if (v === 'hidden' && !project.hidden) return false;
       continue;
     }
+    if (cond.type === 'sort') continue;
   }
   return true;
 }

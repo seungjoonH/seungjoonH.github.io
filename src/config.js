@@ -44,8 +44,8 @@ const language = {
 };
 
 const version = {
-  number: '1.0.5',
-  buildDate: '20260315',
+  number: '1.0.6',
+  buildDate: '20260321',
 };
 
 const contact = {
@@ -58,10 +58,10 @@ const contact = {
 const skills = [
   {
     'Web - Frontend': ['Typescript', 'Next.js', 'React'],
-    'Web - Backend': ['NestJS', 'Node.js'],
+    'Web - Backend': ['NestJS', 'Node.js', 'SpringBoot'],
     Mobile: ['Flutter'],
-    Database: ['Firebase', 'Redis', 'MySQL'],
-    Language: ['JavaScript', 'Python', 'Java', 'C'],
+    Database: ['Firebase', 'Redis', 'MySQL', 'PostgreSQL'],
+    Language: ['Javascript', 'Python', 'Java', 'C'],
   },
 ];
 
@@ -84,6 +84,25 @@ const searchPlaceholderExamples = {
   ],
 };
 
+const projectCard = {
+  fontScaleSteps: [0.5, 0.75, 1, 1.25, 1.5],
+  maxVisibleTags: {
+    mobile: [8, 7, 6, 6, 5],
+    tablet: [10, 9, 8, 7, 6],
+    desktop: [12, 10, 9, 8, 7],
+    wide: [14, 12, 10, 9, 8],
+  },
+  maxVisibleStacks: {
+    mobile: [8, 7, 6, 6, 5],
+    tablet: [10, 9, 8, 7, 6],
+    desktop: [12, 10, 9, 8, 7],
+    wide: [14, 12, 10, 9, 8],
+  },
+};
+
+const TYPO_SCALE_MIN = 0.5;
+const TYPO_SCALE_MAX = 1.5;
+
 const config = {
   animation,
   breakpoints,
@@ -95,7 +114,22 @@ const config = {
   contact,
   skills,
   searchPlaceholderExamples,
+  projectCard,
 };
 
 export default config;
-export { animation, breakpoints, ui, typography, theme, language, version, contact, skills, searchPlaceholderExamples };
+export { 
+  animation, 
+  breakpoints, 
+  ui, 
+  typography, 
+  theme, 
+  language, 
+  version,
+  contact, 
+  skills, 
+  searchPlaceholderExamples, 
+  projectCard, 
+  TYPO_SCALE_MIN,
+  TYPO_SCALE_MAX,
+};

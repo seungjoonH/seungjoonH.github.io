@@ -16,7 +16,7 @@
   );
   font-weight: 400;
   margin-top: 0;
-  bottom: 0;
+  bottom: clamp(12px, 2.2vh, 36px);
   right: 0;
   opacity: 0;
   z-index: 10;
@@ -26,12 +26,12 @@
 }
 
 .fadeIn {
-  bottom: 0;
+  bottom: clamp(12px, 2.2vh, 36px);
   opacity: 1;
 }
 
 .noTransition {
-  bottom: 0;
+  bottom: clamp(12px, 2.2vh, 36px);
   opacity: 1;
   transition-duration: 0s;
 }

@@ -60,7 +60,7 @@ export function Icon({
       role="img"
       aria-label={alt || undefined}
       aria-hidden={ariaHidden}
-      className={buildCls(sizeClass, className)}
+      className={buildCls(styles.iconRoot, sizeClass, className)}
       style={wrapperStyle}
       dangerouslySetInnerHTML={{ __html: svgWithSize }}
       {...rest}

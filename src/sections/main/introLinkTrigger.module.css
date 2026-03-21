@@ -1,0 +1,142 @@
+.wrap {
+  position: relative;
+  display: inline;
+}
+
+.trigger {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: inherit;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 0.18em;
+  border-radius: 2px;
+}
+
+.trigger:hover,
+.trigger:focus-visible {
+  text-decoration-style: solid;
+}
+
+.trigger:focus-visible {
+  outline: 2px solid var(--color-border);
+  outline-offset: 2px;
+}
+
+.popoverFrame {
+  --intro-popover-duration: calc(0.26s / var(--speed-scale, 1));
+  --intro-popover-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  position: fixed;
+  z-index: 2500;
+  min-width: min(240px, 92vw);
+  max-width: min(420px, 94vw);
+  box-sizing: border-box;
+  border-radius: 10px;
+  overflow: visible;
+  mix-blend-mode: normal;
+  border: 1px solid var(--project-popup-border, rgba(255, 255, 255, 0.12));
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55);
+  color: var(--color-text);
+  font-size: 0.72em;
+  font-weight: 400;
+  line-height: 1.35;
+  text-align: left;
+  background: var(--project-popup-bg);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--intro-popover-duration) var(--intro-popover-ease);
+}
+
+.popoverFrameVisible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .popoverFrame {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: var(--color-bg-card);
+  }
+}
+
+.popoverInner {
+  position: relative;
+  z-index: 1;
+  padding: 12px 14px 14px;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popoverFrame {
+    --intro-popover-duration: 0.05s;
+  }
+}
+
+:global([data-theme="light"]) .popoverFrame {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.lead {
+  margin: 0 0 10px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.rowGroup {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.rowPill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 0;
+  padding: 6px 14px;
+  border: 1px solid var(--color-text);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text-soft);
+  font: inherit;
+  font-size: 1em;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: var(--hover-transition);
+}
+
+.rowPill:hover,
+.rowPill:focus-visible {
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-text) 8%, transparent);
+}
+
+.rowPill:focus-visible {
+  outline: 2px solid var(--color-border);
+  outline-offset: 2px;
+}
+
+.rowPillIcon {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  color: inherit;
+}
+
+.rowPillLabel {
+  white-space: nowrap;
+}

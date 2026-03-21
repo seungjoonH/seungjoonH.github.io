@@ -83,25 +83,19 @@ const experiences = [
     details: {
       sections: [
         {
-          title: 'DOM manipulation and declarative UI',
+          title: 'Understanding the DOM rendering flow from Vanilla JS imperative DOM manipulation to React declarative rendering',
           items: [
-            'Explored Vanilla JS-based DOM manipulation and declarative UI expression',
-            'Encapsulated DOM creation in a custom helper for declarative UI',
-            'Confirmed JSX transformation to jsx/jsxs calls via Vite build output',
-          ],
-          links: [
-            { type: 'tistory', title: '[Web] DOM manipulation - createElement to JSX', href: 'https://seungjoonh.tistory.com/entry/web-dom' },
+            'Experienced readability issues where UI hierarchy became buried within imperative DOM manipulation code flow',
+            'Encapsulated DOM creation logic into custom helper functions to achieve a more declarative UI structure',
+            'Analyzed Vite build output to confirm that JSX is transformed into jsx / jsxs function calls',
           ],
         },
         {
-          title: 'State management',
+          title: 'Understanding the state management flow from Vanilla JS Store to Zustand',
           items: [
-            'Implemented Vanilla JS state management and Observer-pattern Store',
-            'Unidirectional flow: state change → subscribe → DOM update',
-            'Compared Store implementations: object, class, and closure (functional)',
-          ],
-          links: [
-            { type: 'tistory', title: '[Web] Observer pattern and Store - state management', href: 'https://seungjoonh.tistory.com/entry/web-observer-store' },
+            'Recognized the need for UI state management in Vanilla JS and implemented an Observer-pattern–based Store architecture',
+            'Designed a unidirectional update flow: state change → subscription → DOM update',
+            'Compared Store implementations using object, class, and closure patterns, then extended the flow toward Zustand’s closure-based store structure and selector-based subscription model',
           ],
         },
       ],

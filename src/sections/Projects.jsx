@@ -5,7 +5,7 @@ import { ProjectCard } from '@sections/projects/ProjectCard';
 import ProjectRepository from '../repositories/project.js';
 import styles from './projects.module.css';
 import { buildCls } from '../utils/cssUtil';
-import { useBreakpoint } from '../hooks/useBreakpoint';
+import { useResponsive } from '../hooks/useResponsive';
 import { Icon } from '@components/shared/icon/Icon';
 import { useConfigStore } from '../stores/configStore';
 import { useProjectSearchStore } from '../stores/projectSearchStore';
@@ -13,13 +13,30 @@ import { useProjectCardFlipStore } from '../stores/projectCardFlipStore';
 import { parseQuery } from '@sections/projects/search/parseQuery';
 import { normalizeStackToken } from '@sections/projects/search/stackMapping';
 import { filterProjects, getShowValue } from '@sections/projects/search/filterProjects';
+import { stripSortFromParsedClauses } from '@sections/projects/search/stripSort';
+import { sortProjectsByMode } from '@sections/projects/search/sortProjects';
+import {
+  applySortModeToRawQuery,
+  getSortModeFromRawQuery,
+  nextSortModeAfterClick,
+} from '@sections/projects/search/querySortMode';
 import { ProjectSearchBar } from '@sections/projects/ProjectSearchBar';
+import { useTranslation } from 'react-i18next';
+import { useA11y } from '../hooks/useA11y';
 
 const MIN_CARD_WIDTH = 300;
 const BASE_GAP = 12;
 
+function labelForSortMode(mode, t) {
+  if (mode == null || mode === 'recent') return t('project.sortOrderRecent');
+  if (mode === 'oldest') return t('project.sortOrderOldest');
+  return t('project.sortOrderStatus');
+}
+
 export function Projects() {
-  const { type: breakpointType, projectsGridBounds: columnBounds } = useBreakpoint();
+  const { t } = useTranslation();
+  const a11y = useA11y();
+  const { type: breakpointType, projectsGridBounds: columnBounds, isMobile } = useResponsive();
   const language = useConfigStore((s) => s.language);
   const rawQuery = useProjectSearchStore((s) => s.rawQuery);
   const setFlippedProjectId = useProjectCardFlipStore((s) => s.setFlippedProjectId);
@@ -27,9 +44,7 @@ export function Projects() {
   const setQueryFromShortcut = useProjectSearchStore((s) => s.setQueryFromShortcut);
   const [projects, setProjects] = useState([]);
   const [columnCount, setColumnCount] = useState(4);
-  const [containerWidth, setContainerWidth] = useState(
-    typeof window !== 'undefined' ? window.innerWidth : 0
-  );
+  const [containerWidth, setContainerWidth] = useState(window.innerWidth);
   const [headerOpacity, setHeaderOpacity] = useState(0);
   const rowRefs = useRef([]);
   const rowsContainerRef = useRef(null);
@@ -66,13 +81,31 @@ export function Projects() {
     return parseQuery(q, normalizeStackToken);
   }, [rawQuery]);
 
-  const visibleProjects = useMemo(() => {
-    if (!searchClauses.length) return projects.filter((p) => !p.hidden);
-    return filterProjects(projects, searchClauses, normalizeStackToken);
-  }, [projects, searchClauses]);
+  const { filterClauses, sortMode } = useMemo(
+    () => stripSortFromParsedClauses(searchClauses),
+    [searchClauses]
+  );
 
-  const showValue = useMemo(() => getShowValue(searchClauses), [searchClauses]);
+  const visibleProjects = useMemo(() => {
+    let list;
+    if (!filterClauses.length) list = projects.filter((p) => !p.hidden);
+    else list = filterProjects(projects, filterClauses, normalizeStackToken);
+    if (sortMode) list = sortProjectsByMode(list, sortMode);
+    return list;
+  }, [projects, filterClauses, sortMode]);
+
+  const showValue = useMemo(() => getShowValue(filterClauses), [filterClauses]);
   const showHiddenBadge = showValue === 'all' || showValue === 'hidden';
+
+  const parsedSortMode = useMemo(() => getSortModeFromRawQuery(rawQuery), [rawQuery]);
+  const sortIconName =
+    parsedSortMode === 'oldest' ? 'sort-oldest' : parsedSortMode === 'status' ? 'sort-status' : 'sort-recent';
+  const sortCurrentLabel = useMemo(() => labelForSortMode(parsedSortMode, t), [parsedSortMode, t]);
+  const sortNextLabel = useMemo(() => {
+    const next = nextSortModeAfterClick(parsedSortMode);
+    return labelForSortMode(next, t);
+  }, [parsedSortMode, t]);
+  const sortUsesNonDefault = parsedSortMode === 'oldest' || parsedSortMode === 'status';
 
   const rows = useMemo(() => {
     const chunked = [];
@@ -159,10 +192,12 @@ export function Projects() {
         if (rect.top <= endFade) {
           opacity = 1;
           translateY = 0;
-        } else if (rect.top >= startFade) {
+        }
+        else if (rect.top >= startFade) {
           opacity = 0;
           translateY = 18;
-        } else {
+        }
+        else {
           const t = (startFade - rect.top) / (startFade - endFade);
           opacity = t;
           translateY = (1 - t) * 18;
@@ -181,7 +216,6 @@ export function Projects() {
     setColumnCount(Math.min(effectiveBounds.max, Math.max(effectiveBounds.min, next)));
   };
 
-  const isMobile = breakpointType === 'mobile';
   useEffect(() => {
     if (!isMobile) return;
     const clearFlipIfOutside = (e) => {
@@ -196,6 +230,17 @@ export function Projects() {
       document.removeEventListener('mousedown', clearFlipIfOutside, true);
     };
   }, [isMobile, setFlippedProjectId]);
+
+  const handleToggleShowHidden = () => {
+    const q = (rawQuery || '').trim();
+    if (q === 'show:all') return setQuery('');
+    return setQueryFromShortcut('show:all');
+  };
+
+  const handleSortCycle = () => {
+    const nextMode = nextSortModeAfterClick(getSortModeFromRawQuery(rawQuery));
+    setQuery(applySortModeToRawQuery(rawQuery, nextMode));
+  };
 
   return (
     <div className={styles.projectsContainer} ref={sectionRef}>
@@ -213,41 +258,70 @@ export function Projects() {
           <ProjectPano />
         </div>
         <div className={styles.controls}>
-        <div className={styles.visibilityToggle}>
+        <div
+          className={styles.visibilityToggle}
+          role="group"
+          aria-label={a11y('project.visibilityToolbar')}
+        >
           <button
             type="button"
             className={buildCls(showHiddenBadge && styles.active)}
-            onClick={() => {
-              const q = (rawQuery || '').trim();
-              if (q === 'show:all') setQuery('');
-              else setQueryFromShortcut('show:all');
-            }}
-            aria-label="숨긴 프로젝트 포함 (show:all)"
+            onClick={handleToggleShowHidden}
+            aria-label={a11y('project.showHidden')}
+            aria-pressed={showHiddenBadge}
             title="show:all"
           >
-            <Icon name={showHiddenBadge ? 'eye-open' : 'eye-off'} />
+            <Icon name={showHiddenBadge ? 'eye-open' : 'eye-off'} size="md" aria-hidden />
+          </button>
+          <button
+            type="button"
+            className={buildCls(sortUsesNonDefault && styles.active)}
+            onClick={handleSortCycle}
+            aria-label={a11y('project.sortCycle', { current: sortCurrentLabel, next: sortNextLabel })}
+            title={t('project.sortButtonTitle', { current: sortCurrentLabel, next: sortNextLabel })}
+          >
+            <Icon name={sortIconName} size="md" aria-hidden />
           </button>
         </div>
         <ProjectSearchBar />
-        <div className={styles.sliderWrap}>
-          <button type="button" onClick={() => onChangeColumn(columnCount - 1)}>-</button>
+        <div className={styles.sliderWrap} role="group" aria-label={a11y('project.gridSlider')}>
+          <button
+            type="button"
+            onClick={() => onChangeColumn(columnCount - 1)}
+            aria-label={a11y('project.gridDecrease')}
+            disabled={columnCount <= effectiveBounds.min}
+          >
+            <span aria-hidden="true">−</span>
+          </button>
           <input
             type="range"
             min={effectiveBounds.min}
             max={effectiveBounds.max}
             value={columnCount}
             onChange={(e) => onChangeColumn(Number(e.target.value))}
+            aria-valuemin={effectiveBounds.min}
+            aria-valuemax={effectiveBounds.max}
+            aria-valuenow={columnCount}
+            aria-valuetext={a11y('project.gridValue', { count: columnCount })}
+            aria-label={a11y('project.gridSlider')}
           />
-          <button type="button" onClick={() => onChangeColumn(columnCount + 1)}>+</button>
+          <button
+            type="button"
+            onClick={() => onChangeColumn(columnCount + 1)}
+            aria-label={a11y('project.gridIncrease')}
+            disabled={columnCount >= effectiveBounds.max}
+          >
+            <span aria-hidden="true">+</span>
+          </button>
         </div>
       </div>
       </div>
 
       <div className={styles.projectsContentWrap}>
-      {visibleProjects.length === 0 && (rawQuery || '').trim() ? (
-        <p className={styles.searchEmpty}>결과가 없습니다</p>
-      ) : null}
-      <div className={styles.rows} ref={rowsContainerRef}>
+        {visibleProjects.length === 0 && (rawQuery || '').trim() && (
+          <p className={styles.searchEmpty}>{t('project.searchEmpty')}</p>
+        )}
+        <div className={styles.rows} ref={rowsContainerRef}>
         {rows.map((row, rowIndex) => (
           <div
             key={`row-${rowIndex}`}
@@ -270,7 +344,7 @@ export function Projects() {
             ))}
           </div>
         ))}
-      </div>
+        </div>
       </div>
     </div>
   );

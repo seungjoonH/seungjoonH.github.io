@@ -4,16 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="stylesheet"
+      as="style"
+      crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+    />
     <title>현승준 | 프론트엔드 개발자</title>
     <meta name="description" content="탐구한 흔적을 기록하고 구조화된 결과물로 이어내는, 프론트엔드 개발자, 현승준 입니다." />
     <meta name="author" content="현승준" />
     <link rel="canonical" href="https://seungjoonh.github.io/" />
-    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="현승준 | 프론트엔드 개발자" />
     <meta property="og:description" content="탐구한 흔적을 기록하고 구조화된 결과물로 이어내는, 프론트엔드 개발자, 현승준 입니다." />
     <meta property="og:locale" content="ko_KR" />
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="현승준 | 프론트엔드 개발자" />
     <meta name="twitter:description" content="탐구한 흔적을 기록하고 구조화된 결과물로 이어내는, 프론트엔드 개발자, 현승준 입니다." />
@@ -22,21 +26,14 @@
     <script>
       (function() {
         try {
-          var raw = localStorage.getItem('portfolio-config');
-          if (raw) {
-            var data = JSON.parse(raw);
-            var state = data.state || data;
-            if (state != null && typeof state.typographyScale === 'number') {
-              document.documentElement.style.setProperty('--font-scale', String(state.typographyScale));
-            }
-            if (state != null && state.theme) {
-              document.documentElement.setAttribute('data-theme', state.theme);
-            }
-            if (state != null && typeof state.speedScale === 'number') {
-              document.documentElement.style.setProperty('--speed-scale', String(state.speedScale));
-            }
-          }
-        } catch (e) {}
+          const raw = localStorage.getItem('portfolio-config');
+          if (!raw) return;
+          const data = JSON.parse(raw);
+          const state = data.state || data;
+          if (state == null || !state.theme) return;
+          document.documentElement.setAttribute('data-theme', state.theme);
+        }
+        catch {}
       })();
     </script>
     <div id="root"></div>

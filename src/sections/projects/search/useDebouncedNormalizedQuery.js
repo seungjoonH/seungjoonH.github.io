@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { parseQuery } from './parseQuery.js';
 import { normalizeStackToken } from './stackMapping.js';
+import { stripSortFromParsedClauses } from './stripSort.js';
 
 const DEBOUNCE_MS = 1000;
 
@@ -19,8 +20,9 @@ export function useDebouncedNormalizedQuery(rawQuery, delayMs = DEBOUNCE_MS) {
 
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
-      const clauses = parseQuery(trimmed, normalizeStackToken);
-      setNormalizedClauses(clauses);
+      const parsed = parseQuery(trimmed, normalizeStackToken);
+      const { filterClauses } = stripSortFromParsedClauses(parsed);
+      setNormalizedClauses(filterClauses);
       timerRef.current = null;
     }, delayMs);
 
@@ -36,7 +38,8 @@ export function getParsedForHighlight(rawQuery) {
   const q = typeof rawQuery === 'string' ? rawQuery : '';
   const trimmed = q.trim();
   if (!trimmed) return [];
-  return parseQuery(trimmed, normalizeStackToken);
+  const parsed = parseQuery(trimmed, normalizeStackToken);
+  return stripSortFromParsedClauses(parsed).filterClauses;
 }
 
 export default useDebouncedNormalizedQuery;

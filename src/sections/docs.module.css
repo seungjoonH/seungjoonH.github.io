@@ -194,8 +194,11 @@
 .docChip {
   flex-shrink: 0;
   margin-right: 12px;
-  padding: 2px 8px;
-  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 9999px;
   border: 1px solid var(--color-border);
   background: var(--color-bg-subtle, rgba(255, 255, 255, 0.06));
   color: var(--color-text-muted);
@@ -204,6 +207,15 @@
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.docChipIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  color: inherit;
 }
 
 .docChip:hover {
@@ -267,6 +279,10 @@
   }
 
   .docRow .docIcon {
+    display: none !important;
+  }
+
+  .docChipIcon {
     display: none !important;
   }
 }

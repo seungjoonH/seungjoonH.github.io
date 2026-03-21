@@ -19,7 +19,7 @@
   border: 2px solid #fff;
   border-radius: 50%;
   opacity: 0.80;
-  animation: ringPulse 1.4s ease-in-out infinite;
+  animation: ringPulse 0.85s ease-in-out infinite;
   filter: drop-shadow(0 0 0.5px rgba(0, 0, 0, 0.35));
 }
 

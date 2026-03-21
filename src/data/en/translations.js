@@ -12,16 +12,22 @@ export default {
     github: 'GITHUB',
     linkedin: 'LINKEDIN',
     tel: 'TEL',
-    copy: 'Copy',
-    copied: 'Copied',
   },
   main: {
     title: "Seungjoon\nHyeon's\nPortfolio",
-    introduction: "Recording explorations and turning them into outcomes,\nI'm @[Seungjoon Hyeon], a front-end developer.\n- I value design that improves usability and collaboration.\n- I explore the why behind small features and document the flow.",
+    introduction: "I trace exploration and turn it into structured outcomes,\n**Frontend** developer @[Seungjoon Hyeon].\n\n- So anyone can use services without friction, I pursue @(portfolio)[an inclusive UX].\n- @(ai)[Using AI to clear development bottlenecks], I improve collaboration to build @(dx)[a better DX].\n- I @(renderer)[reflect and learn deeply] about how technology works, and capture insights in @(docs)[notes and docs].",
+    introLink: {
+      popupLead: 'Spoiler',
+      rowPortfolio: 'Personal portfolio',
+      rowAcommit: 'Acommit',
+      rowExtify: 'Extify',
+      rowMulbangultalk: 'Moolbangwool Talk',
+      rowRenderer3d: '3D Renderer',
+      rowDocs: '#Docs',
+    },
   },
   settings: {
     open: 'Settings',
-    close: 'Close',
     title: 'Settings',
     speed: 'Speed',
     fontSize: 'Font size',
@@ -31,16 +37,14 @@ export default {
     light: 'Light',
   },
   experience: {
-    sectionTitles: 'Sections',
-    toProject: 'Go to projects',
+    toProjectLink: 'Go to projects',
   },
   zoom: {
     tooltipMessage: 'Is the text too large or too small?\nYou can adjust the font size in the settings button on the right.',
-    close: 'Close',
   },
   project: {
     searchAppliedHint: 'A search filter is applied.',
-    searchAppliedTooltipClose: 'Close tooltip',
+    searchEmpty: 'No matching projects',
     deploy: {
       deploy: 'Web',
       appstore: 'AppStore',
@@ -48,7 +52,14 @@ export default {
       npm: 'npm',
     },
     linkStatus: 'Discontinued',
-    detailAria: '{{title}} detail',
-    close: 'Close',
+    expandDetail: 'Expand detail',
+    status: {
+      inDevelopment: 'In Dev',
+      live: 'Live',
+      maintained: 'Maintained',
+      supportEnded: 'Support Ended',
+      contributionEnded: 'Contributed',
+      ended: 'Ended',
+    },
   },
 };

@@ -1,5 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useA11y } from '../hooks/useA11y';
 import { Header } from '@components/layout/Header';
 import { Icon } from '@components/shared/icon/Icon';
 import { useConfigStore } from '../stores/configStore';
@@ -12,12 +13,8 @@ const LABEL_KEYS = { email: 'email', github: 'github', linkedin: 'linkedin', tel
 
 function decode(value) {
   if (typeof value !== 'string') return value;
-  try {
-    return decodeURIComponent(value);
-  } catch {
-    // 잘못된 인코딩이면 원본 그대로 사용
-    return value;
-  }
+  try { return decodeURIComponent(value); }
+  catch { return value; }
 }
 
 function getContactHref(key, value) {
@@ -54,6 +51,7 @@ function getCopyText(key, value) {
 
 export function Contact() {
   const { t } = useTranslation();
+  const a11y = useA11y();
   const language = useConfigStore((s) => s.language) ?? config.language?.initial ?? 'en';
   const contact = config.contact || {};
   const [copiedKeys, setCopiedKeys] = useState({});
@@ -91,6 +89,10 @@ export function Contact() {
             const displayValue = getDisplayValue(key, value, language);
             const copyText = getCopyText(key, value);
             const label = t(`contact.${LABEL_KEYS[key]}`);
+            const copied = copiedKeys[key] === true;
+            const copyAriaLabel = copied 
+              ? a11y('contact.copied', { label }) 
+              : a11y('contact.copy', { label });
 
             return (
               <div key={key} className={styles.card} role="listitem">
@@ -99,7 +101,7 @@ export function Contact() {
                   className={styles.cardLink}
                   target="_blank"
                   rel="noreferrer"
-                  aria-label={`${label}: ${displayValue}`}
+                  aria-label={a11y('contact.rowLink', { label, value: displayValue })}
                 >
                   <Icon name={ICON_MAP[key]} className={styles.cardIcon} aria-hidden="true" />
                   <span className={styles.cardLabel}>{label}</span>
@@ -110,10 +112,10 @@ export function Contact() {
                   className={styles.copyBtn}
                   onClick={() => handleCopy(key, copyText)}
                   disabled={!copyText}
-                  aria-label={copiedKeys[key] ? t('contact.copied') : t('contact.copy')}
-                  title={t('contact.copy')}
+                  aria-label={copyAriaLabel}
+                  title={copyAriaLabel}
                 >
-                  <Icon name={copiedKeys[key] ? 'check' : 'copy'} className={styles.copyIcon} aria-hidden="true" />
+                  <Icon name={copied ? 'check' : 'copy'} className={styles.copyIcon} aria-hidden="true" />
                 </button>
               </div>
             );

@@ -1,0 +1,76 @@
+{
+  "common": {
+    "close": "닫기"
+  },
+  "contact": {
+    "rowLink": "{{label}}: {{value}}",
+    "copy": "{{label}} 클립보드에 복사",
+    "copied": "{{label}} 복사됨"
+  },
+  "docs": {
+    "nav": "플랫폼별 문서 링크",
+    "folderRegion": "{{label}} 문서 목록",
+    "chipNavigate": "{{chip}} 관련 섹션으로 이동"
+  },
+  "experience": {
+    "detailDialog": "경력 상세: {{company}}",
+    "cardMobile": "{{company}}, {{position}}. 한 번 더 활성화하면 전체 상세를 엽니다.",
+    "cardDesktop": "{{company}}, {{position}}. 전체 상세 보기.",
+    "prev": "이전 경력 카드 보기",
+    "next": "다음 경력 카드 보기",
+    "sectionList": "이 경력 관련 문서 섹션",
+    "toProjects": "이 회사 관련 프로젝트로 이동",
+    "logo": "{{company}} 로고",
+    "detailLogo": "경력 상세 — {{company}} 로고"
+  },
+  "nav": {
+    "zoomDismiss": "글자 크기 안내 닫기",
+    "settingsOpen": "설정 열기"
+  },
+  "project": {
+    "detailDialog": "프로젝트 상세: {{title}}",
+    "cardMobile": "{{title}}. 처음 누르면 카드 뒤집기, 다시 누르면 상세 창.",
+    "cardDesktop": "{{title}}. 상세 창 열기.",
+    "thumbnail": "{{title}} 썸네일",
+    "titleLink": "{{title}} 새 창에서 열기",
+    "deployLink": "{{label}}: {{title}}",
+    "sectionDocLink": "{{type}} 링크: {{title}}, 새 창",
+    "searchInput": "제목, 태그, 기술 스택, 검색어로 프로젝트 찾기",
+    "searchClear": "검색어 지우기",
+    "searchTooltipClose": "검색 적용 안내 닫기",
+    "showHidden": "숨긴 프로젝트까지 목록에 포함. 단축: show:all",
+    "visibilityToolbar": "숨김 표시와 목록 정렬",
+    "sortCycle": "프로젝트 정렬 순서 바꾸기. 현재 {{current}}. 누르면 {{next}}로 바뀝니다.",
+    "searchByTag": "태그 {{tag}} 검색에 추가",
+    "searchByStack": "기술 스택 {{stack}} 검색에 추가",
+    "gridDecrease": "한 줄에 보이는 프로젝트 열 개수 줄이기",
+    "gridIncrease": "한 줄에 보이는 프로젝트 열 개수 늘리기",
+    "gridSlider": "프로젝트 카드 한 줄 열 개수",
+    "gridValue": "한 줄 {{count}}열"
+  },
+  "settings": {
+    "dialog": "설정",
+    "close": "설정 닫기",
+    "speedDecrease": "애니메이션 속도 한 단계 느리게",
+    "speedIncrease": "애니메이션 속도 한 단계 빠르게",
+    "speedSlider": "전체 애니메이션 및 전환 속도. 최소 {{min}}배~최대 {{max}}배, 현재 {{value}}배",
+    "speedValue": "속도 {{value}}배",
+    "fontDecrease": "글자 크기 한 단계 줄이기",
+    "fontIncrease": "글자 크기 한 단계 키우기",
+    "fontSlider": "본문 글자 크기 비율. 최소 {{min}}~최대 {{max}}, 현재 {{value}}",
+    "fontValue": "글자 비율 {{value}}",
+    "languageGroup": "화면 언어",
+    "langKo": "한국어",
+    "langEn": "English",
+    "themeToDark": "다크 테마로 전환",
+    "themeToLight": "라이트 테마로 전환"
+  },
+  "introLink": {
+    "openHint": "관련 프로젝트 및 문서 안내 열기",
+    "popupLabel": "관련 프로젝트 및 섹션 안내"
+  },
+  "skills": {
+    "tagSearch": "{{name}} 사용 프로젝트 검색",
+    "icon": "{{name}} 기술 아이콘"
+  }
+}
