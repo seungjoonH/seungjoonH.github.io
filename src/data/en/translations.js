@@ -15,7 +15,7 @@ export default {
   },
   main: {
     title: "Seungjoon\nHyeon's\nPortfolio",
-    introduction: "I trace exploration and turn it into structured outcomes,\n**Frontend** developer @[Seungjoon Hyeon].\n\n- So anyone can use services without friction, I pursue @(portfolio)[an inclusive UX].\n- @(ai)[Using AI to clear development bottlenecks], I improve collaboration to build @(dx)[a better DX].\n- I @(renderer)[reflect and learn deeply] about how technology works, and capture insights in @(docs)[notes and docs].",
+    introduction: "Focused on continuously improving UX and DX,\n**Frontend** developer @[Seungjoon Hyeon].\n\n- So anyone can use services without friction, I pursue @(portfolio)[an inclusive UX].\n- @(ai)[Using AI to clear development bottlenecks], I improve collaboration to build @(dx)[a better DX].\n- I @(renderer)[reflect and learn deeply] about how technology works, and capture insights in @(docs)[notes and docs].",
     introLink: {
       popupLead: 'Spoiler',
       rowPortfolio: 'Personal portfolio',

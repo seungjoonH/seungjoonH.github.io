@@ -15,7 +15,7 @@ export default {
   },
   main: {
     title: "Seungjoon\nHyeon's\nPortfolio",
-    introduction: "탐구한 흔적을 기록하고 구조화된 결과물로 이어내는,\n**Frontend** 개발자, @[현승준] 입니다.\n\n- 누구나 불편함 없이 서비스를 사용할 수 있도록, @(portfolio)[보편적인 사용자 경험(UX)]을 추구합니다.\n- @(ai)[AI로 개발 병목을 해결]하고, 협업 효율을 높여 @(dx)[더 나은 개발자 경험(DX)]을 만들기 위해 노력합니다.\n- 기술의 원리를 @(renderer)[깊게 고민하고 학습]하며, 그 과정에서 얻은 인사이트를 @(docs)[기록과 문서]로 남깁니다.",
+    introduction: "더 나은 UX/DX를 위해 끊임없이 고민하는,\n**Frontend** 개발자, @[현승준] 입니다.\n\n- 누구나 불편함 없이 서비스를 사용할 수 있도록, @(portfolio)[보편적인 사용자 경험(UX)]을 추구합니다.\n- @(ai)[AI로 개발 병목을 해결]하고, 협업 효율을 높여 @(dx)[더 나은 개발자 경험(DX)]을 만들기 위해 노력합니다.\n- 기술의 원리를 @(renderer)[깊게 고민하고 학습]하며, 그 과정에서 얻은 인사이트를 @(docs)[기록과 문서]로 남깁니다.",
     introLink: {
       popupLead: '스포일러',
       rowPortfolio: '개인 포트폴리오',
