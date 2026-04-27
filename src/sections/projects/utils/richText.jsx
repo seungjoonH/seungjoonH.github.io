@@ -1,4 +1,3 @@
-import React from 'react';
 import katex from 'katex';
 
 function renderKatex(latex, displayMode, key) {
@@ -28,7 +27,7 @@ function renderKatex(latex, displayMode, key) {
 function tokenizeRichText(s) {
   const tokens = [];
   let i = 0;
-  while (i < s.length) {
+  tokenizeLoop: while (i < s.length) {
     const boldAt = s.indexOf('**', i);
     const codeAt = s.indexOf('`', i);
     const dollarAt = s.indexOf('$', i);
@@ -48,46 +47,53 @@ function tokenizeRichText(s) {
     if (!first || first.pos > i) {
       const end = first ? first.pos : s.length;
       if (end > i) tokens.push({ type: 'text', value: s.slice(i, end) });
-      if (!first) break;
+      if (!first) break tokenizeLoop;
       i = first.pos;
       continue;
     }
 
-    if (first.type === 'bold') {
-      const end = s.indexOf('**', i + 2);
-      if (end < 0) {
-        tokens.push({ type: 'text', value: s.slice(i) });
+    switch (first.type) {
+      case 'bold': {
+        const end = s.indexOf('**', i + 2);
+        if (end < 0) {
+          tokens.push({ type: 'text', value: s.slice(i) });
+          break tokenizeLoop;
+        }
+        tokens.push({ type: 'strong', value: s.slice(i + 2, end) });
+        i = end + 2;
         break;
       }
-      tokens.push({ type: 'strong', value: s.slice(i + 2, end) });
-      i = end + 2;
-    }
-    else if (first.type === 'code') {
-      const end = s.indexOf('`', i + 1);
-      if (end < 0) {
-        tokens.push({ type: 'text', value: s.slice(i) });
+      case 'code': {
+        const end = s.indexOf('`', i + 1);
+        if (end < 0) {
+          tokens.push({ type: 'text', value: s.slice(i) });
+          break tokenizeLoop;
+        }
+        tokens.push({ type: 'code', value: s.slice(i + 1, end) });
+        i = end + 1;
         break;
       }
-      tokens.push({ type: 'code', value: s.slice(i + 1, end) });
-      i = end + 1;
-    }
-    else if (first.type === 'inlineMath') {
-      const end = s.indexOf('$', i + 1);
-      if (end < 0) {
-        tokens.push({ type: 'text', value: s.slice(i) });
+      case 'inlineMath': {
+        const end = s.indexOf('$', i + 1);
+        if (end < 0) {
+          tokens.push({ type: 'text', value: s.slice(i) });
+          break tokenizeLoop;
+        }
+        tokens.push({ type: 'math', displayMode: false, value: s.slice(i + 1, end).trim() });
+        i = end + 1;
         break;
       }
-      tokens.push({ type: 'math', displayMode: false, value: s.slice(i + 1, end).trim() });
-      i = end + 1;
-    }
-    else if (first.type === 'displayMath') {
-      const end = s.indexOf('$$', i + 2);
-      if (end < 0) {
-        tokens.push({ type: 'text', value: s.slice(i) });
+      case 'displayMath': {
+        const end = s.indexOf('$$', i + 2);
+        if (end < 0) {
+          tokens.push({ type: 'text', value: s.slice(i) });
+          break tokenizeLoop;
+        }
+        tokens.push({ type: 'math', displayMode: true, value: s.slice(i + 2, end).trim() });
+        i = end + 2;
         break;
       }
-      tokens.push({ type: 'math', displayMode: true, value: s.slice(i + 2, end).trim() });
-      i = end + 2;
+      default: break;
     }
   }
   return tokens;
@@ -96,17 +102,19 @@ function tokenizeRichText(s) {
 function tokensToNodes(tokens, keyPrefix = '') {
   return tokens.map((item, idx) => {
     const key = `${keyPrefix}${idx}`;
-    if (item.type === 'strong') {
-      const inner = item.value;
-      const nested =
-        inner.includes('$') || inner.includes('**') || inner.includes('`')
-          ? tokensToNodes(tokenizeRichText(inner), `${key}-`)
-          : inner;
-      return <strong key={key}>{nested}</strong>;
+    switch (item.type) {
+      case 'strong': {
+        const inner = item.value;
+        const nested =
+          inner.includes('$') || inner.includes('**') || inner.includes('`')
+            ? tokensToNodes(tokenizeRichText(inner), `${key}-`)
+            : inner;
+        return <strong key={key}>{nested}</strong>;
+      }
+      case 'code': return <code key={key}>{item.value}</code>;
+      case 'math': return renderKatex(item.value, item.displayMode, key);
+      default: return <span key={key}>{item.value}</span>;
     }
-    if (item.type === 'code') return <code key={key}>{item.value}</code>;
-    if (item.type === 'math') return renderKatex(item.value, item.displayMode, key);
-    return <span key={key}>{item.value}</span>;
   });
 }
 

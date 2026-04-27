@@ -14,7 +14,7 @@
   margin-bottom: 36px;
 }
 
-.contactTitle {
+.contactTitle :global(h2) {
   bottom: 0;
   left: 0;
   margin-top: 0;

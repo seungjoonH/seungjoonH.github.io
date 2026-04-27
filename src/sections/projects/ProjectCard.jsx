@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import styles from './projectCard.module.css';
 import { ProjectDetailPopup } from './ProjectDetailPopup';
 import { ProjectDetailContent } from './ProjectDetailContent';
-import { Icon } from '@components/shared/icon/Icon';
+import { Icon, SvgIcon } from '@components/shared/icon/Icon';
 import { toHashTag } from './utils/tagUtil';
 import { buildCls } from '../../utils/cssUtil';
 import { useProjectSearchStore } from '../../stores/projectSearchStore';
@@ -66,14 +66,72 @@ export function ProjectCard({ project, showAll = false }) {
     setFlippedProjectId(null);
   };
 
+  const handleCardKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleCardClick();
+    }
+  };
+
+  const cardCls = buildCls(styles.card, isFlipped && styles.flipped);
+  const tagsWrapCls = buildCls(styles.tagsWrap, styles.frontTagsWrap);
+  const visible = visibleStacks;
+  const twoRows = useEvenSplit && visible.length >= 2;
+  const row1 = twoRows ? visible.slice(0, Math.floor(visible.length / 2)) : visible;
+  const row2 = twoRows ? visible.slice(Math.floor(visible.length / 2)) : [];
+
+  const renderStackChip = (stack) => {
+    const chipCls = buildCls(
+      styles.stackChip,
+      isStackMatchedByQuery(stack, parsedClauses, normalizeStackToken) && styles.stackChipHighlighted
+    );
+    return (
+      <button
+        key={stack}
+        type="button"
+        className={chipCls}
+        onClick={(e) => (e.stopPropagation(), appendShortcutToQuery(`stack:"${stack}"`))}
+        aria-label={a11y('project.searchByStack', { stack })}
+      >
+        {getStackIconName(stack) && (
+          <span className={styles.stackChipIcon} aria-hidden="true">
+            <Icon name={getStackIconName(stack)} />
+          </span>
+        )}
+        <span className={styles.stackChipText}>{stack}</span>
+      </button>
+    );
+  };
+
+  let stackChipsLine;
+  if (visible.length === 0) {
+    stackChipsLine = <span className={styles.languageStacks}>-</span>;
+  } else if (twoRows) {
+    stackChipsLine = (
+      <span className={styles.languageStacksTwoRows}>
+        <span className={styles.languageStacksRow}>{row1.map(renderStackChip)}</span>
+        <span className={styles.languageStacksRow}>{row2.map(renderStackChip)}</span>
+      </span>
+    );
+  } else {
+    stackChipsLine = (
+      <span ref={chipsContainerRef} className={styles.languageStacks}>
+        {row1.map(renderStackChip)}
+      </span>
+    );
+  }
+
   return (
     <>
       <div
         ref={cardRef}
         data-interactive-card="project"
-        className={buildCls(styles.card, isFlipped && styles.flipped)}
+        className={cardCls}
+        role="button"
+        tabIndex={0}
         aria-label={a11y(`project.card${a11yCardSuffix}`, { title: project.title || '' })}
         onClick={handleCardClick}
+        onKeyDown={handleCardKeyDown}
         onContextMenu={(e) => isMobile && e.preventDefault()}
       >
       <div className={styles.cardInner}>
@@ -91,12 +149,13 @@ export function ProjectCard({ project, showAll = false }) {
             ) : null}
             {showThumbnail ? (
               project.coverImage.toLowerCase().endsWith('.svg') ? (
-                <Icon
-                  src={project.coverImage}
-                  className={styles.thumbnail}
-                  onError={() => setThumbnailError(true)}
-                  alt={a11y('project.thumbnail', { title: project.title || 'project' })}
-                />
+                <span className={styles.thumbnail}>
+                  <SvgIcon
+                    src={project.coverImage}
+                    onError={() => setThumbnailError(true)}
+                    alt={a11y('project.thumbnail', { title: project.title || 'project' })}
+                  />
+                </span>
               ) : (
                 <img
                   src={project.coverImage}
@@ -117,7 +176,7 @@ export function ProjectCard({ project, showAll = false }) {
               <h3>{titleTerms.length ? highlightText(project.title || '', titleTerms, styles.highlight) : (project.title || '')}</h3>
               <span>{project.yearLabel}</span>
             </div>
-            <div className={buildCls(styles.tagsWrap, styles.frontTagsWrap)}>
+            <div className={tagsWrapCls}>
               <div className={styles.tagsScroll}>
                 {effectiveTags.tags.slice(0, maxVisibleTags).map((tag) => (
                   <button
@@ -137,40 +196,7 @@ export function ProjectCard({ project, showAll = false }) {
               </div>
             </div>
             <div className={styles.languageLine} ref={lineRef}>
-              {(() => {
-                const visible = visibleStacks;
-                const twoRows = useEvenSplit && visible.length >= 2;
-                const row1 = twoRows ? visible.slice(0, Math.floor(visible.length / 2)) : visible;
-                const row2 = twoRows ? visible.slice(Math.floor(visible.length / 2)) : [];
-                const renderChip = (stack) => (
-                  <button
-                    key={stack}
-                    type="button"
-                    className={buildCls(styles.stackChip, isStackMatchedByQuery(stack, parsedClauses, normalizeStackToken) && styles.stackChipHighlighted)}
-                    onClick={(e) => (e.stopPropagation(), appendShortcutToQuery(`stack:"${stack}"`))}
-                    aria-label={a11y('project.searchByStack', { stack })}
-                  >
-                    {getStackIconName(stack) && (
-                      <Icon name={getStackIconName(stack)} className={styles.stackChipIcon} aria-hidden />
-                    )}
-                    <span className={styles.stackChipText}>{stack}</span>
-                  </button>
-                );
-                if (visible.length === 0) return <span className={styles.languageStacks}>-</span>;
-                if (twoRows) {
-                  return (
-                    <span className={styles.languageStacksTwoRows}>
-                      <span className={styles.languageStacksRow}>{row1.map(renderChip)}</span>
-                      <span className={styles.languageStacksRow}>{row2.map(renderChip)}</span>
-                    </span>
-                  );
-                }
-                return (
-                  <span ref={chipsContainerRef} className={styles.languageStacks}>
-                    {row1.map(renderChip)}
-                  </span>
-                );
-              })()}
+              {stackChipsLine}
             </div>
           </div>
         </div>

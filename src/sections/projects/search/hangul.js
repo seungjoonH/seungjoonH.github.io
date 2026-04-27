@@ -69,11 +69,6 @@ function _isHangeul(c) {
   return isJaeum(c) || isMoeum(c) || isEumjeol(c);
 }
 
-export function isHangeul(str) {
-  if (typeof str !== 'string') return false;
-  return str.split('').every((c) => _isHangeul(c) || c === ' ');
-}
-
 export function hasHangeul(str) {
   if (typeof str !== 'string') return false;
   return str.split('').some((c) => c.length === 1 && _isHangeul(c));
@@ -232,64 +227,6 @@ function moassugiOne(cho, jung, jong) {
   return String.fromCodePoint(code);
 }
 
-function foldCompositeMoeum(s) {
-  let str = s;
-  const keys = Object.keys(IJUNGMOEUM);
-  for (const key of keys) {
-    const list = IJUNGMOEUM[key];
-    for (const moeum of list) {
-      if (!str.includes(moeum)) continue;
-      str = str.replaceAll(moeum, key);
-      break;
-    }
-  }
-  return str;
-}
-
-export function moassugi(str) {
-  if (typeof str !== 'string') return '';
-  str = foldCompositeMoeum(str);
-  const chars = str.split('');
-  const result = [];
-  let buf = [];
-  let sawJaeum = false;
-
-  for (let i = chars.length - 1; i >= 0; i--) {
-    const c = chars[i];
-    buf.unshift(c);
-    if (isJaeum(c)) {
-      sawJaeum = true;
-      continue;
-    }
-    if (sawJaeum && (isMoeum(c) || isEumjeol(c))) {
-      const assembled = assembleBuffer(buf);
-      if (assembled) {
-        result.unshift(assembled);
-        buf = [];
-      }
-      sawJaeum = false;
-    }
-  }
-  if (buf.length) result.unshift(buf.join(''));
-  return result.join('');
-}
-
-function assembleBuffer(buf) {
-  if (buf.length === 0) return '';
-  if (buf.length === 1) return buf[0];
-  if (buf.length >= 2 && isMoeum(buf[0]) && isJaeum(buf[1])) {
-    const cho = buf.length === 3 && isJaeum(buf[2]) ? buf[2] : 'ㅇ';
-    return moassugiOne(cho, buf[0], buf[1]);
-  }
-  if (buf.length === 2 && isJaeum(buf[0]) && isMoeum(buf[1])) {
-    return moassugiOne(buf[0], buf[1], ' ');
-  }
-  if (buf.length === 3 && isJaeum(buf[0]) && isMoeum(buf[1]) && isJaeum(buf[2])) {
-    return moassugiOne(buf[0], buf[1], buf[2]);
-  }
-  return buf.join('');
-}
-
 export function containsHangeul(text, query) {
   if (typeof text !== 'string') text = '';
   if (typeof query !== 'string' || query === '') return true;
@@ -321,18 +258,3 @@ export function tagMatchesQuery(tag, query) {
   }
   return tag.toLowerCase().includes(query.toLowerCase());
 }
-
-export default {
-  puleossugi,
-  puleossugiWithMapping,
-  findPuleossugiMatchRanges,
-  moassugi,
-  jamosToDisplayForTyping,
-  getJamoSequenceForTyping,
-  isHangeul,
-  hasHangeul,
-  isSingleChoseong,
-  containsHangeul,
-  stringContains,
-  tagMatchesQuery,
-};

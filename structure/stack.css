@@ -1,6 +1,7 @@
 .stack-container {
   position: relative;
   width: 100vw;
+  height: var(--stack-height);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8,4 +9,5 @@
 
 .stack-item {
   position: absolute;
+  z-index: var(--stack-item-z-index);
 }

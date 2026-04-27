@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 
 function scrollToProjectSection() {
-  if (typeof document === 'undefined') return;
   const el = document.getElementById('project');
   if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 0);
 }
@@ -42,5 +41,3 @@ export const useProjectSearchStore = create((set) => ({
   },
   dismissShortcutHint: () => set({ shortcutHintDismissed: true }),
 }));
-
-export default useProjectSearchStore;

@@ -13,6 +13,7 @@ import { markZoomHintShownThisSession } from '../../utils/zoomDetection';
 import '../../i18n';
 
 const SCROLL_DURATION_BASE_MS = 2000;
+const NAV_ZOOM_TOOLTIP_ANCHOR_GAP_PX = 8;
 
 function useTooltipPosition(anchorRef, visible) {
   const [position, setPosition] = useState(null);
@@ -21,7 +22,10 @@ function useTooltipPosition(anchorRef, visible) {
     const update = () => {
       if (!anchorRef.current) return;
       const rect = anchorRef.current.getBoundingClientRect();
-      setPosition({ top: rect.bottom + 8, right: window.innerWidth - rect.right });
+      setPosition({
+        top: rect.bottom + NAV_ZOOM_TOOLTIP_ANCHOR_GAP_PX,
+        right: window.innerWidth - rect.right,
+      });
     };
     update();
     window.addEventListener('scroll', update, true);
@@ -54,7 +58,10 @@ export function Nav() {
       className={styles.zoomSettingsTooltip}
       role="status"
       aria-live="polite"
-      style={{ top: tooltipPosition.top, right: tooltipPosition.right }}
+      style={{
+        '--nav-tooltip-top': `${tooltipPosition.top}px`,
+        '--nav-tooltip-right': `${tooltipPosition.right}px`,
+      }}
     >
       <span className={styles.zoomSettingsTooltipArrow} aria-hidden="true" />
       <span className={styles.zoomSettingsTooltipText}>
@@ -71,8 +78,10 @@ export function Nav() {
     </div>
   );
 
+  const navCls = buildCls(styles.navbar);
+
   return (
-    <nav className={buildCls(styles.navbar)}>
+    <nav className={navCls}>
       <div className={styles.navbarInner}>
         <ul className={styles.navLinks}>
           <li>
@@ -92,7 +101,9 @@ export function Nav() {
           </li>
           <li className={styles.navItemPano}>
             <Link to="main" smooth={true} duration={duration}>
-              <Icon name="pano" className={styles.mainImg} aria-hidden="true" />
+              <span className={styles.mainImg} aria-hidden="true">
+                <Icon name="pano" />
+              </span>
             </Link>
           </li>
           <li>

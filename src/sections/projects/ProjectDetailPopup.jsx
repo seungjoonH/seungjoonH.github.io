@@ -90,10 +90,10 @@ export function ProjectDetailPopup({ project, onClose, returnFocusRef }) {
         aria-hidden="true"
       />
       <div className={popupStyles.panelWrap}>
-        <div
+        <dialog
           ref={panelRef}
+          open
           className={popupStyles.panel}
-          role="dialog"
           aria-modal="true"
           aria-labelledby="project-detail-title"
           aria-label={a11y('project.detailDialog', { title: project.title })}
@@ -116,7 +116,7 @@ export function ProjectDetailPopup({ project, onClose, returnFocusRef }) {
               <ProjectDetailContent project={project} variant="popup" />
             </div>
           </div>
-        </div>
+        </dialog>
       </div>
     </div>
   );

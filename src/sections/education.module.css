@@ -38,7 +38,7 @@
     padding: 0 28px var(--section-gap, 120px);
   }
 
-  .educationTitle {
+  .educationTitle :global(h2) {
     margin-left: 0;
   }
 

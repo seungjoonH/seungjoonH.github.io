@@ -75,6 +75,8 @@
 
 .zoomSettingsTooltip {
   position: fixed;
+  top: var(--nav-tooltip-top, 0);
+  right: var(--nav-tooltip-right, 0);
   width: max-content;
   max-width: min(400px, 85vw);
   display: flex;
@@ -182,6 +184,11 @@
 }
 
 .mainImg {
+  display: block;
+  line-height: 0;
+}
+
+.mainImg [role='img'] {
   height: 25px;
   width: auto;
   display: block;

@@ -12,10 +12,10 @@ export function useResponsive() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  let index = 0;
-  for (let i = 0; i < widths.length; i++) {
-    if (width >= widths[i]) index = i + 1;
-  }
+  const index = widths.reduce(
+    (matchedIndex, minWidth, currentIndex) => (width >= minWidth ? currentIndex + 1 : matchedIndex),
+    0
+  );
   const type = screenSizeTypes[index] ?? screenSizeTypes[0];
   const projectsGridBounds = projectsGrid[type] ?? projectsGrid[screenSizeTypes[0]];
   const isMobile = type === 'mobile';
@@ -33,5 +33,3 @@ export function useResponsive() {
     a11yCardSuffix: isMobile ? 'Mobile' : 'Desktop',
   };
 }
-
-export default useResponsive;

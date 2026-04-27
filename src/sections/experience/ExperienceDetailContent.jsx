@@ -1,5 +1,5 @@
 import { useA11y } from '../../hooks/useA11y';
-import { Icon } from '@components/shared/icon/Icon';
+import { Icon, SvgIcon } from '@components/shared/icon/Icon';
 import { renderRichText, renderLinkTitle } from '@sections/projects/utils/richText';
 import { getLinkTypeLabel } from '@sections/projects/utils/linkLabels';
 import { formatExperienceDateFull } from '../../utils/dateFormat';
@@ -18,6 +18,8 @@ export function ExperienceDetailContent({ experience }) {
     window.open(href, '_blank', 'noopener,noreferrer');
   };
 
+  const backDividerCls = buildCls(cardStyles.backDivider, topLinks.length === 0 && cardStyles.backDividerTight);
+
   return (
     <>
       <div className={cardStyles.popupHead}>
@@ -29,7 +31,7 @@ export function ExperienceDetailContent({ experience }) {
             <div className={cardStyles.backTitleRow}>
               {imageUrl && (
                 <span className={cardStyles.experienceTitleIcon}>
-                  <Icon
+                  <SvgIcon
                     src={imageUrl}
                     alt={a11y('experience.detailLogo', { company: experience.company })}
                   />
@@ -72,7 +74,7 @@ export function ExperienceDetailContent({ experience }) {
           {formatExperienceDateFull(experience.startDate)} ~ {formatExperienceDateFull(experience.endDate)}
         </div>
       </div>
-      <hr className={buildCls(cardStyles.backDivider, topLinks.length === 0 && cardStyles.backDividerTight)} />
+      <hr className={backDividerCls} />
       <div className={cardStyles.popupBody}>
         <div className={cardStyles.sections}>
           {sections.map((section) => (

@@ -42,10 +42,12 @@
 .panel {
   --panel-padding-x: clamp(1.5rem, 2vw, 2rem);
   position: relative;
+  margin: 0;
   width: 100%;
   max-width: 32rem;
   height: min(85vh, 45rem);
   max-height: min(85vh, 45rem);
+  max-inline-size: none;
   box-sizing: border-box;
   overflow: visible;
   border: 1px solid var(--project-popup-border, rgba(255, 255, 255, 0.12));

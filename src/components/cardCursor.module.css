@@ -1,5 +1,7 @@
 .ring {
   position: fixed;
+  left: var(--card-cursor-x, 0);
+  top: var(--card-cursor-y, 0);
   width: 40px;
   height: 40px;
   margin-left: -20px;

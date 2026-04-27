@@ -33,6 +33,11 @@
   --intro-popover-duration: calc(0.26s / var(--speed-scale, 1));
   --intro-popover-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   position: fixed;
+  top: var(--intro-popover-top, 0);
+  left: var(--intro-popover-left, 0);
+  padding: 0;
+  margin: 0;
+  max-inline-size: none;
   z-index: 2500;
   min-width: min(240px, 92vw);
   max-width: min(420px, 94vw);
@@ -52,6 +57,7 @@
   backdrop-filter: blur(20px);
   opacity: 0;
   pointer-events: none;
+  transform: translateY(-100%);
   transition: opacity var(--intro-popover-duration) var(--intro-popover-ease);
 }
 

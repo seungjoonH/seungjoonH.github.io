@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { Header } from '@components/layout/Header';
 import { Icon } from '@components/shared/icon/Icon';
 import { useDocs } from '../hooks/useDocs';
@@ -8,17 +8,22 @@ import styles from './docs.module.css';
 import { buildCls } from '../utils/cssUtil';
 import { useA11y } from '../hooks/useA11y';
 
-const CATEGORY_KEYS = ['tistory', 'notion', 'githubWiki'];
-const CATEGORY_LABELS = {
-  tistory: 'Tistory',
-  notion: 'Notion',
-  githubWiki: 'Github Wiki',
+const CATEGORIES = {
+  notion:     { label: 'Notion',      icon: 'notion'   },
+  githubWiki: { label: 'Github Wiki', icon: 'github'   },
+  tistory:    { label: 'Tistory',     icon: 'tistory'  },
 };
-const PLATFORM_ICON = {
-  tistory: 'tistory',
-  notion: 'notion',
-  githubWiki: 'github',
-};
+
+const HEADER_FADE_START  = 0.82;
+const HEADER_FADE_END    = 0.50;
+const CONTENT_FADE_START = 0.85;
+const CONTENT_FADE_END   = 0.52;
+
+function calcOpacity(rectTop, windowHeight, fadeStart, fadeEnd) {
+  if (rectTop <= windowHeight * fadeEnd) return 1;
+  if (rectTop >= windowHeight * fadeStart) return 0;
+  return (windowHeight * fadeStart - rectTop) / (windowHeight * (fadeStart - fadeEnd));
+}
 
 export function Docs() {
   const a11y = useA11y();
@@ -31,42 +36,40 @@ export function Docs() {
   const [contentOpacity, setContentOpacity] = useState(0);
   const [expanded, setExpanded] = useState(() => ({ notion: true, githubWiki: false, tistory: false }));
 
-  const categories = useMemo(() => {
-    return CATEGORY_KEYS.map((key) => ({
-      key,
-      label: CATEGORY_LABELS[key],
-      platformIcon: PLATFORM_ICON[key],
-      items: Array.isArray(docs[key]) ? docs[key] : [],
-    })).filter((cat) => cat.items.length > 0);
-  }, [docs]);
+  const categories = useMemo(
+    () => Object.entries(CATEGORIES)
+      .map(([key, { label, icon }]) => ({
+        key,
+        label,
+        platformIcon: icon,
+        items: Array.isArray(docs[key]) ? docs[key] : [],
+      }))
+      .filter((cat) => cat.items.length > 0),
+    [docs]
+  );
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleHeaderScroll = () => {
       const windowHeight = window.innerHeight;
-      const sectionEl = sectionRef.current;
-      if (sectionEl) {
-        const rect = sectionEl.getBoundingClientRect();
-        const startFade = windowHeight * 0.82;
-        const endFade = windowHeight * 0.5;
-        let opacity = 0;
-        if (rect.top <= endFade) opacity = 1;
-        else if (rect.top < startFade) opacity = (startFade - rect.top) / (startFade - endFade);
-        setHeaderOpacity(opacity);
-      }
-      const contentEl = contentRef.current;
-      if (contentEl) {
-        const rect = contentEl.getBoundingClientRect();
-        const startFade = windowHeight * 0.85;
-        const endFade = windowHeight * 0.52;
-        let opacity = 0;
-        if (rect.top <= endFade) opacity = 1;
-        else if (rect.top < startFade) opacity = (startFade - rect.top) / (startFade - endFade);
-        setContentOpacity(opacity);
-      }
+      if (!sectionRef.current) return;
+      const { top } = sectionRef.current.getBoundingClientRect();
+      setHeaderOpacity(calcOpacity(top, windowHeight, HEADER_FADE_START, HEADER_FADE_END));
     };
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleHeaderScroll);
+    handleHeaderScroll();
+    return () => window.removeEventListener('scroll', handleHeaderScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleContentScroll = () => {
+      const windowHeight = window.innerHeight;
+      if (!contentRef.current) return;
+      const { top } = contentRef.current.getBoundingClientRect();
+      setContentOpacity(calcOpacity(top, windowHeight, CONTENT_FADE_START, CONTENT_FADE_END));
+    };
+    window.addEventListener('scroll', handleContentScroll);
+    handleContentScroll();
+    return () => window.removeEventListener('scroll', handleContentScroll);
   }, []);
 
   const toggle = (key) => setExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -76,26 +79,36 @@ export function Docs() {
     e.stopPropagation();
     const src = doc.source;
     if (!src) return;
-    if (src.type === 'experience' && src.experienceId) {
-      setExperienceIdToFocus(src.experienceId);
-      const el = document.getElementById('experience');
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    else if (src.type === 'project' && src.searchQuery) {
-      setQueryFromShortcut(src.searchQuery);
-      const el = document.getElementById('project');
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    switch (src.type) {
+      case 'experience':
+        if (src.experienceId) {
+          setExperienceIdToFocus(src.experienceId);
+          document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        break;
+      case 'project':
+        if (src.searchQuery) {
+          setQueryFromShortcut(src.searchQuery);
+          document.getElementById('project')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        break;
+      default:
+        break;
     }
   };
+
+  const docsHeaderCls = buildCls(styles.docsHeaderBlock, headerOpacity === 0 && styles.docsHeaderBlockHidden);
 
   return (
     <div className={styles.docsContainer} ref={sectionRef}>
       <div
-        className={buildCls(styles.docsHeaderBlock, headerOpacity === 0 && styles.docsHeaderBlockHidden)}
-        style={{ opacity: headerOpacity, transition: 'opacity 0.35s ease-in-out' }}
+        className={docsHeaderCls}
+        style={{ '--header-opacity': headerOpacity }}
       >
         <div className={styles.docsHeaderWrap}>
-          <Header text="Docs" align="center" className={styles.docsTitle} />
+          <div className={styles.docsTitle}>
+            <Header text="Docs" align="center" />
+          </div>
         </div>
       </div>
 
@@ -103,10 +116,12 @@ export function Docs() {
         ref={contentRef}
         className={styles.docsNav}
         aria-label={a11y('docs.nav')}
-        style={{ opacity: contentOpacity, transform: `translateY(${(1 - contentOpacity) * 18}px)`, transition: 'opacity 0.35s ease-in-out, transform 0.35s ease-in-out' }}
+        style={{ '--content-opacity': contentOpacity }}
       >
         {categories.map(({ key, label, platformIcon, items }) => {
           const isOpen = expanded[key];
+          const chevronCls = buildCls(styles.chevron, isOpen && styles.chevronOpen);
+          const docListCls = buildCls(styles.docListWrap, isOpen && styles.docListWrapOpen);
           return (
             <div key={key} className={styles.folderBlock}>
               <button
@@ -116,21 +131,26 @@ export function Docs() {
                 aria-expanded={isOpen}
                 aria-controls={`docs-list-${key}`}
               >
-                <span className={buildCls(styles.chevron, isOpen && styles.chevronOpen)} aria-hidden="true" />
-                <Icon name={isOpen ? 'dir-open' : 'dir-close'} className={styles.folderIcon} aria-hidden="true" />
-                <Icon name={platformIcon} className={styles.platformIcon} aria-hidden="true" />
+                <span className={chevronCls} aria-hidden="true" />
+                <span className={styles.folderIcon} aria-hidden="true">
+                  <Icon name={isOpen ? 'dir-open' : 'dir-close'} />
+                </span>
+                <span className={styles.platformIcon} aria-hidden="true">
+                  <Icon name={platformIcon} />
+                </span>
                 <span className={styles.folderLabel}>{label}</span>
               </button>
-              <div
+              <section
                 id={`docs-list-${key}`}
-                className={buildCls(styles.docListWrap, isOpen && styles.docListWrapOpen)}
-                role="region"
+                className={docListCls}
                 aria-label={a11y('docs.folderRegion', { label })}
               >
                 <div className={styles.docListTrack}>
                   {items.map((doc) => (
                     <div key={doc.id} className={styles.docRow}>
-                      <Icon name="document" className={styles.docIcon} aria-hidden="true" />
+                      <span className={styles.docIcon} aria-hidden="true">
+                        <Icon name="document" />
+                      </span>
                       {doc.source && doc.chipLabel && (
                         <button
                           type="button"
@@ -152,13 +172,15 @@ export function Docs() {
                       >
                         <span className={styles.docTitle}>{doc.title}</span>
                         <div className={styles.docRowIconWrapper}>
-                          <Icon name="angle-right" className={styles.docRowArrow} aria-hidden="true" />
+                          <span className={styles.docRowArrow} aria-hidden="true">
+                            <Icon name="angle-right" />
+                          </span>
                         </div>
                       </a>
                     </div>
                   ))}
                 </div>
-              </div>
+              </section>
             </div>
           );
         })}

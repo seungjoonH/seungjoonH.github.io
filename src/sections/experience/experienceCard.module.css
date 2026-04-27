@@ -61,6 +61,13 @@
   margin-bottom: 4px;
 }
 
+.placeholderGraphic {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .experienceThumbWrap {
   position: relative;
   display: flex;
@@ -92,6 +99,13 @@
 }
 
 .experienceThumbWrap .experienceThumbSvg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  line-height: 0;
+}
+
+.experienceThumbWrap .experienceThumbSvg [role='img'] {
   width: 100%;
   height: 100%;
   display: block;

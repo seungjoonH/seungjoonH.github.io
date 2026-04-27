@@ -1,6 +1,6 @@
 import React from 'react';
 import { normalizeStackToken } from './stackMapping.js';
-import { isSingleChoseong, hasHangeul, findPuleossugiMatchRanges, containsHangeul, tagMatchesQuery } from './hangul.js';
+import { isSingleChoseong, hasHangeul, findPuleossugiMatchRanges, tagMatchesQuery } from './hangul.js';
 
 export function getHighlightTerms(parsedClauses) {
   const titleTerms = [];
@@ -10,20 +10,30 @@ export function getHighlightTerms(parsedClauses) {
 
   for (const conditions of parsedClauses) {
     for (const c of conditions) {
-      if (c.type === 'sort') continue;
-      if (c.type === 'title' && c.value && !isSingleChoseong(String(c.value))) titleTerms.push(String(c.value));
-      if (c.type === 'desc' && c.value && !isSingleChoseong(String(c.value))) descTerms.push(String(c.value));
-      if (c.type === 'fullText' && c.value && !isSingleChoseong(String(c.value))) {
-        const v = String(c.value);
-        titleTerms.push(v);
-        descTerms.push(v);
-        stackTerms.push(normalizeStackToken(v));
-      }
-      if (c.type === 'stack') {
-        const v = c.value;
-        if (typeof v === 'string') stackTerms.push(normalizeStackToken(v));
-        else if (v.and) v.and.forEach((t) => stackTerms.push(normalizeStackToken(t)));
-        else if (v.or) v.or.forEach((t) => stackTerms.push(normalizeStackToken(t)));
+      switch (c.type) {
+        case 'sort': continue;
+        case 'title':
+          if (c.value && !isSingleChoseong(String(c.value))) titleTerms.push(String(c.value));
+          break;
+        case 'desc':
+          if (c.value && !isSingleChoseong(String(c.value))) descTerms.push(String(c.value));
+          break;
+        case 'fullText': {
+          if (!c.value || isSingleChoseong(String(c.value))) break;
+          const v = String(c.value);
+          titleTerms.push(v);
+          descTerms.push(v);
+          stackTerms.push(normalizeStackToken(v));
+          break;
+        }
+        case 'stack': {
+          const v = c.value;
+          if (typeof v === 'string') stackTerms.push(normalizeStackToken(v));
+          else if (v.and) v.and.forEach((t) => stackTerms.push(normalizeStackToken(t)));
+          else if (v.or) v.or.forEach((t) => stackTerms.push(normalizeStackToken(t)));
+          break;
+        }
+        default: break;
       }
     }
   }
@@ -58,24 +68,32 @@ export function getTagsToHighlight(tags, parsedClauses) {
   for (const tag of tags) {
     const tagStr = String(tag);
     for (const conditions of parsedClauses) {
-      for (const c of conditions) {
-        if (c.type === 'tag' && c.value) {
-          const v = String(c.value);
-          if (c.exact && v.toLowerCase() === tagStr.toLowerCase()) {
-            out.push(tagStr);
+      condLoop: for (const c of conditions) {
+        switch (c.type) {
+          case 'tag':
+            if (c.value) {
+              const v = String(c.value);
+              if (c.exact && v.toLowerCase() === tagStr.toLowerCase()) {
+                out.push(tagStr);
+                break condLoop;
+              }
+              if (!c.exact && tagMatchesQuery(tagStr, v)) {
+                out.push(tagStr);
+                break condLoop;
+              }
+            }
             break;
-          }
-          if (!c.exact && tagMatchesQuery(tagStr, v)) {
-            out.push(tagStr);
+          case 'fullText':
+            if (c.value && !isSingleChoseong(String(c.value))) {
+              const v = String(c.value);
+              if (hasHangeul(v) ? tagMatchesQuery(tagStr, v) : tagStr.toLowerCase().includes(v.toLowerCase())) {
+                out.push(tagStr);
+                break condLoop;
+              }
+            }
             break;
-          }
-        }
-        if (c.type === 'fullText' && c.value && !isSingleChoseong(String(c.value))) {
-          const v = String(c.value);
-          if (hasHangeul(v) ? tagMatchesQuery(tagStr, v) : tagStr.toLowerCase().includes(v.toLowerCase())) {
-            out.push(tagStr);
+          default:
             break;
-          }
         }
       }
     }
@@ -149,20 +167,6 @@ function getHighlightRanges(text, terms) {
     ranges.push(...findPuleossugiMatchRanges(text, term));
   }
   return mergeRanges(ranges);
-}
-
-export function highlightStackText(text, terms, markClassName, normalizeStack) {
-  if (!text || typeof text !== 'string') return [text];
-  const safe = terms.filter((t) => t && String(t).length > 0);
-  if (safe.length === 0) return [text];
-
-  const norm = (normalizeStack && typeof normalizeStack === 'function' ? normalizeStack(text) : text).toLowerCase();
-  for (const term of safe) {
-    if (String(term).toLowerCase() !== norm) continue;
-    return [React.createElement('mark', { key: 'stack', className: markClassName }, text)];
-  }
-
-  return highlightText(text, terms, markClassName);
 }
 
 export function highlightText(text, terms, markClassName) {

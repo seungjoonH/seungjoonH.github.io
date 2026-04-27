@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Header } from '@components/layout/Header';
 import { ProjectPano } from '@sections/projects/ProjectPano';
 import { ProjectCard } from '@sections/projects/ProjectCard';
@@ -27,6 +27,18 @@ import { useA11y } from '../hooks/useA11y';
 const MIN_CARD_WIDTH = 300;
 const BASE_GAP = 12;
 
+const HEADER_FADE_START_RATIO = 0.82;
+const HEADER_FADE_END_RATIO   = 0.50;
+const ROW_FADE_START_RATIO    = 0.85;
+const ROW_FADE_END_RATIO      = 0.52;
+const ROW_TRANSLATE_PX        = 18;
+const ROW_GAP_BASE_COLUMNS    = 6;
+const ROW_GAP_SCALE           = 6;
+const ROW_GAP_MIN_PX          = 20;
+const FONT_SCALE_MIN          = 0.82;
+const FONT_SCALE_MAX          = 0.98;
+const FONT_SCALE_DIVISOR      = 3.85;
+
 function labelForSortMode(mode, t) {
   if (mode == null || mode === 'recent') return t('project.sortOrderRecent');
   if (mode === 'oldest') return t('project.sortOrderOldest');
@@ -36,7 +48,7 @@ function labelForSortMode(mode, t) {
 export function Projects() {
   const { t } = useTranslation();
   const a11y = useA11y();
-  const { type: breakpointType, projectsGridBounds: columnBounds, isMobile } = useResponsive();
+  const { projectsGridBounds: columnBounds, isMobile } = useResponsive();
   const language = useConfigStore((s) => s.language);
   const rawQuery = useProjectSearchStore((s) => s.rawQuery);
   const setFlippedProjectId = useProjectCardFlipStore((s) => s.setFlippedProjectId);
@@ -81,10 +93,7 @@ export function Projects() {
     return parseQuery(q, normalizeStackToken);
   }, [rawQuery]);
 
-  const { filterClauses, sortMode } = useMemo(
-    () => stripSortFromParsedClauses(searchClauses),
-    [searchClauses]
-  );
+  const { filterClauses, sortMode } = stripSortFromParsedClauses(searchClauses);
 
   const visibleProjects = useMemo(() => {
     let list;
@@ -94,17 +103,14 @@ export function Projects() {
     return list;
   }, [projects, filterClauses, sortMode]);
 
-  const showValue = useMemo(() => getShowValue(filterClauses), [filterClauses]);
+  const showValue = getShowValue(filterClauses);
   const showHiddenBadge = showValue === 'all' || showValue === 'hidden';
 
-  const parsedSortMode = useMemo(() => getSortModeFromRawQuery(rawQuery), [rawQuery]);
+  const parsedSortMode = getSortModeFromRawQuery(rawQuery);
   const sortIconName =
     parsedSortMode === 'oldest' ? 'sort-oldest' : parsedSortMode === 'status' ? 'sort-status' : 'sort-recent';
-  const sortCurrentLabel = useMemo(() => labelForSortMode(parsedSortMode, t), [parsedSortMode, t]);
-  const sortNextLabel = useMemo(() => {
-    const next = nextSortModeAfterClick(parsedSortMode);
-    return labelForSortMode(next, t);
-  }, [parsedSortMode, t]);
+  const sortCurrentLabel = labelForSortMode(parsedSortMode, t);
+  const sortNextLabel = labelForSortMode(nextSortModeAfterClick(parsedSortMode), t);
   const sortUsesNonDefault = parsedSortMode === 'oldest' || parsedSortMode === 'status';
 
   const rows = useMemo(() => {
@@ -167,54 +173,53 @@ export function Projects() {
   }, [effectiveBounds]);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleProjectsHeaderScroll = () => {
       const windowHeight = window.innerHeight;
       const sectionEl = sectionRef.current;
-      if (sectionEl) {
-        const rect = sectionEl.getBoundingClientRect();
-        const startFade = windowHeight * 0.82;
-        const endFade = windowHeight * 0.5;
-        let opacity = 0;
-        if (rect.top <= endFade) opacity = 1;
-        else if (rect.top < startFade) {
-          opacity = (startFade - rect.top) / (startFade - endFade);
-        }
-        setHeaderOpacity(opacity);
-      }
+      if (!sectionEl) return;
+      const { top } = sectionEl.getBoundingClientRect();
+      const startFade = windowHeight * HEADER_FADE_START_RATIO;
+      const endFade = windowHeight * HEADER_FADE_END_RATIO;
+      let opacity = 0;
+      if (top <= endFade) opacity = 1;
+      else if (top < startFade) opacity = (startFade - top) / (startFade - endFade);
+      setHeaderOpacity(opacity);
+    };
+
+    window.addEventListener('scroll', handleProjectsHeaderScroll);
+    handleProjectsHeaderScroll();
+    return () => window.removeEventListener('scroll', handleProjectsHeaderScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleProjectRowsScroll = () => {
+      const windowHeight = window.innerHeight;
       rowRefs.current.forEach((row) => {
         if (!row) return;
-        const rect = row.getBoundingClientRect();
-        const startFade = windowHeight * 0.85;
-        const endFade = windowHeight * 0.52;
-
+        const { top } = row.getBoundingClientRect();
+        const startFade = windowHeight * ROW_FADE_START_RATIO;
+        const endFade = windowHeight * ROW_FADE_END_RATIO;
         let opacity = 0;
-        let translateY = 18;
-        if (rect.top <= endFade) {
-          opacity = 1;
-          translateY = 0;
-        }
-        else if (rect.top >= startFade) {
-          opacity = 0;
-          translateY = 18;
-        }
+        let translateY = ROW_TRANSLATE_PX;
+        if (top <= endFade) { opacity = 1; translateY = 0; }
+        else if (top >= startFade) { opacity = 0; translateY = ROW_TRANSLATE_PX; }
         else {
-          const t = (startFade - rect.top) / (startFade - endFade);
+          const t = (startFade - top) / (startFade - endFade);
           opacity = t;
-          translateY = (1 - t) * 18;
+          translateY = (1 - t) * ROW_TRANSLATE_PX;
         }
         row.style.opacity = `${opacity}`;
         row.style.transform = `translateY(${translateY}px)`;
       });
     };
 
-    window.addEventListener('scroll', handleScroll);
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleProjectRowsScroll);
+    handleProjectRowsScroll();
+    return () => window.removeEventListener('scroll', handleProjectRowsScroll);
   }, [rows]);
 
-  const onChangeColumn = (next) => {
+  const handleChangeColumn = (next) =>
     setColumnCount(Math.min(effectiveBounds.max, Math.max(effectiveBounds.min, next)));
-  };
 
   useEffect(() => {
     if (!isMobile) return;
@@ -242,30 +247,30 @@ export function Projects() {
     setQuery(applySortModeToRawQuery(rawQuery, nextMode));
   };
 
+  const projectsHeaderCls = buildCls(styles.projectsHeaderBlock, headerOpacity === 0 && styles.projectsHeaderBlockHidden);
+  const showHiddenBtnCls = buildCls(showHiddenBadge && styles.active);
+  const sortBtnCls = buildCls(sortUsesNonDefault && styles.active);
+
   return (
     <div className={styles.projectsContainer} ref={sectionRef}>
       <div
-        className={buildCls(styles.projectsHeaderBlock, headerOpacity === 0 && styles.projectsHeaderBlockHidden)}
-        style={{
-          opacity: headerOpacity,
-          transition: 'opacity 0.35s ease-in-out',
-        }}
+        className={projectsHeaderCls}
+        style={{ '--header-opacity': headerOpacity }}
       >
         <div className={styles.projectsHeaderWrap}>
-          <Header text="Projects" align="center" className={styles.projectsHeaderTitle} />
+          <div className={styles.projectsHeaderTitle}>
+            <Header text="Projects" align="center" />
+          </div>
         </div>
         <div className={styles.panoLineFullWidth} aria-hidden="true">
           <ProjectPano />
         </div>
         <div className={styles.controls}>
-        <div
-          className={styles.visibilityToggle}
-          role="group"
-          aria-label={a11y('project.visibilityToolbar')}
-        >
+        <fieldset className={buildCls(styles.visibilityToggle, styles.projectControlsFieldset)}>
+          <legend className={styles.projectControlsLegend}>{a11y('project.visibilityToolbar')}</legend>
           <button
             type="button"
-            className={buildCls(showHiddenBadge && styles.active)}
+            className={showHiddenBtnCls}
             onClick={handleToggleShowHidden}
             aria-label={a11y('project.showHidden')}
             aria-pressed={showHiddenBadge}
@@ -275,19 +280,20 @@ export function Projects() {
           </button>
           <button
             type="button"
-            className={buildCls(sortUsesNonDefault && styles.active)}
+            className={sortBtnCls}
             onClick={handleSortCycle}
             aria-label={a11y('project.sortCycle', { current: sortCurrentLabel, next: sortNextLabel })}
             title={t('project.sortButtonTitle', { current: sortCurrentLabel, next: sortNextLabel })}
           >
             <Icon name={sortIconName} size="md" aria-hidden />
           </button>
-        </div>
+        </fieldset>
         <ProjectSearchBar />
-        <div className={styles.sliderWrap} role="group" aria-label={a11y('project.gridSlider')}>
+        <fieldset className={buildCls(styles.sliderWrap, styles.projectControlsFieldset)}>
+          <legend className={styles.projectControlsLegend}>{a11y('project.gridSlider')}</legend>
           <button
             type="button"
-            onClick={() => onChangeColumn(columnCount - 1)}
+            onClick={() => handleChangeColumn(columnCount - 1)}
             aria-label={a11y('project.gridDecrease')}
             disabled={columnCount <= effectiveBounds.min}
           >
@@ -298,7 +304,7 @@ export function Projects() {
             min={effectiveBounds.min}
             max={effectiveBounds.max}
             value={columnCount}
-            onChange={(e) => onChangeColumn(Number(e.target.value))}
+            onChange={(e) => handleChangeColumn(Number(e.target.value))}
             aria-valuemin={effectiveBounds.min}
             aria-valuemax={effectiveBounds.max}
             aria-valuenow={columnCount}
@@ -307,13 +313,13 @@ export function Projects() {
           />
           <button
             type="button"
-            onClick={() => onChangeColumn(columnCount + 1)}
+            onClick={() => handleChangeColumn(columnCount + 1)}
             aria-label={a11y('project.gridIncrease')}
             disabled={columnCount >= effectiveBounds.max}
           >
             <span aria-hidden="true">+</span>
           </button>
-        </div>
+        </fieldset>
       </div>
       </div>
 
@@ -329,8 +335,8 @@ export function Projects() {
             className={styles.row}
             style={{
               '--project-columns': columnCount,
-              '--project-gap': `${Math.max(20, (6 - columnCount) * 6)}px`,
-              '--card-font-scale': Math.max(0.82, Math.min(0.98, 3.85 / columnCount)),
+              '--project-gap': `${Math.max(ROW_GAP_MIN_PX, (ROW_GAP_BASE_COLUMNS - columnCount) * ROW_GAP_SCALE)}px`,
+              '--card-font-scale': Math.max(FONT_SCALE_MIN, Math.min(FONT_SCALE_MAX, FONT_SCALE_DIVISOR / columnCount)),
             }}
           >
             {row.map((project, colIndex) => (

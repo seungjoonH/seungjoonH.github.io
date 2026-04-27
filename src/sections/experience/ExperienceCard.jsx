@@ -1,19 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useA11y } from '../../hooks/useA11y';
-import { Icon } from '@components/shared/icon/Icon';
+import { Icon, SvgIcon } from '@components/shared/icon/Icon';
 import { buildCls } from '../../utils/cssUtil';
 import { useProjectSearchStore } from '../../stores/projectSearchStore';
 import { formatExperienceDateShort } from '../../utils/dateFormat';
 import styles from './experienceCard.module.css';
 
+const EXPERIENCE_PLACEHOLDER_SRC = '/assets/images/experience-placeholder.svg';
+
 const DefaultImage = () => (
   <div className={styles.placeholderImage} aria-hidden="true">
-    <svg viewBox="0 0 48 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="4" y="6" width="40" height="14" rx="2" stroke="currentColor" strokeWidth="1.2" fill="none" />
-      <path d="M14 6V4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2" stroke="currentColor" strokeWidth="1.2" fill="none" />
-      <path d="M8 12h8M8 16h12" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
-    </svg>
+    <img src={EXPERIENCE_PLACEHOLDER_SRC} alt="" className={styles.placeholderGraphic} />
   </div>
 );
 
@@ -43,27 +41,32 @@ export function ExperienceCard({ experience, mobileHovered = false }) {
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  const cardCls = buildCls(styles.card, mobileHovered && styles.mobileHovered);
+  const thumbWrapCls = buildCls(styles.experienceThumbWrap, hoveredReady && styles.hasHovered);
+
   return (
-    <div className={buildCls(styles.card, mobileHovered && styles.mobileHovered)}>
+    <div className={cardCls}>
       <div className="columnContainer">
         {showSvg ? (
-          <div className={buildCls(styles.experienceThumbWrap, hoveredReady && styles.hasHovered)}>
+          <div className={thumbWrapCls}>
             <span className={styles.experienceThumbDefault}>
-              <Icon
-                src={imageUrl}
-                className={styles.experienceThumbSvg}
-                onError={() => setImageError(true)}
-                alt={a11y('experience.logo', { company: experience.company })}
-              />
+              <span className={styles.experienceThumbSvg}>
+                <SvgIcon
+                  src={imageUrl}
+                  onError={() => setImageError(true)}
+                  alt={a11y('experience.logo', { company: experience.company })}
+                />
+              </span>
             </span>
             {hoveredUrl && (
               <span className={styles.experienceThumbHovered} aria-hidden="true">
-                <Icon
-                  src={hoveredUrl}
-                  className={styles.experienceThumbSvg}
-                  onLoad={() => setHoveredReady(true)}
-                  alt=""
-                />
+                <span className={styles.experienceThumbSvg}>
+                  <SvgIcon
+                    src={hoveredUrl}
+                    onLoad={() => setHoveredReady(true)}
+                    alt=""
+                  />
+                </span>
               </span>
             )}
           </div>
@@ -99,7 +102,9 @@ export function ExperienceCard({ experience, mobileHovered = false }) {
           >
             <span className={styles.shortcutText}>{t('experience.toProjectLink')}</span>
             <div className={styles.iconWrapper}>
-              <Icon name="angle-right" className={styles.shortcutIcon} aria-hidden="true" />
+              <span className={styles.shortcutIcon} aria-hidden="true">
+                <Icon name="angle-right" />
+              </span>
             </div>
           </a>
         )}

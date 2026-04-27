@@ -18,7 +18,7 @@ const experiences = [
             'Conducted **code refactoring and performance optimization**'
           ],
           links: [
-            { type: 'appstore', title: 'Fitween App Store', href: 'https://apps.apple.com/kr/app/fitween/id1671114122?l=ko-KR' },
+            { type: 'appstore', title: 'AppStore', href: 'https://apps.apple.com/kr/app/fitween/id1671114122?l=ko-KR' },
             { type: 'notion', title: 'Fitween Customer Support', href: 'https://fitween.notion.site/Fitween-8bef341ef8904eed894c79b259903675?pvs=74' },
             { type: 'notion', title: 'Fitween Release Notes', href: 'https://fitween.notion.site/aa14492c494943ad803d15d30cb0b34b' },
           ],

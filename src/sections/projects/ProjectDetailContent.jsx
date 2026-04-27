@@ -23,6 +23,34 @@ import { useStackChipsOverflow } from './useStackChipsOverflow';
 import { StatusChip } from './StatusChip';
 import { PROJECT_STATUS } from './status/projectStatus';
 
+const LINK_SURFACE_BY_TYPE = Object.freeze({
+  github: 'titleIcon',
+  appstore: 'deployText',
+  deploy: 'deployText',
+  pubdev: 'deployText',
+  npm: 'deployText',
+  notion: 'deployText',
+});
+
+const DEPLOY_LABEL_RESOLVER_BY_TYPE = Object.freeze({
+  appstore: ({ t, linkType }) => t('project.deploy.appstore', { defaultValue: deployLabelByType(linkType) }) || '',
+  deploy: ({ t, linkType }) => t('project.deploy.deploy', { defaultValue: deployLabelByType(linkType) }) || '',
+  pubdev: ({ t, linkType }) => t('project.deploy.pubdev', { defaultValue: deployLabelByType(linkType) }) || '',
+  npm: ({ t, linkType }) => t('project.deploy.npm', { defaultValue: deployLabelByType(linkType) }) || '',
+  notion: ({ resolved }) => resolved.title || '',
+});
+
+function getLinkSurface(type) {
+  return LINK_SURFACE_BY_TYPE[normalizeType(type)] ?? null;
+}
+
+function resolveDeployLabel(link, resolved, t) {
+  const typeKey = normalizeType(link.type);
+  const resolveLabel = DEPLOY_LABEL_RESOLVER_BY_TYPE[typeKey];
+  if (!resolveLabel) return '';
+  return resolveLabel({ t, linkType: link.type, resolved });
+}
+
 function resolveLink(link, docs) {
   if (!link?.type) return null;
   if (normalizeType(link.type) === 'doc') {
@@ -141,14 +169,11 @@ export function ProjectDetailContent({ project, variant, isMobile = false }) {
     [project.links, project.relatedLinks]
   );
   const titleIconLinks = useMemo(
-    () => projectLinks.filter((link) => normalizeType(link.type) === 'github'),
+    () => projectLinks.filter((link) => getLinkSurface(link.type) === 'titleIcon'),
     [projectLinks]
   );
   const deployTextLinks = useMemo(
-    () =>
-      projectLinks.filter((link) =>
-        ['appstore', 'deploy', 'pubdev', 'npm', 'notion'].includes(normalizeType(link.type))
-      ),
+    () => projectLinks.filter((link) => getLinkSurface(link.type) === 'deployText'),
     [projectLinks]
   );
   const stopIfCard = variant === 'card' ? (e) => e.stopPropagation() : undefined;
@@ -160,14 +185,63 @@ export function ProjectDetailContent({ project, variant, isMobile = false }) {
   const stacksToShow = variant === 'card' ? effectiveStacks.stacks.slice(0, maxVisibleStacks) : effectiveStacks.stacks;
   const { useEvenSplit, lineRef, chipsContainerRef } = useStackChipsOverflow(stacksToShow.length);
 
+  const headWrapCls = buildCls(variant === 'popup' && cardStyles.popupHead, variant !== 'popup' && cardStyles.backHeadWrap);
+  const periodRowCls = buildCls(cardStyles.periodRow, variant === 'popup' && cardStyles.periodRowPopup);
+
+  const stacksForLine = stacksToShow;
+  const stackTwoRows = useEvenSplit && stacksForLine.length >= 2;
+  const stackRow1 = stackTwoRows ? stacksForLine.slice(0, Math.floor(stacksForLine.length / 2)) : stacksForLine;
+  const stackRow2 = stackTwoRows ? stacksForLine.slice(Math.floor(stacksForLine.length / 2)) : [];
+
+  const renderDetailStackChip = (stack) => {
+    const chipCls = buildCls(
+      cardStyles.stackChip,
+      isStackMatchedByQuery(stack, parsedClauses, normalizeStackToken) && cardStyles.stackChipHighlighted
+    );
+    return (
+      <button
+        key={stack}
+        type="button"
+        className={chipCls}
+        onClick={(e) => (e.stopPropagation(), appendShortcutToQuery(`stack:"${stack}"`))}
+        aria-label={a11y('project.searchByStack', { stack })}
+      >
+        {getStackIconName(stack) && (
+          <span className={cardStyles.stackChipIcon} aria-hidden="true">
+            <Icon name={getStackIconName(stack)} />
+          </span>
+        )}
+        <span className={cardStyles.stackChipText}>{stack}</span>
+      </button>
+    );
+  };
+
+  let stackChipsLine;
+  if (stacksForLine.length === 0) {
+    stackChipsLine = <span className={cardStyles.languageStacks}>-</span>;
+  } else if (stackTwoRows) {
+    stackChipsLine = (
+      <span className={cardStyles.languageStacksTwoRows}>
+        <span className={cardStyles.languageStacksRow}>{stackRow1.map(renderDetailStackChip)}</span>
+        <span className={cardStyles.languageStacksRow}>{stackRow2.map(renderDetailStackChip)}</span>
+      </span>
+    );
+  } else {
+    stackChipsLine = (
+      <span ref={chipsContainerRef} className={cardStyles.languageStacks}>
+        {stackRow1.map(renderDetailStackChip)}
+      </span>
+    );
+  }
+
   return (
     <>
-      <div className={buildCls(variant === 'popup' && cardStyles.popupHead, variant !== 'popup' && cardStyles.backHeadWrap)}>
+      <div className={headWrapCls}>
       <div className={cardStyles.backHead}>
         <div className={cardStyles.backHeadTop}>
           <h4 className={cardStyles.projectType}>{project.typeLabel}</h4>
           <div className={cardStyles.backHeadRight}>
-            <div className={buildCls(cardStyles.periodRow, variant === 'popup' && cardStyles.periodRowPopup)}>
+            <div className={periodRowCls}>
               <div className={cardStyles.period}>{project.periodLabel}</div>
               {variant === 'popup' && <StatusChip status={project.status} variant="popup" />}
             </div>
@@ -215,10 +289,10 @@ export function ProjectDetailContent({ project, variant, isMobile = false }) {
                 {deployTextLinks.map((link, idx) => {
                   const r = resolveLink(link, docs);
                   if (!r) return null;
-                  const typeKey = normalizeType(link.type);
-                  const label = typeKey === 'notion' ? r.title : (t(`project.deploy.${typeKey}`, { defaultValue: deployLabelByType(link.type) }) || '');
+                  const label = resolveDeployLabel(link, r, t);
                   if (!label) return null;
                   const isDiscontinued = project.status === PROJECT_STATUS.SUPPORT_ENDED;
+                  const deployTextCls = buildCls(cardStyles.deployLinkText, isDiscontinued && cardStyles.discontinued);
                   return r.href ? (
                     <a
                       key={`deploy-link-${idx}`}
@@ -229,10 +303,12 @@ export function ProjectDetailContent({ project, variant, isMobile = false }) {
                       title={r.title || label}
                     >
                       <span className={cardStyles.deployLinkIconWrap} aria-hidden="true">
-                        <Icon name="link" className={cardStyles.deployLinkIcon} aria-hidden />
+                        <span className={cardStyles.deployLinkIcon}>
+                          <Icon name="link" />
+                        </span>
                       </span>
                       {!(variant === 'card' && isMobile) && (
-                        <span className={buildCls(cardStyles.deployLinkText, isDiscontinued && cardStyles.discontinued)}>
+                        <span className={deployTextCls}>
                           {label}
                         </span>
                       )}
@@ -245,10 +321,12 @@ export function ProjectDetailContent({ project, variant, isMobile = false }) {
                       title={r.title || label}
                     >
                       <span className={cardStyles.deployLinkIconWrap} aria-hidden="true">
-                        <Icon name="link" className={cardStyles.deployLinkIcon} />
+                        <span className={cardStyles.deployLinkIcon}>
+                          <Icon name="link" />
+                        </span>
                       </span>
                       {!(variant === 'card' && isMobile) && (
-                        <span className={buildCls(cardStyles.deployLinkText, isDiscontinued && cardStyles.discontinued)}>
+                        <span className={deployTextCls}>
                           {label}
                         </span>
                       )}
@@ -295,40 +373,7 @@ export function ProjectDetailContent({ project, variant, isMobile = false }) {
       </div>
 
       <div className={cardStyles.languageLine} ref={lineRef}>
-        {(() => {
-          const visible = stacksToShow;
-          const twoRows = useEvenSplit && visible.length >= 2;
-          const row1 = twoRows ? visible.slice(0, Math.floor(visible.length / 2)) : visible;
-          const row2 = twoRows ? visible.slice(Math.floor(visible.length / 2)) : [];
-          const renderChip = (stack) => (
-            <button
-              key={stack}
-              type="button"
-              className={buildCls(cardStyles.stackChip, isStackMatchedByQuery(stack, parsedClauses, normalizeStackToken) && cardStyles.stackChipHighlighted)}
-              onClick={(e) => (e.stopPropagation(), appendShortcutToQuery(`stack:"${stack}"`))}
-              aria-label={a11y('project.searchByStack', { stack })}
-            >
-              {getStackIconName(stack) && (
-                <Icon name={getStackIconName(stack)} className={cardStyles.stackChipIcon} aria-hidden />
-              )}
-              <span className={cardStyles.stackChipText}>{stack}</span>
-            </button>
-          );
-          if (visible.length === 0) return <span className={cardStyles.languageStacks}>-</span>;
-          if (twoRows) {
-            return (
-              <span className={cardStyles.languageStacksTwoRows}>
-                <span className={cardStyles.languageStacksRow}>{row1.map(renderChip)}</span>
-                <span className={cardStyles.languageStacksRow}>{row2.map(renderChip)}</span>
-              </span>
-            );
-          }
-          return (
-            <span ref={chipsContainerRef} className={cardStyles.languageStacks}>
-              {row1.map(renderChip)}
-            </span>
-          );
-        })()}
+        {stackChipsLine}
       </div>
       </div>
       </div>

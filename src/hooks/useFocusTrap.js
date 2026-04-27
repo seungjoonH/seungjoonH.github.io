@@ -9,15 +9,18 @@ function getFocusables(container) {
   );
 }
 
-export function useFocusTrap(containerRef, active) {
+export function useFocusTrap(containerRef, active, initialFocusRef = null) {
   useEffect(() => {
     if (!active || !containerRef?.current) return;
 
     const container = containerRef.current;
-    const focusables = getFocusables(container);
-    const first = focusables[0];
-    if (first) {
-      first.focus();
+    const initialFocusTarget = initialFocusRef?.current;
+    if (initialFocusTarget) {
+      initialFocusTarget.focus();
+    } else {
+      const focusables = getFocusables(container);
+      const first = focusables[0];
+      if (first) first.focus();
     }
 
     const handleKeyDown = (e) => {
@@ -38,5 +41,5 @@ export function useFocusTrap(containerRef, active) {
 
     container.addEventListener('keydown', handleKeyDown);
     return () => container.removeEventListener('keydown', handleKeyDown);
-  }, [active, containerRef]);
+  }, [active, containerRef, initialFocusRef]);
 }

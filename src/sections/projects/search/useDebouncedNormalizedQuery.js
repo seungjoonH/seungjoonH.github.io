@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { parseQuery } from './parseQuery.js';
 import { normalizeStackToken } from './stackMapping.js';
 import { stripSortFromParsedClauses } from './stripSort.js';
@@ -41,5 +41,3 @@ export function getParsedForHighlight(rawQuery) {
   const parsed = parseQuery(trimmed, normalizeStackToken);
   return stripSortFromParsedClauses(parsed).filterClauses;
 }
-
-export default useDebouncedNormalizedQuery;

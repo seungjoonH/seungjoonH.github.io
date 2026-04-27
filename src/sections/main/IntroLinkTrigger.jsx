@@ -11,6 +11,11 @@ import { useA11y } from '../../hooks/useA11y';
 const OPEN_DELAY_MS = 140;
 const CLOSE_DELAY_MS = 220;
 const POPOVER_UNMOUNT_AFTER_MS = 300;
+const POPOVER_GAP_ABOVE_TRIGGER_PX = 10;
+const POPOVER_MIN_VIEWPORT_TOP_PX = 8;
+const POPOVER_MIN_VIEWPORT_SIDE_PX = 8;
+const POPOVER_MAX_WIDTH_PX = 420;
+const SCROLL_INTO_VIEW_DEFER_MS = 0;
 
 export function IntroLinkTrigger({ linkId, label }) {
   const def = getIntroLinkDefinition(linkId);
@@ -20,7 +25,7 @@ export function IntroLinkTrigger({ linkId, label }) {
   const [open, setOpen] = useState(false);
   const [popoverMounted, setPopoverMounted] = useState(false);
   const [popoverEntered, setPopoverEntered] = useState(false);
-  const [coords, setCoords] = useState({ top: 0, right: 0 });
+  const [coords, setCoords] = useState({ top: 0, left: 0 });
   const openTimerRef = useRef(null);
   const closeTimerRef = useRef(null);
   const popoverUnmountTimerRef = useRef(null);
@@ -51,9 +56,14 @@ export function IntroLinkTrigger({ linkId, label }) {
     const el = wrapRef.current;
     if (!el) return;
     const r = el.getBoundingClientRect();
+    const maxLeft = window.innerWidth - POPOVER_MIN_VIEWPORT_SIDE_PX - POPOVER_MAX_WIDTH_PX;
+    const clampedLeft = Math.max(
+      POPOVER_MIN_VIEWPORT_SIDE_PX,
+      Math.min(r.left, maxLeft)
+    );
     setCoords({
-      top: r.bottom + 6,
-      right: Math.max(8, window.innerWidth - r.right),
+      top: Math.max(POPOVER_MIN_VIEWPORT_TOP_PX, r.top - POPOVER_GAP_ABOVE_TRIGGER_PX),
+      left: clampedLeft,
     });
   }, []);
 
@@ -90,12 +100,12 @@ export function IntroLinkTrigger({ linkId, label }) {
   useLayoutEffect(() => {
     if (!popoverMounted) return undefined;
     updatePopoverPosition();
-    const onReflow = () => updatePopoverPosition();
-    window.addEventListener('scroll', onReflow, true);
-    window.addEventListener('resize', onReflow);
+    const handleReflow = () => updatePopoverPosition();
+    window.addEventListener('scroll', handleReflow, true);
+    window.addEventListener('resize', handleReflow);
     return () => {
-      window.removeEventListener('scroll', onReflow, true);
-      window.removeEventListener('resize', onReflow);
+      window.removeEventListener('scroll', handleReflow, true);
+      window.removeEventListener('resize', handleReflow);
     };
   }, [popoverMounted, updatePopoverPosition]);
 
@@ -104,7 +114,9 @@ export function IntroLinkTrigger({ linkId, label }) {
   const handleWrapLeave = useCallback(
     (e) => {
       const next = e.relatedTarget;
-      if (popoverRef.current && next instanceof Node && popoverRef.current.contains(next)) {
+      const isFocusInsidePopover =
+        next instanceof Node && popoverRef.current?.contains(next);
+      if (isFocusInsidePopover) {
         clearTimers();
         return;
       }
@@ -131,23 +143,23 @@ export function IntroLinkTrigger({ linkId, label }) {
 
   useEffect(() => {
     if (!open && !popoverMounted) return undefined;
-    const onDoc = (e) => {
+    const handleDocMouseDown = (e) => {
       const target = e.target;
       if (!(target instanceof Node)) return;
       if (wrapRef.current?.contains(target) || popoverRef.current?.contains(target)) return;
       setOpen(false);
     };
-    document.addEventListener('mousedown', onDoc);
-    return () => document.removeEventListener('mousedown', onDoc);
+    document.addEventListener('mousedown', handleDocMouseDown);
+    return () => document.removeEventListener('mousedown', handleDocMouseDown);
   }, [open, popoverMounted]);
 
   useEffect(() => {
     if (!open) return undefined;
-    const onKey = (e) => {
+    const handleDocKeyDown = (e) => {
       if (e.key === 'Escape') setOpen(false);
     };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
+    document.addEventListener('keydown', handleDocKeyDown);
+    return () => document.removeEventListener('keydown', handleDocKeyDown);
   }, [open]);
 
   const applyRowAction = useCallback(
@@ -161,7 +173,12 @@ export function IntroLinkTrigger({ linkId, label }) {
       }
       if (row.targetId) {
         const el = document.getElementById(row.targetId);
-        if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 0);
+        if (el) {
+          setTimeout(
+            () => el.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+            SCROLL_INTO_VIEW_DEFER_MS
+          );
+        }
         setOpen(false);
         clearTimers();
       }
@@ -179,24 +196,30 @@ export function IntroLinkTrigger({ linkId, label }) {
     [def, applyRowAction]
   );
 
-  const popoverPositionStyle = useMemo(
-    () => ({ top: coords.top, right: coords.right }),
-    [coords.top, coords.right]
+  const popoverFrameStyle = useMemo(
+    () => ({
+      '--intro-popover-top': `${coords.top}px`,
+      '--intro-popover-left': `${coords.left}px`,
+    }),
+    [coords.top, coords.left]
   );
 
   useEffect(() => () => clearTimers(), [clearTimers]);
 
   if (!def) return <strong>{label}</strong>;
 
+  const popoverFrameCls = buildCls(styles.popoverFrame, popoverEntered && styles.popoverFrameVisible);
+  const triggerCls = buildCls(styles.trigger);
+
   const popoverEl =
     popoverMounted &&
     createPortal(
-      <div
+      <dialog
         ref={popoverRef}
+        open
         id={popoverId}
-        className={buildCls(styles.popoverFrame, popoverEntered && styles.popoverFrameVisible)}
-        style={popoverPositionStyle}
-        role="dialog"
+        className={popoverFrameCls}
+        style={popoverFrameStyle}
         aria-label={a11y('introLink.popupLabel')}
         onMouseEnter={handlePopoverEnter}
         onMouseLeave={handlePopoverLeave}
@@ -212,13 +235,15 @@ export function IntroLinkTrigger({ linkId, label }) {
                 data-row-index={i}
                 onClick={handlePillClick}
               >
-                <Icon name={row.icon ?? 'search'} className={styles.rowPillIcon} aria-hidden="true" />
+                <span className={styles.rowPillIcon} aria-hidden="true">
+                  <Icon name={row.icon ?? 'search'} />
+                </span>
                 <span className={styles.rowPillLabel}>{t(row.labelKey)}</span>
               </button>
             ))}
           </div>
         </div>
-      </div>,
+      </dialog>,
       document.body
     );
 
@@ -231,7 +256,7 @@ export function IntroLinkTrigger({ linkId, label }) {
     >
       <button
         type="button"
-        className={buildCls(styles.trigger)}
+        className={triggerCls}
         aria-expanded={open}
         aria-controls={popoverId}
         aria-haspopup="dialog"

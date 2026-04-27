@@ -9,18 +9,19 @@ const VARIANT = {
 };
 
 /**
- * @param {{ status: string | null | undefined; variant?: 'card' | 'popup'; className?: string }} props
+ * @param {{ status: string | null | undefined; variant?: 'card' | 'popup' }} props
  */
-export function StatusChip({ status, variant = 'card', className }) {
+export function StatusChip({ status, variant = 'card' }) {
   const { t } = useTranslation();
   if (status == null || status === '' || !isKnownProjectStatus(status)) return null;
   const i18nKey = projectStatusTranslationKey(status);
   if (!i18nKey) return null;
   const label = t(`project.status.${i18nKey}`);
   const vClass = projectStatusChipVariantClass(status);
+  const chipCls = buildCls(styles.chip, VARIANT[variant], styles[vClass]);
   return (
     <span
-      className={buildCls(styles.chip, VARIANT[variant], styles[vClass], className)}
+      className={chipCls}
       title={label}
     >
       {label}

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import styles from './introduction.module.css';
 import { buildCls } from '../../utils/cssUtil';
 import { renderRichText } from '../projects/utils/richText.jsx';
@@ -60,13 +60,18 @@ export function Introduction({ text }) {
     else introLines.push(line);
   });
 
+  const introContainerCls = buildCls(styles.introContainer, ['', styles.fadeIn, styles.noTransition][stage]);
+
   return (
-    <div className={buildCls(styles.introContainer, ['', styles.fadeIn, styles.noTransition][stage])}>
-      {introLines.map((paragraph, i) => (
-        <p key={i} className={buildCls(styles.intro, i >= 2 && styles.introSecondary)}>
-          {parseInlineMarkers(paragraph, `intro-p-${i}`)}
-        </p>
-      ))}
+    <div className={introContainerCls}>
+      {introLines.map((paragraph, i) => {
+        const introLineCls = buildCls(styles.intro, i >= 2 && styles.introSecondary);
+        return (
+          <p key={i} className={introLineCls}>
+            {parseInlineMarkers(paragraph, `intro-p-${i}`)}
+          </p>
+        );
+      })}
       {bulletItems.length > 0 && (
         <ul className={styles.introList}>
           {bulletItems.map((item, i) => (

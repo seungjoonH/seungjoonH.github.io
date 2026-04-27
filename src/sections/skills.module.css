@@ -27,7 +27,7 @@
   will-change: transform, opacity;
 }
 
-.skillsTitle {
+.skillsTitle :global(h2) {
   color: var(--color-text);
 }
 
@@ -51,7 +51,7 @@
     padding: 0 28px var(--section-gap, 120px);
   }
 
-  .skillsTitle {
+  .skillsTitle :global(h2) {
     margin-left: 0;
   }
 

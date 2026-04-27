@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import config from '../../config';
 import { useConfigStore } from '../../stores/configStore';
 import { usePlaceholderAnimation } from './search/usePlaceholderAnimation';
@@ -12,14 +12,19 @@ function getPlaceholderExamples(lang) {
   return config.searchPlaceholderExamples[key] ?? config.searchPlaceholderExamples[config.language.fallback];
 }
 
-export const SearchPlaceholderOverlay = React.memo(function SearchPlaceholderOverlay({ paused = false }) {
+export const SearchPlaceholderOverlay = memo(function SearchPlaceholderOverlay({ paused = false }) {
   const language = useConfigStore((s) => s.language);
   const examples = getPlaceholderExamples(language);
   const { displayText, cursorVisible } = usePlaceholderAnimation(examples, { paused });
   return (
     <span className={styles.placeholderOverlay} aria-hidden="true">
       <span className={styles.placeholderText}>{displayText}</span>
-      <span className={styles.placeholderCursor} style={{ opacity: cursorVisible ? 1 : 0 }}>|</span>
+      <span
+        className={styles.placeholderCursor}
+        style={{ '--placeholder-cursor-opacity': cursorVisible ? 1 : 0 }}
+      >
+        |
+      </span>
     </span>
   );
 });

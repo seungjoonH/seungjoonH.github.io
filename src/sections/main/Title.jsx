@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import styles from './title.module.css';
 import { buildCls } from '../../utils/cssUtil';
 
@@ -14,14 +14,15 @@ export function Title({ text }) {
   }, []);
 
   const lines = text.split('\\n');
+  const titleContainerCls = buildCls(styles.titleContainer, show && styles.fadeIn);
 
   return (
-    <div className={buildCls(styles.titleContainer, show && styles.fadeIn)}>
+    <div className={titleContainerCls}>
       {lines.map((line, index) => (
-        <React.Fragment key={index}>
+        <Fragment key={index}>
           {line}
           <br />
-        </React.Fragment>
+        </Fragment>
       ))}
     </div>
   );

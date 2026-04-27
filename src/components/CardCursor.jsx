@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styles from './cardCursor.module.css';
 import { useResponsive } from '../hooks/useResponsive';
 
 const CARD_SELECTOR = '[data-interactive-card]';
 
 function isOverCard(clientX, clientY) {
-  if (typeof document === 'undefined') return false;
   const el = document.elementFromPoint(clientX, clientY);
   return !!el?.closest(CARD_SELECTOR);
 }
@@ -49,7 +48,7 @@ export function CardCursor() {
   return (
     <div
       className={styles.ring}
-      style={{ left: pos.x, top: pos.y }}
+      style={{ '--card-cursor-x': `${pos.x}px`, '--card-cursor-y': `${pos.y}px` }}
       aria-hidden="true"
     >
       <span className={styles.ringInner} />

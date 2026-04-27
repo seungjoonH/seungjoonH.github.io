@@ -28,6 +28,9 @@ export function ExperienceDetailPopup({ experience, onClose, returnFocusRef }) {
     onClose();
   };
 
+  const panelCls = buildCls(popupStyles.panel, popupStyles.panelContentFit);
+  const contentCls = buildCls(popupStyles.content, popupStyles.contentFit);
+
   return (
     <div className={popupStyles.modalRoot}>
       <div
@@ -36,11 +39,11 @@ export function ExperienceDetailPopup({ experience, onClose, returnFocusRef }) {
         aria-hidden="true"
       />
       <div className={popupStyles.panelWrap}>
-        <div
+        <dialog
           ref={panelRef}
-          className={buildCls(popupStyles.panel, popupStyles.panelContentFit)}
+          open
+          className={panelCls}
           data-popup="experience"
-          role="dialog"
           aria-modal="true"
           aria-labelledby="experience-detail-title"
           aria-label={a11y('experience.detailDialog', { company: experience.company })}
@@ -59,11 +62,11 @@ export function ExperienceDetailPopup({ experience, onClose, returnFocusRef }) {
               {a11y('experience.detailDialog', { company: experience.company })}
             </div>
 
-            <div className={buildCls(popupStyles.content, popupStyles.contentFit)}>
+            <div className={contentCls}>
               <ExperienceDetailContent experience={experience} />
             </div>
           </div>
-        </div>
+        </dialog>
       </div>
     </div>
   );

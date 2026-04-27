@@ -21,5 +21,3 @@ export function injectSvgSize(svgText) {
     '<svg$1 style="width:100%;height:100%;display:block;vertical-align:middle">'
   );
 }
-
-export default { fetchSvgContent, injectSvgSize, svgContentCache };

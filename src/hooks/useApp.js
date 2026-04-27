@@ -58,6 +58,11 @@ export function useApp() {
   }, [language, i18n]);
 
   useEffect(() => {
+    const lang = language || config.language.initial || 'en';
+    document.documentElement.setAttribute('lang', lang);
+  }, [language]);
+
+  useEffect(() => {
     document.body.setAttribute('data-breakpoint', breakpointType);
     document.body.setAttribute('data-narrow', narrow ? 'true' : 'false');
   }, [breakpointType, narrow]);

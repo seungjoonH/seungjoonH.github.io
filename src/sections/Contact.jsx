@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useA11y } from '../hooks/useA11y';
 import { Header } from '@components/layout/Header';
@@ -7,46 +7,68 @@ import { useConfigStore } from '../stores/configStore';
 import config from '../config';
 import styles from './contact.module.css';
 
-const CONTACT_KEYS = ['email', 'github', 'linkedin', 'tel'];
-const ICON_MAP = { email: 'email', github: 'github', linkedin: 'linkedin', tel: 'tel' };
-const LABEL_KEYS = { email: 'email', github: 'github', linkedin: 'linkedin', tel: 'tel' };
+const CONTACT_FIELDS = Object.freeze({
+  email: {
+    icon: 'email',
+    labelKey: 'email',
+    href: (raw) => `mailto:${raw}`,
+    display: (raw) => raw,
+    copy: (raw) => raw,
+  },
+  github: {
+    icon: 'github',
+    labelKey: 'github',
+    href: (raw) => (raw.startsWith('http') ? raw : `https://${raw}`),
+    display: (raw) => raw.replace(/^https?:\/\/github\.com\/?/i, 'github.com/') || raw,
+    copy: (raw) => (raw.startsWith('http') ? raw : `https://github.com/${raw.replace(/^\/+/, '')}`),
+  },
+  linkedin: {
+    icon: 'linkedin',
+    labelKey: 'linkedin',
+    href: (raw) => (raw.startsWith('http') ? raw : `https://${raw}`),
+    display: (raw) => raw.replace(/^https?:\/\/[^/]+/i, 'linkedin.com') || raw,
+    copy: (raw) => (raw.startsWith('http') ? raw : `https://${raw}`),
+  },
+  tel: {
+    icon: 'tel',
+    labelKey: 'tel',
+    href: (raw) => `tel:${raw.replace(/\s/g, '')}`,
+    display: (raw, language) => {
+      const isKo = language === 'ko' || String(language).startsWith('ko');
+      if (isKo) return raw.replace(/^\+82\s*10\s*/, '010 ').trim() || raw;
+      return raw.replace(/^010\s*/, '+82 10 ').trim() || raw;
+    },
+    copy: (raw) => raw,
+  },
+});
+const CONTACT_KEYS = Object.keys(CONTACT_FIELDS);
 
-function decode(value) {
+function decodeContactConfigValue(value) {
   if (typeof value !== 'string') return value;
-  try { return decodeURIComponent(value); }
+  if (!/%[0-9A-Fa-f]{2}/.test(value)) return value;
+  try { return decodeURIComponent(value); } 
   catch { return value; }
 }
 
 function getContactHref(key, value) {
-  const raw = decode(value);
+  const raw = decodeContactConfigValue(value);
   if (!raw) return '#';
-  switch (key) {
-    case 'email': return `mailto:${raw}`;
-    case 'tel': return `tel:${raw.replace(/\s/g, '')}`;
-    case 'github':
-    case 'linkedin': return raw.startsWith('http') ? raw : `https://${raw}`;
-    default: return raw;
-  }
+  const field = CONTACT_FIELDS[key];
+  return field?.href ? field.href(raw) : raw;
 }
 
 function getDisplayValue(key, value, language) {
-  const raw = decode(value);
-  if (key === 'github' && raw) return raw.replace(/^https?:\/\/github\.com\/?/i, 'github.com/') || raw;
-  if (key === 'linkedin' && raw) return raw.replace(/^https?:\/\/[^/]+/i, 'linkedin.com') || raw;
-  if (key === 'tel' && raw) {
-    const isKo = language === 'ko' || String(language).startsWith('ko');
-    if (isKo) return raw.replace(/^\+82\s*10\s*/, '010 ').trim() || raw;
-    return raw.replace(/^010\s*/, '+82 10 ').trim() || raw;
-  }
-  return raw;
+  const raw = decodeContactConfigValue(value);
+  if (!raw) return raw;
+  const field = CONTACT_FIELDS[key];
+  return field?.display ? field.display(raw, language) : raw;
 }
 
 function getCopyText(key, value) {
-  const raw = decode(value);
+  const raw = decodeContactConfigValue(value);
   if (!raw) return '';
-  if (key === 'github' && !raw.startsWith('http')) return `https://github.com/${raw.replace(/^\/+/, '')}`;
-  if (key === 'linkedin' && !raw.startsWith('http')) return `https://${raw}`;
-  return raw;
+  const field = CONTACT_FIELDS[key];
+  return field?.copy ? field.copy(raw) : raw;
 }
 
 export function Contact() {
@@ -80,22 +102,25 @@ export function Contact() {
     <div className={styles.contactContainer}>
       <div className={styles.contactContent}>
         <div className={styles.contactHeaderWrap}>
-          <Header text={t('nav.contact')} align="center" className={styles.contactTitle} />
+          <div className={styles.contactTitle}>
+            <Header text={t('nav.contact')} align="center" />
+          </div>
         </div>
-        <div className={styles.cardGrid} role="list">
+        <ul className={styles.cardGrid}>
           {CONTACT_KEYS.map((key) => {
             const value = contact[key];
+            const { icon, labelKey } = CONTACT_FIELDS[key];
             const href = getContactHref(key, value);
             const displayValue = getDisplayValue(key, value, language);
             const copyText = getCopyText(key, value);
-            const label = t(`contact.${LABEL_KEYS[key]}`);
+            const label = t(`contact.${labelKey}`);
             const copied = copiedKeys[key] === true;
-            const copyAriaLabel = copied 
-              ? a11y('contact.copied', { label }) 
+            const copyAriaLabel = copied
+              ? a11y('contact.copied', { label })
               : a11y('contact.copy', { label });
 
             return (
-              <div key={key} className={styles.card} role="listitem">
+              <li key={key} className={styles.card}>
                 <a
                   href={href}
                   className={styles.cardLink}
@@ -103,7 +128,9 @@ export function Contact() {
                   rel="noreferrer"
                   aria-label={a11y('contact.rowLink', { label, value: displayValue })}
                 >
-                  <Icon name={ICON_MAP[key]} className={styles.cardIcon} aria-hidden="true" />
+                  <span className={styles.cardIcon} aria-hidden="true">
+                    <Icon name={icon} />
+                  </span>
                   <span className={styles.cardLabel}>{label}</span>
                   <span className={styles.cardValue}>{displayValue}</span>
                 </a>
@@ -115,12 +142,14 @@ export function Contact() {
                   aria-label={copyAriaLabel}
                   title={copyAriaLabel}
                 >
-                  <Icon name={copied ? 'check' : 'copy'} className={styles.copyIcon} aria-hidden="true" />
+                  <span className={styles.copyIcon} aria-hidden="true">
+                    <Icon name={copied ? 'check' : 'copy'} />
+                  </span>
                 </button>
-              </div>
+              </li>
             );
           })}
-        </div>
+        </ul>
       </div>
     </div>
   );

@@ -4,6 +4,8 @@ import config from '../config.js';
 
 const initialState = {
   theme: config.theme.initial,
+  isLight: config.theme.initial === 'light',
+  isDark: config.theme.initial === 'dark',
   language: config.language.initial,
   typographyScale: config.typography.scale,
   speedScale: 1,
@@ -19,20 +21,28 @@ export function dampenFontScale(scale) {
   return 1 + (clamped - 1) * 0.35;
 }
 
+function deriveThemeState(theme) {
+  const nextTheme = theme === 'light' ? 'light' : 'dark';
+  return {
+    theme: nextTheme,
+    isLight: nextTheme === 'light',
+    isDark: nextTheme === 'dark',
+  };
+}
+
 export const useConfigStore = create(
   persist(
     (set) => ({
       ...initialState,
-      setTheme: (theme) => set({ theme }),
+      setTheme: (theme) => set(deriveThemeState(theme)),
+      toggleTheme: () => set(({ theme }) => deriveThemeState(theme === 'light' ? 'dark' : 'light')),
       setLanguage: (language) => set({ language }),
       setTypographyScale: (v) =>
         set({ typographyScale: Math.min(TYPOGRAPHY_SCALE_MAX, Math.max(TYPOGRAPHY_SCALE_MIN, Number(v))) }),
       setSpeedScale: (v) =>
         set({ speedScale: Math.min(SPEED_SCALE_MAX, Math.max(SPEED_SCALE_MIN, Number(v))) }),
-      reset: () => set(initialState),
+      reset: () => set({ ...initialState }),
     }),
     { name: 'portfolio-config' }
   )
 );
-
-export default useConfigStore;

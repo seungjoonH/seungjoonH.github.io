@@ -1,5 +1,3 @@
-import React from 'react';
-
 export function renderTextWithBreakAtSpaces(text, wordClassName, renderSegment) {
   if (text == null || text === '') return null;
   const str = String(text);
@@ -14,5 +12,3 @@ export function renderTextWithBreakAtSpaces(text, wordClassName, renderSegment) 
     );
   });
 }
-
-export default { renderTextWithBreakAtSpaces };

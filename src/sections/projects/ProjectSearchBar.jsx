@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useA11y } from '../../hooks/useA11y';
 import { Icon } from '@components/shared/icon/Icon';
@@ -20,7 +20,7 @@ export function ProjectSearchBar() {
 
   return (
     <div className={styles.searchBarBlock}>
-      <div className={styles.searchWrap} role="search">
+      <search className={styles.searchWrap}>
         <span className={styles.searchIcon} aria-hidden="true">
           <Icon name="search" />
         </span>
@@ -47,7 +47,7 @@ export function ProjectSearchBar() {
             <Icon name="close" aria-hidden="true" />
           </button>
         )}
-      </div>
+      </search>
       {showTooltip && (
         <div
           className={styles.searchAppliedTooltip}

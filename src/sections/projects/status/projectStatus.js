@@ -1,4 +1,4 @@
-/** Canonical status string values (sync with project data `status` field). */
+
 export const PROJECT_STATUS = {
   IN_DEVELOPMENT: 'in-development',
   LIVE: 'live',
@@ -8,7 +8,6 @@ export const PROJECT_STATUS = {
   ENDED: 'ended',
 };
 
-/** Lower number = higher in list when sorting by `sort:status`. */
 export const PROJECT_STATUS_SORT_RANK = {
   [PROJECT_STATUS.IN_DEVELOPMENT]: 0,
   [PROJECT_STATUS.LIVE]: 1,
@@ -24,7 +23,6 @@ export function isKnownProjectStatus(status) {
   return status != null && KNOWN.has(String(status));
 }
 
-/** Unknown statuses sort after all known (stable fallback). */
 export function getProjectStatusRank(status) {
   if (status == null || status === '') return 999;
   const key = String(status);
@@ -32,7 +30,6 @@ export function getProjectStatusRank(status) {
   return PROJECT_STATUS_SORT_RANK[key];
 }
 
-/** i18n key under `project.status` (camelCase). */
 export function projectStatusTranslationKey(status) {
   const map = {
     [PROJECT_STATUS.IN_DEVELOPMENT]: 'inDevelopment',
@@ -45,7 +42,6 @@ export function projectStatusTranslationKey(status) {
   return map[String(status)] ?? null;
 }
 
-/** CSS module class token (no hyphens) for StatusChip backgrounds. */
 const CHIP_VARIANT_CLASS = {
   [PROJECT_STATUS.IN_DEVELOPMENT]: 'inDevelopment',
   [PROJECT_STATUS.LIVE]: 'live',

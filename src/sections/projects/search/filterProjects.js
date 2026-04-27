@@ -22,11 +22,18 @@ export function isStackMatchedByQuery(stackName, parsedClauses, normalizeStack) 
   const stackNorm = normalizeStack(String(stackName)).toLowerCase();
   for (const conditions of parsedClauses) {
     for (const cond of conditions) {
-      if (cond.type === 'stack' && singleStackMatchesCondValue(stackName, cond.value, normalizeStack, cond.exact))
-        return true;
-      if (cond.type === 'fullText' && cond.value && !isSingleChoseong(String(cond.value))) {
-        const queryNorm = normalizeStack(cond.value).toLowerCase();
-        if (stackContainsQuery(stackNorm, queryNorm)) return true;
+      switch (cond.type) {
+        case 'stack':
+          if (singleStackMatchesCondValue(stackName, cond.value, normalizeStack, cond.exact)) return true;
+          break;
+        case 'fullText':
+          if (cond.value && !isSingleChoseong(String(cond.value))) {
+            const queryNorm = normalizeStack(cond.value).toLowerCase();
+            if (stackContainsQuery(stackNorm, queryNorm)) return true;
+          }
+          break;
+        default:
+          break;
       }
     }
   }
@@ -88,76 +95,63 @@ function matchesLink(project, typeWanted) {
 function projectMatchesConditions(project, conditions, normalizeStack) {
   const fullText = getSearchableText(project);
   const descText = getDescText(project);
-  const linkTypes = getProjectLinkTypes(project);
 
   for (const cond of conditions) {
-    if (cond.type === 'fullText') {
-      if (isSingleChoseong(cond.value)) continue;
-      if (stringContains(fullText, cond.value)) continue;
-      if (matchesStack(project, cond.value, normalizeStack)) continue;
-      return false;
-    }
-    if (cond.type === 'tag') {
-      const tags = project.tagNames || project.tags || [];
-      const q = String(cond.value);
-      const qLower = q.toLowerCase();
-      if (cond.exact) {
-        if (!tags.some((t) => String(t).toLowerCase() === qLower)) return false;
+    switch (cond.type) {
+      case 'sort': continue;
+      case 'fullText':
+        if (isSingleChoseong(cond.value)) continue;
+        if (stringContains(fullText, cond.value)) continue;
+        if (matchesStack(project, cond.value, normalizeStack)) continue;
+        return false;
+      case 'tag': {
+        const tags = project.tagNames || project.tags || [];
+        const q = String(cond.value);
+        const matched = cond.exact
+          ? tags.some((t) => String(t).toLowerCase() === q.toLowerCase())
+          : tags.some((t) => tagMatchesQuery(String(t), q));
+        if (!matched) return false;
+        continue;
       }
-      else {
-        if (!tags.some((t) => tagMatchesQuery(String(t), q))) return false;
+      case 'title': {
+        if (isSingleChoseong(cond.value)) continue;
+        const title = project.title || '';
+        const matched = cond.exact
+          ? title.toLowerCase() === cond.value.toLowerCase()
+          : stringContains(title, cond.value);
+        if (!matched) return false;
+        continue;
       }
-      continue;
-    }
-    if (cond.type === 'title') {
-      if (isSingleChoseong(cond.value)) continue;
-      const title = project.title || '';
-      if (cond.exact) {
-        if (title.toLowerCase() !== cond.value.toLowerCase()) return false;
-      }
-      else {
-        if (!stringContains(title, cond.value)) return false;
-      }
-      continue;
-    }
-    if (cond.type === 'desc') {
-      if (isSingleChoseong(cond.value)) continue;
-      if (cond.exact) {
+      case 'desc':
+        if (isSingleChoseong(cond.value)) continue;
         if (!stringContains(descText, cond.value)) return false;
+        continue;
+      case 'stack':
+        if (!matchesStack(project, cond.value, normalizeStack, cond.exact)) return false;
+        continue;
+      case 'is': {
+        const projectType = (project.type ?? (project.teamSize > 1 ? 'group' : 'personal')).toLowerCase();
+        const want = cond.value;
+        const match = Array.isArray(want)
+          ? want.some((w) => projectType === String(w).toLowerCase())
+          : projectType === String(want).toLowerCase();
+        if (cond.negate ? match : !match) return false;
+        continue;
       }
-      else {
-        if (!stringContains(descText, cond.value)) return false;
+      case 'team':
+        if (!matchesTeam(project, cond.value)) return false;
+        continue;
+      case 'link':
+        if (!matchesLink(project, cond.value)) return false;
+        continue;
+      case 'show': {
+        const v = cond.value;
+        if (v === 'public' && project.hidden) return false;
+        if (v === 'hidden' && !project.hidden) return false;
+        continue;
       }
-      continue;
+      default: continue;
     }
-    if (cond.type === 'stack') {
-      if (!matchesStack(project, cond.value, normalizeStack, cond.exact)) return false;
-      continue;
-    }
-    if (cond.type === 'is') {
-      const projectType = (project.type ?? (project.teamSize > 1 ? 'group' : 'personal')).toLowerCase();
-      const want = cond.value;
-      const match = Array.isArray(want)
-        ? want.some((w) => projectType === String(w).toLowerCase())
-        : projectType === String(want).toLowerCase();
-      if (cond.negate ? match : !match) return false;
-      continue;
-    }
-    if (cond.type === 'team') {
-      if (!matchesTeam(project, cond.value)) return false;
-      continue;
-    }
-    if (cond.type === 'link') {
-      if (!matchesLink(project, cond.value)) return false;
-      continue;
-    }
-    if (cond.type === 'show') {
-      const v = cond.value;
-      if (v === 'public' && project.hidden) return false;
-      if (v === 'hidden' && !project.hidden) return false;
-      continue;
-    }
-    if (cond.type === 'sort') continue;
   }
   return true;
 }

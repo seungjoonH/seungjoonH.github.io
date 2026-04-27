@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useConfigStore } from '../../stores/configStore';
 import styles from './mainPano.module.css';
 import { buildCls } from '../../utils/cssUtil';
@@ -24,9 +24,12 @@ export function MainPano() {
     };
   }, [speedScale]);
 
+  const mainPanoContainerCls = buildCls(
+    styles.mainPanoContainer,
+    ['', styles.animation1, styles.animation2, styles.noTransition][stage]
+  );
+
   return (
-    <div
-      className={buildCls(styles.mainPanoContainer, ['', styles.animation1, styles.animation2, styles.noTransition][stage])}
-    ></div>
+    <div className={mainPanoContainerCls} />
   );
 }

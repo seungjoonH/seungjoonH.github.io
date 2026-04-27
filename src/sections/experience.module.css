@@ -154,7 +154,7 @@
   opacity: 0;
 }
 
-.experienceHeaderTitle {
+.experienceHeaderTitle :global(h2) {
   bottom: 0;
   left: 0;
   margin-top: var(--section-gap, 200px);
@@ -183,7 +183,7 @@
     --experience-card-max-width: 280px;
   }
 
-  .experienceHeaderTitle {
+  .experienceHeaderTitle :global(h2) {
     margin-top: var(--section-gap, 120px);
   }
 

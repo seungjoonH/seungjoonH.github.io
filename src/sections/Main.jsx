@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { MainPano } from '@sections/main/MainPano';
 import { Title } from '@sections/main/Title';
 import { Introduction } from '@sections/main/Introduction';
@@ -8,61 +8,36 @@ import '../i18n';
 import styles from './main.module.css';
 import { buildCls } from '../utils/cssUtil';
 
-const Languages = {
-  KOREAN: 'ko',
-  ENGLISH: 'en',
-};
-
-class Language {
-  constructor(value) {
-    if (!Object.values(Languages).includes(value)) {
-      throw new Error(`Invalid language: ${value}`);
-    }
-    this.value = value;
-  }
-  get current() { return this.value; }
-  
-  inverse() {
-    this.value = this.value === Languages.KOREAN ? Languages.ENGLISH : Languages.KOREAN;
-    return this.value;
-  }
-
-  toggle() { this.value = this.inverse(); }
-
-  get key() {
-    return Object.keys(Languages)
-        .find(key => Languages[key] === this.value);
-  }
-};
+const MAIN_SCROLL_FADE_MAX_PX = 500;
+const PARALLAX_TITLE_SCROLL_RATIO = 0.5;
+const PARALLAX_INTRO_SCROLL_RATIO = 0.3;
 
 export function Main() {
-  const { t, i18n } = useTranslation();
-  const [language, setLanguage] = useState(new Language(Languages.ENGLISH));
+  const { t } = useTranslation();
   const [opacity, setOpacity] = useState(1);
-  const containerRef = useRef(null);
   const titleRef = useRef(null);
   const introRef = useRef(null);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScrollOpacity = () => {
       const scrollY = window.scrollY;
-      const maxScroll = 500;
-      const newOpacity = Math.max(1 - scrollY / maxScroll, 0);
-      setOpacity(newOpacity);
+      setOpacity(Math.max(1 - scrollY / MAIN_SCROLL_FADE_MAX_PX, 0));
+    };
+    window.addEventListener('scroll', handleScrollOpacity);
+    return () => window.removeEventListener('scroll', handleScrollOpacity);
+  }, []);
 
+  useEffect(() => {
+    const handleScrollParallax = () => {
+      const scrollY = window.scrollY;
       const title = titleRef.current;
       const intro = introRef.current;
-      if (!title || !intro || !containerRef.current) return;
-
-      title.style.transform = `translateY(${scrollY * 0.5}px)`;
-      intro.style.transform = `translateY(${-scrollY * 0.3}px)`;
+      if (!title || !intro) return;
+      title.style.setProperty('--parallax-title-offset-y', `${scrollY * PARALLAX_TITLE_SCROLL_RATIO}px`);
+      intro.style.setProperty('--parallax-intro-offset-y', `${-scrollY * PARALLAX_INTRO_SCROLL_RATIO}px`);
     };
-
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    window.addEventListener('scroll', handleScrollParallax);
+    return () => window.removeEventListener('scroll', handleScrollParallax);
   }, []);
 
   const stackStyle = {
@@ -71,21 +46,25 @@ export function Main() {
     '--stack-z-1': 1,
   };
   const introStyle = { '--parallax-intro-opacity': opacity };
+  const parallaxContainerCls = buildCls(styles.parallaxContainer);
+  const mainHeroCls = buildCls(styles.mainHero);
+  const parallaxTitleCls = buildCls(styles.parallaxTitle);
+  const parallaxIntroCls = buildCls(styles.parallaxIntro);
 
   return (
-    <div className={buildCls(styles.parallaxContainer)} ref={containerRef}>
+    <div className={parallaxContainerCls}>
       <div className="columnContainer">
-        <div className={buildCls(styles.mainHero)}>
+        <div className={mainHeroCls}>
           <div className="stackContainer" style={stackStyle}>
             <div className="stackItem"><MainPano /></div>
             <div className="stackItem">
-              <div className={buildCls(styles.parallaxTitle)} ref={titleRef}>
+              <div className={parallaxTitleCls} ref={titleRef}>
                 <Title text={t('main.title')} />
               </div>
             </div>
           </div>
         </div>
-        <div className={buildCls(styles.parallaxIntro)} style={introStyle} ref={introRef}>
+        <div className={parallaxIntroCls} style={introStyle} ref={introRef}>
           <Introduction text={t('main.introduction')} />
         </div>
       </div>
