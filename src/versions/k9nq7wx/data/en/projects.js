@@ -1,0 +1,502 @@
+const projects = [
+  {
+    id: 'mbwt',
+    teamSize: 4,
+    hidden: false,
+    type: 'group',
+    title: 'Moolbangwool Talk',
+    status: 'live',
+    period: { start: '2026-01', end: '2026-02' },
+    summary:
+      'A real-time voice social app that opens with light minigames and flows naturally into conversation',
+    tags: [
+      'naver-boostcamp',
+      'voice-chat',
+      'design',
+      'planning',
+      'real-time-communication',
+      { name: 'real-time-game', show: false },
+      { name: 'social', show: false },
+      { name: 'testing', show: false },
+      { name: 'ci-cd', show: false },
+      { name: 'optimization', show: false },
+      { name: 'oauth', show: false },
+      { name: 'jwt', show: false },
+      { name: 'full-stack', show: false },
+      { name: 'monorepo', show: false },
+    ],
+    techStack: [
+      'Next.js',
+      'NestJS',
+      'Socket.io',
+      'TypeORM',
+      'MySQL',
+      'Redis',
+      'Zustand',
+      'Playwright',
+      'Vitest',
+      'Docker',
+      'GitHub Actions',
+      'NCP',
+      { name: 'Typescript', show: false },
+      { name: 'React', show: false },
+      { name: 'Node.js', show: false },
+      { name: 'mediasoup', show: false },
+      { name: 'WebRTC', show: false },
+      { name: 'Passport', show: false },
+      { name: 'Jest', show: false },
+    ],
+    links: [
+      { type: 'deploy', title: 'Web', href: 'https://moolbangwool.duckdns.org/home' },
+      { type: 'github', title: 'GitHub', href: 'https://github.com/boostcampwm2025/web26-2Ryuk' },
+      { type: 'notion', title: 'Patch notes', href: 'https://rapid-bubble-113.notion.site/2fe207f233418064a95be845fe26ec3e' },
+    ],
+    sections: [
+      {
+        title: '**Role**',
+        items: [
+          'Led frontend implementation and optimization, supported backend modules where needed, and shaped data models and APIs together with the team',
+        ],
+      },
+      {
+        title:
+          '**Draggable floating chat panel**, a custom hook for placement, and Zustand Persist for restoring position',
+        items: [
+          'Split drag, edge clamping, and pointer events into a custom hook so components mostly handle rendering',
+          'Classified position changes as drag, resize correction, or panel expansion and persisted through Zustand only when it made sense',
+          'When expansion pushed the panel off-screen, skipped persisting the corrected coordinates so collapsing restored the prior position',
+        ],
+        links: [{ type: 'doc', id: 'floating-component-spec' }],
+      },
+      {
+        title:
+          '**Load testing with Playwright and socket.io** to tune game input and rendering',
+        items: [
+          'Confirmed that broadcasting every input to N peers could make client receive rates scale like O(N²)',
+          'Reproduced ten concurrent players with Playwright and socket.io-client, then used FPS logs and Chrome Performance to find hotspots',
+          'Batched outbound input on the client every 100ms and had the server broadcast scores and rankings on a fixed 300ms cadence',
+          'Cut client receive events from **about 2,937/s to 32/s**, lifted average FPS from **30.7 to 60.5**, and reduced broadcast work from **O(N²) to O(N)**',
+        ],
+        links: [{ type: 'doc', id: 'rendering-optimization-input-burst' }],
+      },
+      {
+        title: '**Real-time chat** on a NestJS WebSocket gateway',
+        items: [
+          'Joined and left Socket.io rooms on enter/exit so broadcasts stayed room-scoped instead of global',
+          'Validated JWT on the handshake, checked room membership before sends, filtered banned words, and kept the last 30 messages in Redis for reconnects',
+          'Used the Redis adapter so rooms and events stayed consistent across multiple instances',
+        ],
+      },
+      {
+        title:
+          '**Docker Compose** for dev and prod parity, **GitHub Actions** builds, and **NCP VPC** network separation',
+        items: [
+          'Ran Server, Client, Redis, and MySQL together with Docker Compose, and moved MySQL to a private subnet in production',
+          'Built images in GitHub Actions, pushed to Docker Hub, and pulled them on production hosts inside the NCP VPC',
+          'Placed the web tier in a public subnet and MySQL in a private one so the database is not directly exposed',
+        ],
+        links: [{ type: 'doc', id: 'mbwt-service-architecture' }],
+      },
+      {
+        title: '**Outcomes**',
+        items: [
+          'Split FloatingWidget, ChatPanel, and panel layers so drag logic could be reused elsewhere',
+          'Moved the database to a private subnet and removed the NAT gateway to tighten the production security boundary',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'portfolio',
+    teamSize: 1,
+    hidden: false,
+    type: 'personal',
+    title: 'Personal Portfolio',
+    status: 'maintained',
+    period: { start: '2026-03', end: 'present' },
+    summary: 'A personal portfolio website focused on structured data, search UX, accessibility, multilingual support, and interactive design',
+    tags: [
+      'responsive',
+      'search',
+      'ux',
+      'accessibility',
+      'i18n',
+      { name: 'interaction', show: false },
+      { name: 'theme-switching', show: false },
+      { name: 'tooltip', show: false },
+      { name: 'aria', show: false },
+      { name: 'light-mode', show: false },
+      { name: 'dark-mode', show: false },
+      { name: 'semantic', show: false },
+      { name: 'animation', show: false },
+      { name: 'screen-reader', show: false },
+      { name: 'font-scale', show: false },
+      { name: 'wcag', show: false },
+      { name: 'css', show: false },
+    ],
+    techStack: ['Javascript', 'React'],
+    links: [
+      { type: 'deploy', title: 'Web', href: 'https://seungjoonh.github.io' },
+      { type: 'github', title: 'GitHub', href: 'https://github.com/seungjoonH/seungjoonH.github.io' },
+    ],
+    sections: [
+      {
+        title: '**Accessibility improvements**: semantic structure and ARIA design',
+        items: [
+          'Structured the page with **semantic tags** such as `header`, `nav`, `main`, `section`, and `article`, and supplemented missing semantics with **ARIA roles, names, and states** where needed. Also reviewed **unclear guidance copy** directly and aligned **screen reader announcements and focus order** with the UI',
+          'Used the `useConfigStore` hook to manage **light/dark mode** in global state and applied **a consistent design system** through grouped **CSS variable sets** for each mode',
+          'Provided a **Font Scale** setting and used `clamp` / `cq` so the **layout remains stable even when text size is increased**',
+        ],
+      },
+      {
+        title: '**User experience improvements**: user-friendly UI/UX design',
+        items: [
+          'Used **tooltips** on UI that was hard to understand at a glance, guiding users toward the next action or the right settings path',
+          'Added labels and helper text to buttons, links, and inputs so their **roles are immediately understandable**, and reinforced context with `title` and ARIA',
+        ],
+      },
+      {
+        title: '**Responsive layout design**: breakpoint-based screen adaptation',
+        items: [
+          'Defined **four breakpoints — mobile, tablet, desktop, and wide** — and designed grid columns and typography so the layout would not break at any size',
+          'Implemented a `useResponsive` hook to detect the active breakpoint and reflect it in **grid column counts and the number of visible tags/stacks inside cards**',
+        ],
+      },
+      {
+        title: '**Project search implementation**: based on disassembled and composed Hangul matching',
+        searchChip: { label: 'Extify', searchQuery: 'title:Extify show:all' },
+        items: [
+          'Built on prior experience from **Extify** to port **Hangul jamo decomposition and choseong matching algorithms** to JavaScript, enabling typo-tolerant search UX',
+          'Improved discoverability and scanability through query normalization, stack/tag alias mapping, and result highlighting',
+        ],
+      },
+      {
+        title: '**Multilingual support**: designing a react-i18next-based resource structure',
+        items: [
+          'Used `react-i18next` for UI strings, while storing project, experience, and other **domain data in parallel `ko` / `en` directories** under the **same schema**',
+          'Applied shared key naming and `{{variable}}` interpolation for dynamic values, and grouped accessibility-only copy under an **`a11y` subtree** so screen reader text also follows the active language',
+        ],
+      },
+      {
+        title: '**Interaction implementation**: animation-based feedback design',
+        items: [
+          'Used scroll-based **fade-in/out** to create a sense of progress, and implemented **parallax scrolling** in the hero section',
+          'Enabled **smooth scrolling** from header navigation buttons to each section',
+          'Added a **flip animation** on project card **hover/focus** and modal/popup **transition animations** to provide **immediate feedback** for both mouse and keyboard interactions',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'acommit',
+    teamSize: 1,
+    hidden: false,
+    type: 'personal',
+    title: 'Acommit',
+    status: 'maintained',
+    period: { start: '2025-11', end: 'present' },
+    summary: 'An AI-powered CLI tool for automating Git collaboration workflows',
+    tags: [
+      'open-source',
+      'npm',
+      'git',
+      'cli',
+      'collaboration-tool',
+      { name: 'commit-messages', show: false },
+      { name: 'ai', show: false },
+      { name: 'automation', show: false },
+      { name: 'solo-planning', show: false },
+      { name: 'vibe-coding', show: false },
+      { name: 'pain-point-driven', show: false },
+      { name: 'maintenance', show: false },
+      { name: 'release', show: false },
+    ],
+    techStack: ['Javascript', 'Node.js'],
+    links: [
+      { type: 'npm', title: 'npm', href: 'https://www.npmjs.com/package/acommit' },
+      { type: 'github', title: 'GitHub', href: 'https://github.com/seungjoonH/acommit' },
+    ],
+    sections: [
+      {
+        title: '**CLI design and implementation**: automatic commit messages based on git diff',
+        items: [
+          'Built a CLI that analyzes git diff to generate commit messages, solving the difficulty of splitting large file changes properly and keeping team commit conventions consistent',
+          '**Implemented it through vibe coding based on a detailed plan**, covering the full path from multi-LLM integration to CLI publication',
+        ],
+      },
+      {
+        title: '**Automation architecture design**: extensibility through user-defined rules',
+        items: [
+          'Designed the tool so teams can define commit conventions in `rules.yml`, and generate **commit messages that follow those rules**',
+          'Analyzed changed files from git diff and designed **five grouping strategies** — such as similarity, tags, and directories — to generate sensible commit units automatically',
+          'Added support for both OpenAI and Gemini, and designed the structure so token limits and other LLM settings can be controlled directly from `rules.yml`',
+        ],
+      },
+      {
+        title: '**npm package release**: real project adoption and usage',
+        items: [
+          'Published it as an **official npm package** so anyone can install and use the CLI easily',
+          'Applied it to real development workflows to automate commit message writing and change summarization, and **felt a clear improvement in commit workflow speed**',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'extify',
+    teamSize: 1,
+    hidden: false,
+    type: 'personal',
+    title: 'Extify',
+    status: 'maintained',
+    period: { start: '2024-11', end: 'present' },
+    summary: 'A lightweight Dart utility extension package',
+    tags: [
+      'open-source',
+      'pub.dev',
+      'release',
+      'library',
+      { name: 'maintenance', show: false },
+      { name: 'solo-planning', show: false },
+      { name: 'lightweight-utilities', show: false },
+      { name: 'disassembled-input', show: false },
+      { name: 'composed-syllables', show: false },
+      { name: 'korean-particles', show: false },
+      { name: 'string-processing', show: false },
+      { name: 'testing', show: false },
+      { name: 'personal-project', show: false },
+      { name: 'pain-point-driven', show: false },
+    ],
+    techStack: ['Dart'],
+    links: [
+      { type: 'pubdev', title: 'pub.dev', href: 'https://pub.dev/packages/extify' },
+      { type: 'github', title: 'GitHub', href: 'https://github.com/seungjoonH/extify' },
+    ],
+    sections: [
+      {
+        title: '**Package design**: consolidating repeated utility logic',
+        items: [
+          'Designed and published a Dart package that bundles frequently used core utilities to remove inefficiency from repeatedly reimplementing the same logic across projects',
+        ],
+      },
+      {
+        title: '**Core feature implementation**: Korean particles, jamo processing, and string transformation',
+        items: [
+          {
+            title: 'Automatic Korean particle handling and jamo decomposition',
+            items: ['Automated tricky Korean particle rules such as "eun/neun" and "i/ga", and implemented and documented choseong/jungseong/jongseong decomposition and composition logic'],
+            links: [{ type: 'doc', id: 'flutter-hangeul' }],
+          },
+          {
+            title: 'String case converter',
+            items: ['Implemented and documented bidirectional conversion across various naming conventions such as snake_case, camelCase, and PascalCase'],
+            links: [{ type: 'doc', id: 'flutter-string-case-converter' }],
+          },
+        ],
+      },
+      {
+        title: '**Package release and maintenance**: public release on pub.dev',
+        items: [
+          '**Published it as an open-source package on pub.dev** so anyone can easily install it through `pubspec.yaml`',
+          '**Reduced repeated code across projects**',
+          'Gained experience in designing and maintaining a library at a level that external users can trust',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'hgu-glocal',
+    teamSize: 4,
+    hidden: false,
+    type: 'group',
+    title: 'Handong Glocal Website',
+    status: 'support-ended',
+    period: { start: '2025-02', end: '2025-08' },
+    summary: 'The official Handong Glocal website built for the university (Legacy)',
+    tags: [
+      'official-site',
+      'responsive',
+      'i18n',
+      'board',
+      'file-upload',
+    ],
+    techStack: [
+      'Typescript',
+      'Next.js',
+      'SpringBoot',
+      'JPA',
+      'PostgreSQL',
+      'AWS',
+      'S3',
+      'Docker',
+      { name: 'JWT', show: false },
+      { name: 'React', show: false },
+      { name: 'GitHub Actions', show: false },
+      { name: 'Terraform', show: false },
+      { name: 'EC2', show: false },
+      { name: 'RDS', show: false },
+      { name: 'Swagger', show: false },
+      { name: 'Google OAuth', show: false },
+    ],
+    links: [
+      { type: 'deploy', title: 'Web', href: 'https://glocal.handong.edu' },
+      { type: 'github', title: 'GitHub', href: 'https://github.com/D-Moong' },
+    ],
+    sections: [
+      {
+        title: '**Official website development**: production deployment experience for a university site',
+        items: [
+          'Built the **official Glocal University website as a solo developer** under a direct request from the university and deployed it to the actual school domain',
+          'Integrated the frontend (`Next.js`) and backend (`Spring Boot`) directly, and implemented a **school website structure** with boards, notices, and resource sections',
+          'Continuously improved the service by reflecting feedback from the university side',
+        ],
+      },
+      {
+        title: '**Responsive layout design**: adapting screens by device type',
+        items: [
+          'Designed a **responsive layout structure** so content would not break across desktop, tablet, and mobile environments',
+          'Implemented a `useResponsive` hook to track `width`, `height`, and `status (desktop/tablet/mobile)`, updating state on resize events',
+          'Used **CSS class composition** where the UI structure stayed the same, and **device-specific component branching** where the structure itself differed',
+          'Delivered **consistent UI/UX and stable rendering** across a wide range of screen sizes',
+        ],
+        links: [{ type: 'doc', id: 'web-responsive' }],
+      },
+      {
+        title: '**Multilingual support**: implementing an i18n-based language switching structure',
+        items: [
+          'Implemented a **multilingual web structure** supporting both Korean and English for global users',
+          'Built a `useLanguage` hook to load the initial language from storage and control switching through `switchLanguage()` / `toggleLanguage()`',
+          'Integrated `react-i18next` so that not only regular strings but also **multiline text and object-based translation data** could be rendered naturally',
+          'Designed the home screen and major UI text to stay in sync on language change, securing a **consistent user experience in both Korean and English**',
+        ],
+        links: [{ type: 'external', title: 'Related post', href: 'https://seungjoonh.tistory.com/entry/web-i18n' }],
+      },
+      {
+        title: '**Boards and resource sections**: AWS S3-based file upload handling',
+        items: [
+          'Implemented **board-style content management features** such as notices and resource sections so the university could manage content directly',
+          'Applied an **AWS S3-based file storage structure** for resource uploads, linking uploaded files to posts for retrieval and download',
+          'Separated static assets and attachments to reduce dependency on server storage and improve file handling stability in production',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'foodrain',
+    teamSize: 3,
+    hidden: true,
+    type: 'group',
+    title: 'Foodrain',
+    status: 'contribution-ended',
+    period: { start: '2024-09', end: '2024-12' },
+    summary: 'Maintenance of a web service for advanced integrated logistics support for small business owners',
+    tags: ['maintenance', 'flutter-web', 'frontend'],
+    techStack: ['Flutter', 'Dart'],
+    links: [
+      { type: 'external', title: 'Foodrain service', href: 'https://foodrain.com/main' },
+    ],
+    sections: [
+      {
+        title: '**User web maintenance**: feature additions and UI improvements',
+        items: [
+          '**Flutter Web** frontend development',
+          'Developed new UI/UX screens and improved performance',
+          'Integrated backend APIs and reflected client requirements',
+        ],
+      },
+      {
+        title: '**Admin web maintenance**: feature additions and UI improvements',
+        items: [
+          '**Flutter Web** frontend development',
+          'Developed new UI/UX screens and improved performance',
+          'Integrated backend APIs and reflected client requirements',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'fitween',
+    teamSize: 5,
+    hidden: false,
+    type: 'group',
+    title: 'Fitween',
+    status: 'support-ended',
+    period: { start: '2023-06', end: '2023-12' },
+    summary: 'A fitness motivation app that combines AI motion recognition with game elements',
+    tags: ['planning', 'development', 'release', 'version-control'],
+    techStack: ['Flutter', 'Dart', 'Firebase'],
+    links: [
+      { type: 'appstore', title: 'AppStore', href: 'https://apps.apple.com/kr/app/fitween/id1671114122?l=ko-KR' },
+      { type: 'github', title: 'GitHub', href: 'https://github.com/seungjoonH/fitween' },
+    ],
+    sections: [
+      {
+        title: '**Design sprint execution**: minimizing product risk',
+        items: [
+          '**Built prototypes of real app features and validated them through user testing**',
+          'Collected user needs and feedback around real-time pose feedback',
+          'Excluded unnecessary features and finalized development priorities for the core experience',
+        ],
+        links: [{ type: 'doc', id: 'fitween-design-sprint' }],
+      },
+      {
+        title: '**Motion recognition implementation**: adopting TensorFlow MoveNet',
+        items: [
+          'Applied pose estimation technology to track leg angles and movement in real time',
+          'With no official Flutter library available, **analyzed an unmaintained open-source project**, adapted it to fit the product requirements, and documented the process',
+        ],
+        links: [{ type: 'doc', id: 'movenet-flutter' }],
+      },
+      {
+        title: '**UI component development**: custom implementation due to lack of suitable packages',
+        items: [
+          'Built a Circular Carousel widget from scratch to faithfully match the design specification',
+          'Documented the implementation process',
+        ],
+        links: [{ type: 'doc', id: 'flutter-circular-carousel' }],
+      },
+    ],
+  },
+  {
+    id: '3d-renderer',
+    teamSize: 1,
+    hidden: false,
+    type: 'toy',
+    title: '3D Renderer',
+    status: 'ended',
+    period: { start: '2024-05', end: '2024-05' },
+    summary: 'An experimental 3D rendering project where I directly implemented how 3D shapes are projected onto a 2D screen using Python',
+    tags: ['graphics', 'math', 'rendering-engine', 'solo-planning'],
+    techStack: ['Python', 'Pygame', 'Numpy'],
+    links: [
+      { type: 'github', title: 'GitHub', href: 'https://github.com/seungjoonH/3d-renderer' },
+    ],
+    sections: [
+      {
+        title: '**Rendering engine implementation**: designing a 3D → 2D projection pipeline',
+        items: [
+          'Learned and implemented **the principle of transforming spatial coordinates into 2D screen coordinates through a camera** without using engines such as Unity or OpenGL',
+          'Defined the line of sight from the camera position ($V$) to the object coordinate ($A$), and built a projection pipeline that **computes the intersection with the projection plane using vector math and plane equations, then converts it into screen coordinates**',
+        ],
+        links: [{ type: 'doc', id: 'project-3d-renderer' }],
+      },
+      {
+        title: '**Camera system implementation**: real-time view control and 3D movement',
+        items: [
+          'Implemented a free camera control system by calculating **view vector rotation based on mouse input**',
+          'Implemented movement logic for freely exploring **3D space using WASD and vertical movement keys**',
+          'Delivered an **FPS-style camera control experience** through vector-based movement and rotation calculations',
+        ],
+      },
+      {
+        title: '**Rendering structure design**: vector-based coordinate computation',
+        items: [
+          'Implemented **screen coordinate calculation logic based on dot products** using NumPy',
+          'Defined screen-space unit vectors ($i\'$, $j\'$) and designed a structure that **maps projected points into screen coordinates**',
+          'Directly implemented and experimented with **the mathematical foundation of rendering** to better understand how graphics engines work',
+        ],
+      },
+    ],
+  },
+];
+
+export default projects;

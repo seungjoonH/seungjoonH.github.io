@@ -118,6 +118,13 @@ export const docs = {
       source: { type: 'project', searchQuery: 'title:"Moolbangwool Talk" show:all' },
       chipLabel: 'Mbwt',
     },
+    {
+      id: 'mbwt-service-architecture',
+      link: 'https://github.com/boostcampwm2025/web26-2Ryuk/wiki/%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90',
+      title: 'Moolbangwool Talk: service architecture',
+      source: { type: 'project', searchQuery: 'title:"Moolbangwool Talk" show:all' },
+      chipLabel: 'Mbwt',
+    },
   ],
 };
 

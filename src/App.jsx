@@ -1,35 +1,35 @@
-import { Nav } from '@components/layout/Nav';
-import { Main } from '@sections/Main';
-import { Education } from '@sections/Education';
-import { Experience } from '@sections/Experience';
-import { Skills } from '@sections/Skills';
-import { Projects } from '@sections/Projects';
-import { Docs } from '@sections/Docs';
-import { Contact } from '@sections/Contact';
-import { CardCursor } from '@components/CardCursor';
-import { useApp } from './hooks/useApp';
-import config from './config.js';
+import { Navigate, Route, Routes, useParams } from 'react-router-dom';
+import { getDefaultSiteHash, isSiteVersionAllowed } from './config.js';
+import { VersionProvider } from './versioning/VersionContext.jsx';
+import { I18nVersionBridge } from './versioning/I18nVersionBridge.jsx';
+import { VersionAppEntry } from './versioning/VersionAppEntry.jsx';
+import { IntroLinksProvider } from './versioning/IntroLinksContext.jsx';
 
-function App() {
-  const { narrow, educationFadeInTriggered, configStyleProps } = useApp();
+function VersionedRoute() {
+  const { versionHash } = useParams();
+  const fallback = getDefaultSiteHash();
+
+  if (!isSiteVersionAllowed(versionHash)) {
+    return <Navigate to={`/${fallback}`} replace />;
+  }
 
   return (
-    <div className="columnContainer">
-      <style dangerouslySetInnerHTML={configStyleProps} />
-      <CardCursor />
-      <Nav />
-      <div className="section" id="main"><Main /></div>
-      <div className="section" id="education"><Education narrow={narrow} shouldFadeIn={educationFadeInTriggered} /></div>
-      <div className="section" id="experience"><Experience /></div>
-      <div className="section" id="skills"><Skills /></div>
-      <div className="section" id="project"><Projects /></div>
-      <div className="section" id="docs"><Docs /></div>
-      <div className="section" id="contact"><Contact /></div>
-      <span className="versionLabel" aria-hidden="true">
-        v{config.version?.number} - {config.version?.buildDate}
-      </span>
-    </div>
+    <VersionProvider versionHash={versionHash}>
+      <I18nVersionBridge />
+      <IntroLinksProvider>
+        <VersionAppEntry />
+      </IntroLinksProvider>
+    </VersionProvider>
   );
 }
 
-export default App;
+export default function App() {
+  const defaultHash = getDefaultSiteHash();
+
+  return (
+    <Routes>
+      <Route path="/" element={<Navigate to={`/${defaultHash}`} replace />} />
+      <Route path="/:versionHash" element={<VersionedRoute />} />
+    </Routes>
+  );
+}

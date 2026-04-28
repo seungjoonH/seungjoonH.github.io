@@ -1,17 +1,21 @@
 import EducationModel from '../models/education.js';
-import educationsEn from '../data/en/educations.js';
-import educationsKo from '../data/ko/educations.js';
-
-const dataByLang = { en: educationsEn, ko: educationsKo };
+import { loadDataFile } from '../versioning/loadDataModule.js';
 
 export default class EducationRepository {
-  constructor() { this.list = []; }
-
-  async load(lang = 'en') {
-    const data = Array.isArray(dataByLang[lang]) ? dataByLang[lang] : (dataByLang.en ?? []);
-    this.list = data.map((json) => EducationModel.fromJson(json));
+  constructor() {
+    this.list = [];
   }
 
-  get all() { return this.list; }
-  getById(id) { return this.list.find((education) => education.id === id); }
+  async load(lang = 'en', versionHash = '') {
+    const data = await loadDataFile({ versionHash, lang, fileName: 'educations.js' });
+    const arr = Array.isArray(data) ? data : [];
+    this.list = arr.map((json) => EducationModel.fromJson(json));
+  }
+
+  get all() {
+    return this.list;
+  }
+  getById(id) {
+    return this.list.find((education) => education.id === id);
+  }
 }

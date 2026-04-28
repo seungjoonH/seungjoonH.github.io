@@ -1,10 +1,7 @@
-import docsEn from '../data/en/docs.js';
-import docsKo from '../data/ko/docs.js';
+import { loadDataFile } from '../versioning/loadDataModule.js';
 
-const dataByLang = { en: docsEn, ko: docsKo };
-
-export function getDocsForLanguage(lang) {
-  return dataByLang[lang] ?? dataByLang.en;
+export async function loadDocsForLanguage(lang = 'en', versionHash = '') {
+  return loadDataFile({ versionHash, lang, fileName: 'docs.js' });
 }
 
 export default class DocsRepository {
@@ -12,8 +9,8 @@ export default class DocsRepository {
     this._docs = null;
   }
 
-  load(lang = 'en') {
-    this._docs = getDocsForLanguage(lang);
+  async load(lang = 'en', versionHash = '') {
+    this._docs = await loadDocsForLanguage(lang, versionHash);
   }
 
   get docs() {

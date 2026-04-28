@@ -3,11 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { useA11y } from '../hooks/useA11y';
 import { useConfigStore } from '../stores/configStore';
 import { useProjectSearchStore } from '../stores/projectSearchStore';
-import { translateProjectSearchQuery } from '../sections/projects/search/translateQuery';
+import { translateProjectSearchQuery } from '@sections/projects/search/translateQuery';
+import { useVersionHash } from '../versioning/VersionContext.jsx';
+import { loadDataFile } from '../versioning/loadDataModule.js';
 import styles from './settingsPopup.module.css';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { SegmentedButton } from './shared/SegmentedButton';
 import { Icon } from './shared/icon/Icon';
+import { trackEvent } from '../utils/analytics.js';
 
 const SETTINGS_SPEED_MIN = 0.5;
 const SETTINGS_SPEED_MAX = 1.5;
@@ -18,6 +21,7 @@ const SETTINGS_SLIDER_STEP = 0.25;
 export function SettingsPopup({ onClose, returnFocusRef }) {
   const { t } = useTranslation();
   const a11y = useA11y();
+  const versionHash = useVersionHash();
   const panelRef = useRef(null);
   const titleRef = useRef(null);
   const {
@@ -48,6 +52,15 @@ export function SettingsPopup({ onClose, returnFocusRef }) {
     window.addEventListener('keydown', handleEscape);
     return () => window.removeEventListener('keydown', handleEscape);
   }, [handleClose]);
+  useEffect(() => {
+    trackEvent({
+      event: 'ui:settings_open',
+      versionHash,
+      locale: language,
+      dedupeKey: 'ui:settings_open',
+      cooldownMs: 800,
+    });
+  }, [versionHash, language]);
 
   return (
     <dialog
@@ -152,9 +165,13 @@ export function SettingsPopup({ onClose, returnFocusRef }) {
               { value: 'en', label: 'English', ariaLabel: a11y('settings.langEn') },
             ]}
             value={language}
-            onChange={(newLang) => {
+            onChange={async (newLang) => {
               if (rawQuery && newLang !== language) {
-                const translated = translateProjectSearchQuery(rawQuery, language, newLang);
+                const [en, ko] = await Promise.all([
+                  loadDataFile({ versionHash, lang: 'en', fileName: 'projects.js' }),
+                  loadDataFile({ versionHash, lang: 'ko', fileName: 'projects.js' }),
+                ]);
+                const translated = translateProjectSearchQuery(rawQuery, language, newLang, { en, ko });
                 setQuery(translated);
               }
               setLanguage(newLang);

@@ -44,8 +44,8 @@ const language = {
 };
 
 const version = {
-  number: '1.0.8',
-  buildDate: '20260427',
+  number: '1.0.9',
+  buildDate: '20260428',
 };
 
 const contact = {
@@ -103,6 +103,15 @@ const projectCard = {
 const TYPO_SCALE_MIN = 0.5;
 const TYPO_SCALE_MAX = 1.5;
 
+/** @type {{ defaultHash: string, hashes: Record<string, boolean> }} */
+const siteVersions = {
+  defaultHash: 'k9nq7wx',
+  hashes: {
+    k9nq7wx: true,
+    v3m8rj2: true,
+  },
+};
+
 const config = {
   animation,
   breakpoints,
@@ -115,9 +124,18 @@ const config = {
   skills,
   searchPlaceholderExamples,
   projectCard,
+  siteVersions,
 };
 
 export default config;
+export function isSiteVersionAllowed(hash) {
+  return siteVersions.hashes[hash] === true;
+}
+
+export function getDefaultSiteHash() {
+  return siteVersions.defaultHash;
+}
+
 export { 
   animation, 
   breakpoints, 
@@ -129,7 +147,8 @@ export {
   contact, 
   skills, 
   searchPlaceholderExamples, 
-  projectCard, 
+  projectCard,
+  siteVersions,
   TYPO_SCALE_MIN,
   TYPO_SCALE_MAX,
 };

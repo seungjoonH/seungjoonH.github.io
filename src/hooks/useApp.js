@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useConfigStore, dampenFontScale } from '../stores/configStore';
 import config from '../config.js';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +11,7 @@ const NARROW_MAX_WIDTH = 768;
 export function useApp() {
   const { theme, language, typographyScale, speedScale } = useConfigStore();
   const { i18n } = useTranslation();
+  const { pathname } = useLocation();
   const { type: breakpointType } = useResponsive();
   useZoomDetection();
 
@@ -34,7 +36,7 @@ export function useApp() {
   useEffect(() => {
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     window.scrollTo(0, 0);
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     const mode = theme || config.theme.initial;

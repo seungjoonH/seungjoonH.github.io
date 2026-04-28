@@ -114,7 +114,14 @@ export const docs = {
     {
       id: 'rendering-optimization-input-burst',
       link: 'https://github.com/boostcampwm2025/web26-2Ryuk/wiki/%EB%B9%84%EC%BB%A4%EC%B1%84%EC%9A%B0%EA%B8%B0-%EA%B2%8C%EC%9E%84-%EC%B5%9C%EC%A0%81%ED%99%94',
-      title: '비커채우기 게임 실시간 입력 폭증 환경에서의 렌더링 최적화',
+      title: '비커채우기 게임 최적화',
+      source: { type: 'project', searchQuery: 'title:"물방울톡" show:all' },
+      chipLabel: '물방울톡',
+    },
+    {
+      id: 'mbwt-service-architecture',
+      link: 'https://github.com/boostcampwm2025/web26-2Ryuk/wiki/%EC%95%84%ED%82%A4%ED%85%8D%EC%B3%90',
+      title: '물방울톡 서비스 아키텍처',
       source: { type: 'project', searchQuery: 'title:"물방울톡" show:all' },
       chipLabel: '물방울톡',
     },
