@@ -30,6 +30,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Navigate to={`/${defaultHash}`} replace />} />
       <Route path="/:versionHash" element={<VersionedRoute />} />
+      <Route path="*" element={<Navigate to={`/${defaultHash}`} replace />} />
     </Routes>
   );
 }

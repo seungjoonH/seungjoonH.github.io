@@ -7,7 +7,7 @@ const projects = [
     title: 'Moolbangwool Talk',
     status: 'live',
     period: { start: '2026-01', end: 'present' },
-    summary: 'A real-time voice social service that starts with light minigames and naturally leads into conversation',
+    summary: 'A real-time voice social app that breaks the ice with minigames and flows naturally into conversation',
     tags: [
       'naver-boostcamp',
       'voice-chat',
@@ -51,41 +51,41 @@ const projects = [
     ],
     sections: [
       {
-        title: '**Design system implementation**: establishing component design principles',
+        title: '**Design system**: establishing a component design philosophy',
         items: [
-          'Different styling approaches across developers caused visual inconsistency throughout the product',
-          'Defined design specs for each component and documented a **component design philosophy** so developers could only choose from predefined types',
-          'Reduced design variance across collaboration and **improved both design quality and the speed of implementing new UI**',
+          'Each developer styled things differently, leading to visual inconsistency across the product',
+          'Defined per-component design specs and **formalized a component philosophy** where developers pick only from predefined types - documented and shared across the team',
+          'Cut design drift during collaboration and **improved both polish and the speed of shipping new UI**',
         ],
         links: [{ type: 'doc', id: 'component-design-philosophy' }],
       },
       {
-        title: '**Floating component design**: optimizing state restoration logic',
+        title: '**Floating component design**: state restoration after refresh',
         items: [
           'Implemented a freely draggable floating chat panel',
-          '**Modularized position control logic into a dedicated hook** to decouple it from UI components and reduce complexity',
-          'Used Zustand Persist `partialize` and `merge` to preserve coordinates and restore state after refresh',
-          '**Delivered UI/UX aligned with both product and design intent**',
+          '**Extracted position control into a dedicated hook** to decouple it from UI components and keep complexity manageable',
+          'Used Zustand Persist `partialize` and `merge` to persist coordinates and restore panel state after page refresh',
+          '**Shipped UI/UX that matched both product intent and design specs**',
         ],
         links: [{ type: 'doc', id: 'floating-component-spec' }],
       },
       {
-        title: '**Real-time game optimization**: handling excessive input traffic',
+        title: '**Real-time game optimization**: surviving rapid input bursts',
         items: [
-          'Observed frame drops in multi-user environments and rendering stutter during user testing',
-          'Identified bottlenecks through **load testing** with Playwright and socket.io-client and **FPS / Performance profiling**',
-          'An N×N broadcast on every input caused an event explosion and saturated the main thread',
-          'Changed the client to accumulate input deltas in 100ms windows and send them in batches',
-          'Separated input handling from state broadcasting on the server and switched to a fixed 300ms broadcast cycle',
-          'Reduced incoming events per second from **about 2,937 → 32** and improved average FPS from **30.7 → 60.5**',
+          'Saw frame drops in multi-user sessions and confirmed rendering stutter during user testing',
+          'Pinpointed bottlenecks through **load testing** with Playwright and socket.io-client, plus **FPS and Performance profiling**',
+          'Every input triggered an N×N broadcast, causing an event flood that saturated the main thread',
+          'Changed the client to batch input deltas into 100ms windows before sending',
+          'Decoupled input handling from state broadcasting on the server and locked broadcasts to a fixed 300ms cycle',
+          'Cut incoming events per second from **~2,937 → 32** and pushed average FPS from **30.7 → 60.5**',
         ],
         links: [{ type: 'doc', id: 'rendering-optimization-input-burst' }],
       },
       {
-        title: '**QA system setup**: establishing a verification process',
+        title: '**QA system**: building a structured verification process',
         items: [
-          'Structured entry logic systematically based on user state and route',
-          'Established a QA process to ensure **reliable system behavior and stronger technical completeness**',
+          'Mapped out entry logic systematically based on user state and navigation path',
+          'Established a QA process to keep **system behavior reliable and technically solid**',
         ],
         links: [{ type: 'doc', id: 'qa-checklist' }],
       },
@@ -99,7 +99,7 @@ const projects = [
     title: 'Personal Portfolio',
     status: 'maintained',
     period: { start: '2026-03', end: 'present' },
-    summary: 'A personal portfolio website focused on structured data, search UX, accessibility, multilingual support, and interactive design',
+    summary: 'A personal portfolio site with structured data, search UX, accessibility, i18n, and interactive design baked in',
     tags: [
       'responsive',
       'search',
@@ -126,48 +126,48 @@ const projects = [
     ],
     sections: [
       {
-        title: '**Accessibility improvements**: semantic structure and ARIA design',
+        title: '**Accessibility**: semantic structure and ARIA design',
         items: [
-          'Structured the page with **semantic tags** such as `header`, `nav`, `main`, `section`, and `article`, and supplemented missing semantics with **ARIA roles, names, and states** where needed. Also reviewed **unclear guidance copy** directly and aligned **screen reader announcements and focus order** with the UI',
-          'Used the `useConfigStore` hook to manage **light/dark mode** in global state and applied **a consistent design system** through grouped **CSS variable sets** for each mode',
-          'Provided a **Font Scale** setting and used `clamp` / `cq` so the **layout remains stable even when text size is increased**',
+          'Built page structure with **semantic tags** (`header`, `nav`, `main`, `section`, `article`) and filled gaps with **ARIA roles, names, and states**. Reviewed unclear copy firsthand and aligned **screen reader announcements and focus order** with the visual UI',
+          'Managed **light/dark mode** state globally via `useConfigStore` and applied a **consistent design system** using grouped **CSS variable sets** per mode',
+          'Exposed a **Font Scale** setting and used `clamp` / `cq` so the **layout holds even when text size is cranked up**',
         ],
       },
       {
-        title: '**User experience improvements**: user-friendly UI/UX design',
+        title: '**User experience**: user-friendly UI/UX',
         items: [
-          'Used **tooltips** on UI that was hard to understand at a glance, guiding users toward the next action or the right settings path',
-          'Added labels and helper text to buttons, links, and inputs so their **roles are immediately understandable**, and reinforced context with `title` and ARIA',
+          'Added **tooltips** on non-obvious UI to nudge users toward the next action or the right setting',
+          'Gave buttons, links, and inputs clear labels and helper text so their **purpose is obvious at a glance**, with `title` and ARIA for added context',
         ],
       },
       {
-        title: '**Responsive layout design**: breakpoint-based screen adaptation',
+        title: '**Responsive layout**: breakpoint-based adaptation',
         items: [
-          'Defined **four breakpoints — mobile, tablet, desktop, and wide** — and designed grid columns and typography so the layout would not break at any size',
-          'Implemented a `useResponsive` hook to detect the active breakpoint and reflect it in **grid column counts and the number of visible tags/stacks inside cards**',
+          'Defined **four breakpoints — mobile, tablet, desktop, and wide** — with grid columns and typography tuned so nothing breaks at any size',
+          'Built a `useResponsive` hook to track the active breakpoint and apply it to **grid column counts and visible tag/stack counts inside cards**',
         ],
       },
       {
-        title: '**Project search implementation**: based on disassembled and composed Hangul matching',
+        title: '**Project search**: Hangul jamo decomposition and choseong matching',
         searchChip: { label: 'Extify', searchQuery: 'title:Extify show:all' },
         items: [
-          'Built on prior experience from **Extify** to port **Hangul jamo decomposition and choseong matching algorithms** to JavaScript, enabling typo-tolerant search UX',
-          'Improved discoverability and scanability through query normalization, stack/tag alias mapping, and result highlighting',
+          'Ported **Hangul jamo decomposition and choseong matching algorithms** from Extify into JavaScript to enable typo-tolerant search UX',
+          'Layered on query normalization, stack/tag alias mapping, and result highlighting to make **results easy to find and scan**',
         ],
       },
       {
-        title: '**Multilingual support**: designing a react-i18next-based resource structure',
+        title: '**Multilingual support**: react-i18next resource structure',
         items: [
-          'Used `react-i18next` for UI strings, while storing project, experience, and other **domain data in parallel `ko` / `en` directories** under the **same schema**',
-          'Applied shared key naming and `{{variable}}` interpolation for dynamic values, and grouped accessibility-only copy under an **`a11y` subtree** so screen reader text also follows the active language',
+          'Loaded UI strings via `react-i18next` and split **domain data (projects, experiences, etc.) into `ko` / `en` directories** under a shared schema',
+          'Used consistent key naming and `{{variable}}` interpolation for dynamic values, and grouped accessibility-only copy under an **`a11y` subtree** so screen reader text tracks the active language',
         ],
       },
       {
-        title: '**Interaction implementation**: animation-based feedback design',
+        title: '**Interactions**: animation-driven feedback',
         items: [
-          'Used scroll-based **fade-in/out** to create a sense of progress, and implemented **parallax scrolling** in the hero section',
-          'Enabled **smooth scrolling** from header navigation buttons to each section',
-          'Added a **flip animation** on project card **hover/focus** and modal/popup **transition animations** to provide **immediate feedback** for both mouse and keyboard interactions',
+          'Added scroll-based **fade-in/out** for a sense of progress, and set up **parallax scrolling** in the hero section',
+          'Wired header nav buttons to trigger **smooth scrolling** to each section',
+          'Built a **card flip animation** on hover/focus and added modal/popup **transition animations** for snappy feedback on both mouse and keyboard interactions',
         ],
       },
     ],
@@ -180,7 +180,7 @@ const projects = [
     title: 'Acommit',
     status: 'maintained',
     period: { start: '2025-11', end: 'present' },
-    summary: 'An AI-powered CLI tool for automating Git collaboration workflows',
+    summary: 'An AI-powered CLI tool that automates Git commit workflows',
     tags: [
       'open-source',
       'npm',
@@ -203,25 +203,25 @@ const projects = [
     ],
     sections: [
       {
-        title: '**CLI design and implementation**: automatic commit messages based on git diff',
+        title: '**CLI design and implementation**: commit message generation from git diff',
         items: [
-          'Built a CLI that analyzes git diff to generate commit messages, solving the difficulty of splitting large file changes properly and keeping team commit conventions consistent',
-          '**Implemented it through vibe coding based on a detailed plan**, covering the full path from multi-LLM integration to CLI publication',
+          'Built a git diff-based CLI to tackle two recurring pain points: splitting large changesets into sensible commits and keeping team commit conventions consistent',
+          '**Vibe-coded from a detailed upfront plan** - went from multi-LLM integration to npm publish in one fast iteration',
         ],
       },
       {
-        title: '**Automation architecture design**: extensibility through user-defined rules',
+        title: '**Automation architecture**: user-defined rules for extensibility',
         items: [
-          'Designed the tool so teams can define commit conventions in `rules.yml`, and generate **commit messages that follow those rules**',
-          'Analyzed changed files from git diff and designed **five grouping strategies** — such as similarity, tags, and directories — to generate sensible commit units automatically',
-          'Added support for both OpenAI and Gemini, and designed the structure so token limits and other LLM settings can be controlled directly from `rules.yml`',
+          'Teams define their commit conventions in `rules.yml`, and the tool generates **messages that follow those rules**',
+          'Analyzes changed files from git diff and groups them into sensible commit units using **five strategies** — similarity, tags, directory structure, and more',
+          'Supports both OpenAI and Gemini, with token limits and LLM config all tunable directly from `rules.yml`',
         ],
       },
       {
-        title: '**npm package release**: real project adoption and usage',
+        title: '**npm release**: shipped and used in real projects',
         items: [
-          'Published it as an **official npm package** so anyone can install and use the CLI easily',
-          'Applied it to real development workflows to automate commit message writing and change summarization, and **felt a clear improvement in commit workflow speed**',
+          'Published as an **official npm package** - install with one command, works in any CLI environment',
+          'Dogfooded it across real projects to automate commit writing and change summarization, and **felt the speed gain firsthand**',
         ],
       },
     ],
@@ -260,30 +260,30 @@ const projects = [
       {
         title: '**Package design**: consolidating repeated utility logic',
         items: [
-          'Designed and published a Dart package that bundles frequently used core utilities to remove inefficiency from repeatedly reimplementing the same logic across projects',
+          'Got tired of re-implementing the same utility logic across projects, so packaged the core pieces into a dedicated Dart library and published it',
         ],
       },
       {
-        title: '**Core feature implementation**: Korean particles, jamo processing, and string transformation',
+        title: '**Core features**: Korean particles, jamo processing, and string transformation',
         items: [
           {
-            title: 'Automatic Korean particle handling and jamo decomposition',
-            items: ['Automated tricky Korean particle rules such as "eun/neun" and "i/ga", and implemented and documented choseong/jungseong/jongseong decomposition and composition logic'],
+            title: 'Korean particle handling and jamo decomposition',
+            items: ['Automated tricky particle rules like "eun/neun" and "i/ga", and implemented choseong/jungseong/jongseong decomposition and composition with full documentation'],
             links: [{ type: 'doc', id: 'flutter-hangeul' }],
           },
           {
             title: 'String case converter',
-            items: ['Implemented and documented bidirectional conversion across various naming conventions such as snake_case, camelCase, and PascalCase'],
+            items: ['Implemented bidirectional conversion across naming conventions - snake_case, camelCase, PascalCase, and more - with full documentation'],
             links: [{ type: 'doc', id: 'flutter-string-case-converter' }],
           },
         ],
       },
       {
-        title: '**Package release and maintenance**: public release on pub.dev',
+        title: '**Release and maintenance**: open-sourced on pub.dev',
         items: [
-          '**Published it as an open-source package on pub.dev** so anyone can easily install it through `pubspec.yaml`',
-          '**Reduced repeated code across projects**',
-          'Gained experience in designing and maintaining a library at a level that external users can trust',
+          '**Published as an open-source package on pub.dev** - installable via `pubspec.yaml` with no friction',
+          '**Eliminated repeated boilerplate** across projects',
+          'Gained hands-on experience designing and maintaining a library to a standard that external users can rely on',
         ],
       },
     ],
@@ -296,7 +296,7 @@ const projects = [
     title: 'Handong Glocal Website',
     status: 'support-ended',
     period: { start: '2025-02', end: '2025-08' },
-    summary: 'The official Handong Glocal website built for the university (Legacy)',
+    summary: 'Official Handong University Glocal website (Legacy)',
     tags: [
       'official-site',
       'responsive',
@@ -328,39 +328,39 @@ const projects = [
     ],
     sections: [
       {
-        title: '**Official website development**: production deployment experience for a university site',
+        title: '**Official university website**: solo development and production deployment',
         items: [
-          'Built the **official Glocal University website as a solo developer** under a direct request from the university and deployed it to the actual school domain',
-          'Integrated the frontend (`Next.js`) and backend (`Spring Boot`) directly, and implemented a **school website structure** with boards, notices, and resource sections',
-          'Continuously improved the service by reflecting feedback from the university side',
+          'Took a direct commission from the university to **build the official Glocal website solo** and deployed it to the real school domain',
+          'Wired up the frontend (`Next.js`) and backend (`Spring Boot`) end-to-end, implementing a full **university site structure** with boards, notices, and resource sections',
+          'Iterated on features continuously based on feedback from the university',
         ],
       },
       {
-        title: '**Responsive layout design**: adapting screens by device type',
+        title: '**Responsive layout**: device-aware screen adaptation',
         items: [
-          'Designed a **responsive layout structure** so content would not break across desktop, tablet, and mobile environments',
-          'Implemented a `useResponsive` hook to track `width`, `height`, and `status (desktop/tablet/mobile)`, updating state on resize events',
-          'Used **CSS class composition** where the UI structure stayed the same, and **device-specific component branching** where the structure itself differed',
-          'Delivered **consistent UI/UX and stable rendering** across a wide range of screen sizes',
+          'Designed a **responsive layout** so content stays intact across desktop, tablet, and mobile',
+          'Built a `useResponsive` hook to track `width`, `height`, and `status (desktop/tablet/mobile)` and update on resize',
+          'Used **CSS class composition** where layout structure was shared, and **device-specific component branching** where it diverged',
+          'Achieved **consistent UI/UX and stable rendering** across screen sizes',
         ],
         links: [{ type: 'doc', id: 'web-responsive' }],
       },
       {
-        title: '**Multilingual support**: implementing an i18n-based language switching structure',
+        title: '**Multilingual support**: i18n-based language switching',
         items: [
-          'Implemented a **multilingual web structure** supporting both Korean and English for global users',
-          'Built a `useLanguage` hook to load the initial language from storage and control switching through `switchLanguage()` / `toggleLanguage()`',
-          'Integrated `react-i18next` so that not only regular strings but also **multiline text and object-based translation data** could be rendered naturally',
-          'Designed the home screen and major UI text to stay in sync on language change, securing a **consistent user experience in both Korean and English**',
+          'Built a **bilingual site (Korean/English)** to serve both domestic and international users',
+          'Created a `useLanguage` hook that loads the initial language from storage and exposes `switchLanguage()` / `toggleLanguage()` for control',
+          'Integrated `react-i18next` to handle not just plain strings but also **multiline text and object-shaped translation data**',
+          'Kept the home screen and key UI text in sync on language switch to deliver a **consistent experience in both Korean and English**',
         ],
         links: [{ type: 'external', title: 'Related post', href: 'https://seungjoonh.tistory.com/entry/web-i18n' }],
       },
       {
-        title: '**Boards and resource sections**: AWS S3-based file upload handling',
+        title: '**Boards and resource sections**: file uploads with AWS S3',
         items: [
-          'Implemented **board-style content management features** such as notices and resource sections so the university could manage content directly',
-          'Applied an **AWS S3-based file storage structure** for resource uploads, linking uploaded files to posts for retrieval and download',
-          'Separated static assets and attachments to reduce dependency on server storage and improve file handling stability in production',
+          'Implemented **board-style content management** (notices, resources, etc.) so the university could manage content without developer involvement',
+          'Used **AWS S3 for file storage**, linking uploaded attachments to posts for retrieval and download',
+          'Kept static assets and uploaded files separate to reduce server storage dependency and keep file handling stable in production',
         ],
       },
     ],
@@ -373,7 +373,7 @@ const projects = [
     title: 'Foodrain',
     status: 'contribution-ended',
     period: { start: '2024-09', end: '2024-12' },
-    summary: 'Maintenance of a web service for advanced integrated logistics support for small business owners',
+    summary: 'Maintenance of a Flutter Web logistics platform for small business merchants',
     tags: ['maintenance', 'flutter-web', 'frontend'],
     techStack: ['Flutter', 'Dart'],
     links: [
@@ -384,16 +384,16 @@ const projects = [
         title: '**User web maintenance**: feature additions and UI improvements',
         items: [
           '**Flutter Web** frontend development',
-          'Developed new UI/UX screens and improved performance',
-          'Integrated backend APIs and reflected client requirements',
+          'Built new UI/UX screens and improved performance',
+          'Integrated backend APIs and addressed client requirements',
         ],
       },
       {
         title: '**Admin web maintenance**: feature additions and UI improvements',
         items: [
           '**Flutter Web** frontend development',
-          'Developed new UI/UX screens and improved performance',
-          'Integrated backend APIs and reflected client requirements',
+          'Built new UI/UX screens and improved performance',
+          'Integrated backend APIs and addressed client requirements',
         ],
       },
     ],
@@ -406,7 +406,7 @@ const projects = [
     title: 'Fitween',
     status: 'support-ended',
     period: { start: '2023-06', end: '2023-12' },
-    summary: 'A fitness motivation app that combines AI motion recognition with game elements',
+    summary: 'A fitness motivation app combining AI motion recognition with game mechanics',
     tags: ['planning', 'development', 'release', 'version-control'],
     techStack: ['Flutter', 'Dart', 'Firebase'],
     links: [
@@ -415,26 +415,26 @@ const projects = [
     ],
     sections: [
       {
-        title: '**Design sprint execution**: minimizing product risk',
+        title: '**Design sprint**: de-risking the product early',
         items: [
-          '**Built prototypes of real app features and validated them through user testing**',
-          'Collected user needs and feedback around real-time pose feedback',
-          'Excluded unnecessary features and finalized development priorities for the core experience',
+          '**Built working prototypes of core features and validated them through user testing**',
+          'Gathered user needs and feedback around real-time pose feedback',
+          'Cut unnecessary features and locked in development priorities for the core experience',
         ],
         links: [{ type: 'doc', id: 'fitween-design-sprint' }],
       },
       {
-        title: '**Motion recognition implementation**: adopting TensorFlow MoveNet',
+        title: '**Motion recognition**: integrating TensorFlow MoveNet',
         items: [
-          'Applied pose estimation technology to track leg angles and movement in real time',
-          'With no official Flutter library available, **analyzed an unmaintained open-source project**, adapted it to fit the product requirements, and documented the process',
+          'Applied pose estimation to track leg angles and movement in real time',
+          'No official Flutter library existed, so **reverse-engineered an unmaintained open-source project**, adapted it to fit the product, and documented the whole process',
         ],
         links: [{ type: 'doc', id: 'movenet-flutter' }],
       },
       {
-        title: '**UI component development**: custom implementation due to lack of suitable packages',
+        title: '**Custom UI component**: built from scratch due to missing package support',
         items: [
-          'Built a Circular Carousel widget from scratch to faithfully match the design specification',
+          'Rolled a Circular Carousel widget from scratch to match the design spec exactly',
           'Documented the implementation process',
         ],
         links: [{ type: 'doc', id: 'flutter-circular-carousel' }],
@@ -449,7 +449,7 @@ const projects = [
     title: '3D Renderer',
     status: 'ended',
     period: { start: '2024-05', end: '2024-05' },
-    summary: 'An experimental 3D rendering project where I directly implemented how 3D shapes are projected onto a 2D screen using Python',
+    summary: 'An experimental project where I implemented 3D-to-2D projection from scratch in Python to understand how rendering actually works',
     tags: ['graphics', 'math', 'rendering-engine', 'solo-planning'],
     techStack: ['Python', 'Pygame', 'Numpy'],
     links: [
@@ -457,27 +457,27 @@ const projects = [
     ],
     sections: [
       {
-        title: '**Rendering engine implementation**: designing a 3D → 2D projection pipeline',
+        title: '**Rendering engine**: 3D → 2D projection pipeline from scratch',
         items: [
-          'Learned and implemented **the principle of transforming spatial coordinates into 2D screen coordinates through a camera** without using engines such as Unity or OpenGL',
-          'Defined the line of sight from the camera position ($V$) to the object coordinate ($A$), and built a projection pipeline that **computes the intersection with the projection plane using vector math and plane equations, then converts it into screen coordinates**',
+          'Dug into **how spatial coordinates pass through a camera and land on a 2D screen** - no Unity, no OpenGL, just math',
+          'Defined the line of sight from camera position ($V$) to object coordinate ($A$), then **computed the intersection with the projection plane using vector math and plane equations to get screen coordinates**',
         ],
         links: [{ type: 'doc', id: 'project-3d-renderer' }],
       },
       {
-        title: '**Camera system implementation**: real-time view control and 3D movement',
+        title: '**Camera system**: real-time view control and free 3D movement',
         items: [
-          'Implemented a free camera control system by calculating **view vector rotation based on mouse input**',
-          'Implemented movement logic for freely exploring **3D space using WASD and vertical movement keys**',
-          'Delivered an **FPS-style camera control experience** through vector-based movement and rotation calculations',
+          'Built a free-look camera by computing **view vector rotation from mouse input**',
+          'Implemented **WASD and vertical movement** for freely navigating 3D space',
+          'Combined vector-based movement and rotation for a smooth **FPS-style camera feel**',
         ],
       },
       {
-        title: '**Rendering structure design**: vector-based coordinate computation',
+        title: '**Rendering math**: vector-based coordinate computation',
         items: [
-          'Implemented **screen coordinate calculation logic based on dot products** using NumPy',
-          'Defined screen-space unit vectors ($i\'$, $j\'$) and designed a structure that **maps projected points into screen coordinates**',
-          'Directly implemented and experimented with **the mathematical foundation of rendering** to better understand how graphics engines work',
+          'Implemented **dot product-based screen coordinate calculation** with NumPy',
+          'Defined screen-space unit vectors ($i\'$, $j\'$) and built the structure that **maps projected points to pixel coordinates**',
+          'Implemented the **mathematical core of a rendering pipeline from scratch** to understand how graphics engines work under the hood',
         ],
       },
     ],

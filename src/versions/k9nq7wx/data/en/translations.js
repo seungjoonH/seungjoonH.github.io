@@ -1,13 +1,14 @@
 export default {
   main: {
     introduction:
-      "I'm a developer who works end to end—from client to server—and owns the full stack, @[Seungjoon Hyeon].\n\n" +
-      '- I primarily use Next.js, React, and TypeScript, and I care about @(portfolio)[UX-first UI] and @(mbwtPerf)[performance—including burst traffic in the minigame].\n' +
-      "- I've @(mbwtStack)[turned requirements into API specs and ERDs and shipped backends with NestJS].\n" +
-      '- @(mbwtStack)[I standardized environments with Docker, GitHub Actions, and cloud deployment pipelines].\n' +
-      '- I @(renderer)[study how technology works in depth] and @(docs)[capture what I learn in writing and docs].',
+      "Full-stack web developer who thinks end-to-end,\nfrom client to server, @[Seungjoon Hyeon].\n\n" +
+      '- My core stack is Next.js and TypeScript, with a focus on @(portfolio)[UX-driven UI] and @(mbwtPerf)[performance].\n' +
+      '- I\'ve handled @(mbwtStack)[API specs, ERD design, and NestJS backend] from scratch.\n' +
+      '- @(mbwtInfra)[Unified dev environments with Docker and built CI/CD pipelines on GitHub Actions].\n' +
+      '- I dig into @(renderer)[how things work under the hood] and @(docs)[document what I learn].',
     introLink: {
-      rowMbwtRenderingDoc: 'Rendering optimization under input burst (beaker minigame)',
+      rowMbwtRenderingDoc: 'Rendering optimization under rapid input (beaker minigame)',
+      rowMbwtServiceArchitecture: 'Mbwt - service architecture',
     },
   },
 };

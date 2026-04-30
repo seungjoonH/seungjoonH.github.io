@@ -44,8 +44,8 @@ const language = {
 };
 
 const version = {
-  number: '1.0.9',
-  buildDate: '20260428',
+  number: '1.0.10',
+  buildDate: '20260430',
 };
 
 const contact = {

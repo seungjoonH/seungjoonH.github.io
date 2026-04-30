@@ -87,7 +87,7 @@ export function ExperienceCard({ experience, mobileHovered = false }) {
           </div>
           {sections.length > 0 && (
             <ul className={styles.sectionTitles} aria-label={a11y('experience.sectionList')}>
-              {sections.map((sec, i) => (
+              {sections.slice(0, 3).map((sec, i) => (
                 <li key={i} title={sec.title}>{sec.title}</li>
               ))}
             </ul>

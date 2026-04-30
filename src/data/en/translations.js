@@ -61,5 +61,9 @@ export default {
       contributionEnded: 'Contributed',
       ended: 'Ended',
     },
+    sortOrderRecent: 'Recent',
+    sortOrderOldest: 'Oldest',
+    sortOrderStatus: 'Status',
+    sortButtonTitle: 'Sort: {{current}} — click for {{next}}',
   },
 };
