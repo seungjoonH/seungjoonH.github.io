@@ -4,13 +4,12 @@ import { useA11y } from '../hooks/useA11y';
 import { useConfigStore } from '../stores/configStore';
 import { useProjectSearchStore } from '../stores/projectSearchStore';
 import { translateProjectSearchQuery } from '@sections/projects/search/translateQuery';
-import { useVersionHash } from '../versioning/VersionContext.jsx';
 import { loadDataFile } from '../versioning/loadDataModule.js';
 import styles from './settingsPopup.module.css';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { SegmentedButton } from './shared/SegmentedButton';
 import { Icon } from './shared/icon/Icon';
-import { trackEvent } from '../utils/analytics.js';
+import { useAnalytics } from '../hooks/useAnalytics.js';
 
 const SETTINGS_SPEED_MIN = 0.5;
 const SETTINGS_SPEED_MAX = 1.5;
@@ -21,7 +20,7 @@ const SETTINGS_SLIDER_STEP = 0.25;
 export function SettingsPopup({ onClose, returnFocusRef }) {
   const { t } = useTranslation();
   const a11y = useA11y();
-  const versionHash = useVersionHash();
+  const { trackSettingsOpen } = useAnalytics();
   const panelRef = useRef(null);
   const titleRef = useRef(null);
   const {
@@ -53,14 +52,8 @@ export function SettingsPopup({ onClose, returnFocusRef }) {
     return () => window.removeEventListener('keydown', handleEscape);
   }, [handleClose]);
   useEffect(() => {
-    trackEvent({
-      event: 'ui:settings_open',
-      versionHash,
-      locale: language,
-      dedupeKey: 'ui:settings_open',
-      cooldownMs: 800,
-    });
-  }, [versionHash, language]);
+    trackSettingsOpen();
+  }, [trackSettingsOpen]);
 
   return (
     <dialog

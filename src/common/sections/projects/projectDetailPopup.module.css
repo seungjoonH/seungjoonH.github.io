@@ -116,7 +116,6 @@
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 6px;
-  scrollbar-gutter: stable;
   -webkit-overflow-scrolling: touch;
 }
 

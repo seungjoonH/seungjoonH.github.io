@@ -22,8 +22,7 @@ import { getMaxVisibleChips } from '../../../utils/getMaxVisibleChips.js';
 import { useStackChipsOverflow } from './useStackChipsOverflow';
 import { StatusChip } from './StatusChip';
 import { PROJECT_STATUS } from './status/projectStatus';
-import { useVersionHash } from '../../../versioning/VersionContext.jsx';
-import { trackEvent } from '../../../utils/analytics.js';
+import { useAnalytics } from '../../../hooks/useAnalytics.js';
 
 const LINK_SURFACE_BY_TYPE = Object.freeze({
   github: 'titleIcon',
@@ -101,6 +100,7 @@ function renderSectionItem(item, section, sectionTitle, itemIndex, descTerms, ca
       </li>
     );
   }
+  
   const title = item?.title || '';
   const subItems = Array.isArray(item?.items) ? item.items : [];
   const subLinks = Array.isArray(item?.links) ? item.links : [];
@@ -181,8 +181,7 @@ export function ProjectDetailContent({ project, variant, isMobile = false }) {
   const stopIfCard = variant === 'card' ? (e) => e.stopPropagation() : undefined;
 
   const { type: breakpointType } = useResponsive();
-  const versionHash = useVersionHash();
-  const language = useConfigStore((s) => s.language);
+  const { trackSkillClick } = useAnalytics();
   const typographyScale = useConfigStore((s) => s.typographyScale) ?? config.typography.scale;
   const { maxTags: maxVisibleTags, maxStacks: maxVisibleStacks } = getMaxVisibleChips(breakpointType, typographyScale);
   const tagsToShow = variant === 'card' ? effectiveTags.tags.slice(0, maxVisibleTags) : effectiveTags.tags;
@@ -191,11 +190,18 @@ export function ProjectDetailContent({ project, variant, isMobile = false }) {
 
   const headWrapCls = buildCls(variant === 'popup' && cardStyles.popupHead, variant !== 'popup' && cardStyles.backHeadWrap);
   const periodRowCls = buildCls(cardStyles.periodRow, variant === 'popup' && cardStyles.periodRowPopup);
+  const backHeadTopCls = buildCls(cardStyles.backHeadTop, variant === 'popup' && cardStyles.popup);
 
   const stacksForLine = stacksToShow;
   const stackTwoRows = useEvenSplit && stacksForLine.length >= 2;
   const stackRow1 = stackTwoRows ? stacksForLine.slice(0, Math.floor(stacksForLine.length / 2)) : stacksForLine;
   const stackRow2 = stackTwoRows ? stacksForLine.slice(Math.floor(stacksForLine.length / 2)) : [];
+
+  const handleDetailStackClick = (stack) => (e) => {
+    e.stopPropagation();
+    trackSkillClick(stack);
+    appendShortcutToQuery(`stack:"${stack}"`);
+  };
 
   const renderDetailStackChip = (stack) => {
     const chipCls = buildCls(
@@ -207,17 +213,7 @@ export function ProjectDetailContent({ project, variant, isMobile = false }) {
         key={stack}
         type="button"
         className={chipCls}
-        onClick={(e) => {
-          e.stopPropagation();
-          trackEvent({
-            event: 'skill:click',
-            versionHash,
-            locale: language,
-            entityId: stack,
-            dedupeKey: `skill:click:${stack}`,
-          });
-          appendShortcutToQuery(`stack:"${stack}"`);
-        }}
+        onClick={handleDetailStackClick(stack)}
         aria-label={a11y('project.searchByStack', { stack })}
       >
         {getStackIconName(stack) && (
@@ -252,7 +248,7 @@ export function ProjectDetailContent({ project, variant, isMobile = false }) {
     <>
       <div className={headWrapCls}>
       <div className={cardStyles.backHead}>
-        <div className={cardStyles.backHeadTop}>
+        <div className={backHeadTopCls}>
           <h4 className={cardStyles.projectType}>{project.typeLabel}</h4>
           <div className={cardStyles.backHeadRight}>
             <div className={periodRowCls}>

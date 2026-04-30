@@ -510,6 +510,10 @@
   max-width: 100%;
 }
 
+.backHeadTop.popup {
+  margin-right: 64px;
+}
+
 .backHeadWrap {
   min-width: 0;
   min-height: min-content;
@@ -1058,7 +1062,6 @@
 
 .popupHead {
   flex-shrink: 0;
-  margin-right: 64px;
 }
 
 .popupBody {

@@ -6,7 +6,7 @@ import { useConfigStore } from '../../stores/configStore';
 import { useExperienceFocusStore } from '../../stores/experienceFocusStore';
 import { useA11y } from '../../hooks/useA11y';
 import { useVersionHash } from '../../versioning/VersionContext.jsx';
-import { trackEvent } from '../../utils/analytics.js';
+import { useAnalytics } from '../../hooks/useAnalytics.js';
 import { useExperienceData } from './experience/useExperienceData';
 import { useExperienceLongPress } from './experience/useExperienceLongPress';
 import { useExperienceScroll } from './experience/useExperienceScroll';
@@ -19,21 +19,12 @@ import {
 
 const FOCUS_RESET_MS = 400;
 const ENTER_KEYS = new Set(['Enter', ' ']);
-const EXPERIENCE_CLICK_EVENT = 'experience:click';
-
-function normalizeExperienceEntityId(value) {
-  const normalized = String(value ?? '')
-    .toLowerCase()
-    .replace(/[^a-z0-9_-]/g, '_')
-    .slice(0, 80);
-  return normalized || 'unknown_experience';
-}
 
 export function Experience() {
   const a11y = useA11y();
   const { type: breakpointType, isMobile, a11yCardSuffix } = useResponsive();
   const language = useConfigStore((s) => s.language);
-  const versionHash = useVersionHash();
+  const { trackExperienceClick } = useAnalytics();
   const experienceIdToFocus = useExperienceFocusStore((s) => s.experienceIdToFocus);
   const clearExperienceIdToFocus = useExperienceFocusStore((s) => s.clearExperienceIdToFocus);
 
@@ -52,16 +43,6 @@ export function Experience() {
   const [popupExperience, setPopupExperience] = useState(null);
   const [mobileHoveredCardIndex, setMobileHoveredCardIndex] = useState(null);
   const experienceReturnFocusRef = useRef(null);
-
-  const trackExperienceClick = (experience) => {
-    trackEvent({
-      event: EXPERIENCE_CLICK_EVENT,
-      versionHash,
-      locale: language,
-      entityId: normalizeExperienceEntityId(experience?.id),
-      dedupeKey: `${EXPERIENCE_CLICK_EVENT}:${normalizeExperienceEntityId(experience?.id)}`,
-    });
-  };
 
   const handleOpenPopup = (experience, index) => {
     experienceReturnFocusRef.current = cardRefs.current[index];
@@ -91,7 +72,7 @@ export function Experience() {
       return;
     }
     if (!isMobile) {
-      trackExperienceClick(experience);
+      trackExperienceClick(experience?.id);
       handleFocusCard(index);
       handleOpenPopup(experience, index);
       return;
@@ -102,12 +83,12 @@ export function Experience() {
       return;
     }
     if (mobileHoveredCardIndex === index) {
-      trackExperienceClick(experience);
+      trackExperienceClick(experience?.id);
       handleOpenPopup(experience, index);
       setMobileHoveredCardIndex(null);
       return;
     }
-    trackExperienceClick(experience);
+    trackExperienceClick(experience?.id);
     setMobileHoveredCardIndex(index);
     handleFocusCard(index);
   };
@@ -115,7 +96,7 @@ export function Experience() {
   const handleCardKeyDown = (experience, index) => (e) => {
     if (!ENTER_KEYS.has(e.key)) return;
     e.preventDefault();
-    trackExperienceClick(experience);
+    trackExperienceClick(experience?.id);
     handleOpenPopup(experience, index);
     if (isMobile && mobileHoveredCardIndex === index) setMobileHoveredCardIndex(null);
   };

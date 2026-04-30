@@ -7,19 +7,23 @@ import { SearchPlaceholderOverlay } from './SearchPlaceholderOverlay';
 import styles from '../projects.module.css';
 import { useVersionHash } from '../../../versioning/VersionContext.jsx';
 import { useConfigStore } from '../../../stores/configStore.js';
-import { buildSearchSubmitMeta, trackEvent } from '../../../utils/analytics.js';
+import { useAnalytics } from '../../../hooks/useAnalytics.js';
 
 export function ProjectSearchBar() {
   const { t } = useTranslation();
   const a11y = useA11y();
-  const versionHash = useVersionHash();
-  const language = useConfigStore((s) => s.language);
+  const { trackSearchSubmit } = useAnalytics();
   const rawQuery = useProjectSearchStore((s) => s.rawQuery);
   const queryAppliedByShortcut = useProjectSearchStore((s) => s.queryAppliedByShortcut);
   const shortcutHintDismissed = useProjectSearchStore((s) => s.shortcutHintDismissed);
   const setQuery = useProjectSearchStore((s) => s.setQuery);
   const dismissShortcutHint = useProjectSearchStore((s) => s.dismissShortcutHint);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+
+  const handleSearchKeyDown = (e) => {
+    if (e.key !== 'Enter') return;
+    trackSearchSubmit(rawQuery);
+  };
 
   const showTooltip = rawQuery && queryAppliedByShortcut && !shortcutHintDismissed;
 
@@ -34,17 +38,7 @@ export function ProjectSearchBar() {
             type="search"
             value={rawQuery}
             onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key !== 'Enter') return;
-              trackEvent({
-                event: 'search:submit',
-                versionHash,
-                locale: language,
-                meta: buildSearchSubmitMeta(rawQuery),
-                dedupeKey: `search:submit:${rawQuery.trim().toLowerCase()}`,
-                cooldownMs: 700,
-              });
-            }}
+            onKeyDown={handleSearchKeyDown}
             onFocus={() => setIsSearchFocused(true)}
             onBlur={() => setIsSearchFocused(false)}
             placeholder=""

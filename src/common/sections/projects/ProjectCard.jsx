@@ -19,17 +19,15 @@ import { isStackMatchedByQuery } from './search/filterProjects';
 import { useStackChipsOverflow } from './useStackChipsOverflow';
 import { useA11y } from '../../../hooks/useA11y';
 import { StatusChip } from './StatusChip';
-import { useVersionHash } from '../../../versioning/VersionContext.jsx';
-import { trackEvent } from '../../../utils/analytics.js';
+import { useAnalytics } from '../../../hooks/useAnalytics.js';
 
 export function ProjectCard({ project, showAll = false }) {
   const a11y = useA11y();
-  const versionHash = useVersionHash();
+  const { trackProjectClick, trackSkillClick } = useAnalytics();
   const rawQuery = useProjectSearchStore((s) => s.rawQuery);
   const appendShortcutToQuery = useProjectSearchStore((s) => s.appendShortcutToQuery);
   const { type: breakpointType, isMobile, a11yCardSuffix } = useResponsive();
   const typographyScale = useConfigStore((s) => s.typographyScale) ?? config.typography.scale;
-  const language = useConfigStore((s) => s.language);
   const { maxTags: maxVisibleTags, maxStacks: maxVisibleStacks } = getMaxVisibleChips(breakpointType, typographyScale);
   const flippedProjectId = useProjectCardFlipStore((s) => s.flippedProjectId);
   const setFlippedProjectId = useProjectCardFlipStore((s) => s.setFlippedProjectId);
@@ -65,42 +63,11 @@ export function ProjectCard({ project, showAll = false }) {
 
   const handleCardClick = () => {
     const hasActiveSearch = String(rawQuery || '').trim().length > 0;
-    if (!isMobile) {
-      trackEvent({
-        event: 'project:click',
-        versionHash,
-        locale: language,
-        entityId: project.id,
-        dedupeKey: `project:click:${project.id}`,
-      });
-      if (hasActiveSearch) {
-        trackEvent({
-          event: 'search:result_click',
-          versionHash,
-          locale: language,
-          entityId: project.id,
-          dedupeKey: `search:result_click:${project.id}`,
-        });
-      }
-      return setPopupOpen(true);
-    }
+    trackProjectClick(project.id, { withSearchResult: hasActiveSearch });
+
+    if (!isMobile) return setPopupOpen(true);
     if (!isFlipped) return setFlippedProjectId(project.id);
-    trackEvent({
-      event: 'project:click',
-      versionHash,
-      locale: language,
-      entityId: project.id,
-      dedupeKey: `project:click:${project.id}`,
-    });
-    if (hasActiveSearch) {
-      trackEvent({
-        event: 'search:result_click',
-        versionHash,
-        locale: language,
-        entityId: project.id,
-        dedupeKey: `search:result_click:${project.id}`,
-      });
-    }
+
     setPopupOpen(true);
     setFlippedProjectId(null);
   };
@@ -119,6 +86,12 @@ export function ProjectCard({ project, showAll = false }) {
   const row1 = twoRows ? visible.slice(0, Math.floor(visible.length / 2)) : visible;
   const row2 = twoRows ? visible.slice(Math.floor(visible.length / 2)) : [];
 
+  const handleStackChipClick = (stack) => (e) => {
+    e.stopPropagation();
+    trackSkillClick(stack);
+    appendShortcutToQuery(`stack:"${stack}"`);
+  };
+
   const renderStackChip = (stack) => {
     const chipCls = buildCls(
       styles.stackChip,
@@ -129,17 +102,7 @@ export function ProjectCard({ project, showAll = false }) {
         key={stack}
         type="button"
         className={chipCls}
-        onClick={(e) => {
-          e.stopPropagation();
-          trackEvent({
-            event: 'skill:click',
-            versionHash,
-            locale: language,
-            entityId: stack,
-            dedupeKey: `skill:click:${stack}`,
-          });
-          appendShortcutToQuery(`stack:"${stack}"`);
-        }}
+        onClick={handleStackChipClick(stack)}
         aria-label={a11y('project.searchByStack', { stack })}
       >
         {getStackIconName(stack) && (

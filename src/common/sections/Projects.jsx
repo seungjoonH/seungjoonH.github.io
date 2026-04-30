@@ -24,7 +24,7 @@ import { ProjectSearchBar } from '@sections/projects/ProjectSearchBar';
 import { useTranslation } from 'react-i18next';
 import { useA11y } from '../../hooks/useA11y';
 import { useVersionHash } from '../../versioning/VersionContext.jsx';
-import { trackEvent } from '../../utils/analytics.js';
+import { useAnalytics } from '../../hooks/useAnalytics.js';
 
 const MIN_CARD_WIDTH = 300;
 const BASE_GAP = 12;
@@ -240,14 +240,7 @@ export function Projects() {
   }, [isMobile, setFlippedProjectId]);
 
   const handleToggleShowHidden = () => {
-    trackEvent({
-      event: 'ui:spoiler_click',
-      versionHash,
-      locale: language,
-      entityId: 'show-hidden-toggle',
-      dedupeKey: 'ui:spoiler_click:show-hidden-toggle',
-      cooldownMs: 500,
-    });
+    trackUiSpoilerClick('show-hidden-toggle');
     const q = (rawQuery || '').trim();
     if (q === 'show:all') return setQuery('');
     return setQueryFromShortcut('show:all');

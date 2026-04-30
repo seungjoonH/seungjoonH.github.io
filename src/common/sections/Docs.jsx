@@ -8,9 +8,7 @@ import styles from './docs.module.css';
 import { buildCls } from '../../utils/cssUtil';
 import { useA11y } from '../../hooks/useA11y';
 import { useDocsFocusStore } from '../../stores/docsFocusStore.js';
-import { useVersionHash } from '../../versioning/VersionContext.jsx';
-import { useConfigStore } from '../../stores/configStore.js';
-import { trackEvent } from '../../utils/analytics.js';
+import { useAnalytics } from '../../hooks/useAnalytics.js';
 
 const CATEGORIES = {
   notion:     { label: 'Notion',      icon: 'notion'   },
@@ -31,13 +29,12 @@ function calcOpacity(rectTop, windowHeight, fadeStart, fadeEnd) {
 
 export function Docs() {
   const a11y = useA11y();
-  const versionHash = useVersionHash();
-  const language = useConfigStore((s) => s.language);
   const docs = useDocs();
   const docIdToFocus = useDocsFocusStore((s) => s.docIdToFocus);
   const clearDocIdFocus = useDocsFocusStore((s) => s.clearDocIdToFocus);
   const setQueryFromShortcut = useProjectSearchStore((s) => s.setQueryFromShortcut);
   const setExperienceIdToFocus = useExperienceFocusStore((s) => s.setExperienceIdToFocus);
+  const { trackDocClick } = useAnalytics();
   const sectionRef = useRef(null);
   const contentRef = useRef(null);
   const [headerOpacity, setHeaderOpacity] = useState(0);
@@ -107,6 +104,8 @@ export function Docs() {
   }, []);
 
   const toggle = (key) => setExpanded((prev) => ({ ...prev, [key]: !prev[key] }));
+
+  const handleDocLinkClick = (docId) => () => trackDocClick(docId);
 
   const handleChipClick = (e, doc) => {
     e.preventDefault();
@@ -203,15 +202,7 @@ export function Docs() {
                         target="_blank"
                         rel="noreferrer"
                         className={styles.docRowLink}
-                        onClick={() =>
-                          trackEvent({
-                            event: 'doc:click',
-                            versionHash,
-                            locale: language,
-                            entityId: doc.id,
-                            dedupeKey: `doc:click:${doc.id}`,
-                          })
-                        }
+                        onClick={handleDocLinkClick(doc.id)}
                       >
                         <span className={styles.docTitle}>{doc.title}</span>
                         <div className={styles.docRowIconWrapper}>
