@@ -6,7 +6,7 @@ const projects = [
     type: 'group',
     title: 'Moolbangwool Talk',
     status: 'live',
-    period: { start: '2026-01', end: '2026-02' },
+    period: { start: '2025-12', end: '2026-02' },
     summary:
       'A real-time voice social service that starts with light minigames and flows naturally into conversation',
     tags: [
@@ -294,7 +294,7 @@ const projects = [
   {
     id: 'hgu-glocal',
     teamSize: 4,
-    hidden: false,
+    hidden: true,
     type: 'group',
     title: 'Handong Glocal Website',
     status: 'support-ended',
@@ -408,7 +408,7 @@ const projects = [
     type: 'group',
     title: 'Fitween',
     status: 'support-ended',
-    period: { start: '2023-06', end: '2023-12' },
+    period: { start: '2022-07', end: '2023-12' },
     summary: 'A fitness motivation app combining AI motion recognition with game mechanics',
     tags: ['planning', 'development', 'release', 'version-control'],
     techStack: ['Flutter', 'Dart', 'Firebase'],

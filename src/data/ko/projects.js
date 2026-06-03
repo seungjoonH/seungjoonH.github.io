@@ -6,7 +6,7 @@ const projects = [
     type: 'group',
     title: '물방울톡',
     status: 'live',
-    period: { start: '2026-01', end: 'present' },
+    period: { start: '2025-12', end: '2026-02' },
     summary: '가벼운 미니게임으로 시작해 자연스러운 대화로 이어지는 실시간 음성 소셜 서비스',
     tags: [
       '네이버부스트캠프',
@@ -27,15 +27,16 @@ const projects = [
     techStack: [
       'Typescript',
       'Next.js',
-      'NestJS',
-      'Redis',
-      'MySQL',
+      'CSS Modules',
+      'Zustand',
       'Socket.io',
+      'WebRTC',
+      { name: 'NestJS', show: false },
+      { name: 'Redis', show: false },
+      { name: 'MySQL', show: false },
       { name: 'React', show: false },
       { name: 'Node.js', show: false },
-      { name: 'Zustand', show: false },
       { name: 'mediasoup', show: false },
-      { name: 'WebRTC', show: false },
       { name: 'TypeORM', show: false },
       { name: 'Passport', show: false },
       { name: 'Docker', show: false },
@@ -88,6 +89,53 @@ const projects = [
           'QA 프로세스를 정립하여 **시스템 동작 신뢰성과 기술적 완성도 확보**',
         ],
         links: [{ type: 'doc', id: 'qa-checklist' }],
+      },
+    ],
+  },
+  {
+    id: 'frogger',
+    teamSize: 4,
+    hidden: false,
+    type: 'group',
+    title: 'Frogger',
+    status: 'live',
+    period: { start: '2026-04', end: '2026-04' },
+    summary: '코드를 실행하면 AI가 시각화를 완성하는 알고리즘 디버거',
+    tags: ['웹', '알고리즘', '시각화', 'AI', { name: '바이브코딩', show: false }, { name: '실시간', show: false }],
+    techStack: ['Next.js', 'Typescript', 'D3', 'Three.js', 'Pyodide', 'Acorn', 'GCP', 'Gemini API', 'Vercel'],
+    images: ['/assets/projects/frogger.svg'],
+    links: [
+      { type: 'deploy', title: 'Frogger 서비스 링크', href: 'https://frogger-six.vercel.app/' },
+      { type: 'github', title: 'Frogger Github 저장소 링크', href: 'https://github.com/ultra-ai-dle/frogger' },
+    ],
+    sections: [
+      {
+        title: '**알고리즘 실행 흐름 시각화 디버거** 기획 및 구현',
+        items: [
+          'PS 문제 풀이 시 코드가 어떻게 동작하는지 직관적으로 확인하기 어려운 문제를 해결하기 위해 기획',
+          'Stack부터 DP까지 실행 흐름을 그래프와 표로 보여주는 **알고리즘 디버거 구조** 설계',
+        ],
+      },
+      {
+        title: '**3D 배열 시각화**: Three.js 기반 다양한 표현 방식 지원',
+        items: [
+          '1차원·2차원 배열뿐 아니라 3차원 배열도 직관적으로 파악할 수 있도록 Three.js 기반 시각화 방식 설계',
+          '데이터 구조와 연산 맥락에 맞춰 그래프·표·3D 뷰 등 **여러 표현 방식**을 지원',
+        ],
+      },
+      {
+        title: '**3개 언어 실행 환경 통합**: Python / Javascript / Java',
+        items: [
+          'Python과 JS는 Pyodide(WebAssembly)와 Acorn AST를 활용해 브라우저 Web Worker에서 직접 실행',
+          'Java는 브라우저에서 JVM 구성이 불가해 GCP VM(e2-micro)에 JVM 환경을 별도로 구성',
+        ],
+      },
+      {
+        title: '**AI 기반 시각화 전략 정확도 개선**',
+        items: [
+          '변수명에 의존해 시각화 전략을 결정하면 실제 동작과 달라지는 문제 발생',
+          '프롬프트와 후처리 로직 전반에 **"실제 연산 패턴 기준 판단 원칙"**을 적용해 정확도 개선',
+        ],
       },
     ],
   },
@@ -174,6 +222,136 @@ const projects = [
     ],
   },
   {
+    id: 'ps-studio',
+    teamSize: 1,
+    hidden: false,
+    type: 'personal',
+    title: 'PS Studio',
+    status: 'live',
+    period: { start: '2026-05', end: 'present' },
+    summary: 'PS 스터디를 위한 과제 관리, 코드 리뷰, AI 피드백 통합 플랫폼',
+    tags: ['웹', '스터디', 'AI', '실사용', { name: '유지보수', show: false }, { name: '바이브코딩', show: false }],
+    techStack: ['Next.js', 'NestJS', 'Supabase', 'PostgreSQL', 'Redis', 'BullMQ', 'Canny', 'GCP', 'OpenRouter'],
+    images: ['/assets/projects/psstudio.svg'],
+    links: [
+      { type: 'deploy', title: 'PS Studio 서비스 링크', href: 'https://psstudio.dev/landing' },
+      { type: 'github', title: 'PS Studio Github 저장소 링크', href: 'https://github.com/seungjoonH/psstudio' },
+    ],
+    sections: [
+      {
+        title: '**코드 리뷰·AI 피드백·마감 관리 통합 플랫폼** 기획 및 제작',
+        items: [
+          'Notion 기반 스터디에서 코드 라인 피드백과 마감 관리의 한계를 직접 경험',
+          '라인 리뷰, 버전 관리, AI 피드백, 마감 알림을 갖춘 스터디 전용 플랫폼을 제작해 팀원들과 실사용',
+        ],
+      },
+      {
+        title: '**마감 알림 안정성 확보**',
+        items: [
+          '마감 임박 알림을 정확한 시각에 유실 없이 발송하기 위해 BullMQ delayed job 도입',
+          '폴링 방식 대비 불필요한 DB 부하를 줄이고 서버 재시작에도 작업이 유지되는 구조 설계',
+        ],
+      },
+      {
+        title: '**LLM 비용 관리 및 안정성 개선**',
+        items: [
+          'Gemini 직접 호출 시 429 오류가 잦고 비용 예측이 어려운 문제를 경험',
+          {
+            title: '기능별 모델 라우팅',
+            items: [
+              '단순 요약은 저비용 모델, 긴 컨텍스트 기반 코드 피드백은 고성능 모델로 분리',
+              'OpenRouter를 도입해 모델 전환 유연성을 확보하고 운영 안정성 개선',
+            ],
+          },
+          '선불 충전식 과금과 사용량 대시보드로 비용 예측 가능성 개선',
+        ],
+      },
+      {
+        title: '**GitHub Actions + GCE 기반 CI/CD 파이프라인**',
+        items: [
+          'main 푸시 시 FE/BE/Worker 이미지를 자동 빌드해 GCE VM에 배포하는 파이프라인 구성 및 운영',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'my-first-boj',
+    teamSize: 1,
+    hidden: false,
+    type: 'personal',
+    title: 'My First BOJ',
+    status: 'live',
+    period: { start: '2026-04', end: '2026-04' },
+    summary: 'BOJ 서비스 종료 전 첫 제출 기록을 찾아 보존하는 서비스',
+    tags: ['웹', '아카이빙', '배포', '서비스중', { name: '바이브코딩', show: false }],
+    techStack: ['Next.js', 'Upstash Redis', 'Vercel'],
+    images: ['/assets/projects/my-first-boj.svg'],
+    links: [
+      { type: 'deploy', title: 'My First BOJ 서비스 링크', href: 'https://my-first-boj.vercel.app/' },
+      { type: 'github', title: 'My First BOJ Github 저장소 링크', href: 'https://github.com/seungjoonH/my-first-boj' },
+    ],
+    sections: [
+      {
+        title: '**첫 제출 기록 보존 서비스** 기획 및 제작',
+        items: [
+          '첫 제출 기록 소멸 전 찾아두려는 니즈를 발견해, 검색 결과를 캐싱하고 종료 후에도 조회 가능한 구조 설계',
+          'SEO 적용 및 백준 게시판 홍보로 누적 방문자 약 500명, 수집 데이터 1,000건 달성',
+        ],
+      },
+      {
+        title: '**탐색 알고리즘 개선**으로 BOJ 서버 부하 최소화',
+        items: [
+          {
+            title: '탐색 전략 고도화',
+            items: [
+              '순차 탐색의 무한정 요청 문제를 이진 탐색 O(log N, 최대 27회)으로 개선',
+              '`top=1`과 `prev_page` 링크 활용 방식으로 재개선해 O(1) 수준으로 단축',
+            ],
+          },
+        ],
+      },
+      {
+        title: '**채팅 닉네임 소유권 문제** 해결',
+        items: [
+          '로그인 없는 익명 환경에서 닉네임 소유권을 증명할 수 없는 문제 발생',
+          'BOJ IP 기반 랜덤 닉네임 배정 시스템으로 기획적 해결',
+        ],
+      },
+      {
+        title: '**Vercel 서버리스 + Upstash Redis** 기반 실시간 채팅',
+        items: [
+          'WebSocket 상주 연결이 불가해 SSE + Redis polling 구조로 대체',
+          '탭 비활성 시 연결 해제 및 1분 무활동 자동 닫힘으로 Redis 호출 부하 최소화',
+        ],
+      },
+    ],
+  },
+  {
+    id: 'mykit',
+    teamSize: 1,
+    hidden: false,
+    type: 'personal',
+    title: 'mykit',
+    status: 'maintained',
+    period: { start: '2026-05', end: 'present' },
+    summary: 'AI 코딩 에이전트용 프로젝트 규칙·문서 자동 생성 CLI',
+    tags: ['CLI', 'AI', '자동화', '유지보수', { name: '바이브코딩', show: false }],
+    techStack: ['Node.js', 'Javascript', 'Inquirer.js'],
+    images: ['/assets/projects/mykit.svg'],
+    links: [{ type: 'github', title: 'mykit Github 저장소 링크', href: 'https://github.com/seungjoonH/mykit' }],
+    sections: [
+      {
+        title: '**규칙 파일 기반 워크플로우** 설계 및 자동화',
+        items: [
+          'AI 에이전트가 프로젝트 맥락을 놓쳐 불필요한 코드를 과도 생성하는 문제를 반복 경험해, 에이전트 행동을 통제하는 규칙 기반 워크플로우 설계',
+          '기술 스택 조합에 따라 필요한 규칙 문서만 선택해 자동 생성하는 CLI를 구현해 규칙 작성 비용 절감',
+          '`mykit init` 한 번으로 Codex, Claude, Cursor 등 도구별 규칙 파일을 프로젝트 루트에 자동 생성',
+          '**PLAYBOOK.index.yaml**로 에이전트별 진입점, 도메인 문서 경로, 작업 유형별 탐색 경로를 구조화해 탐색 효율 개선',
+        ],
+      },
+    ],
+  },
+  {
     id: 'acommit',
     teamSize: 1,
     hidden: false,
@@ -241,7 +419,7 @@ const projects = [
       'pub.dev',
       '배포',
       '라이브러리',
-      { name: '유지보수', show: false },
+      '유지보수',
       { name: '단독기획', show: false },
       { name: '경량-유틸리티', show: false },
       { name: '풀어쓰기', show: false },
@@ -292,7 +470,7 @@ const projects = [
   {
     id: 'hgu-glocal',
     teamSize: 4,
-    hidden: false,
+    hidden: true,
     type: 'group',
     title: '한동대학교 글로컬 홈페이지',
     status: 'support-ended',
@@ -406,7 +584,7 @@ const projects = [
     type: 'group',
     title: 'Fitween',
     status: 'support-ended',
-    period: { start: '2023-06', end: '2023-12' },
+    period: { start: '2022-07', end: '2023-12' },
     summary: 'AI 모션 인식과 게임 요소를 활용한 운동 동기부여 어플리케이션',
     tags: ['기획', '개발', '출시', '버전관리'],
     techStack: ['Flutter', 'Dart', 'Firebase'],

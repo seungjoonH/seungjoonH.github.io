@@ -53,6 +53,7 @@ export function Projects() {
   const { projectsGridBounds: columnBounds, isMobile } = useResponsive();
   const language = useConfigStore((s) => s.language);
   const versionHash = useVersionHash();
+  const { trackUiSpoilerClick } = useAnalytics();
   const rawQuery = useProjectSearchStore((s) => s.rawQuery);
   const setFlippedProjectId = useProjectCardFlipStore((s) => s.setFlippedProjectId);
   const setQuery = useProjectSearchStore((s) => s.setQuery);
@@ -108,6 +109,14 @@ export function Projects() {
 
   const showValue = getShowValue(filterClauses);
   const showHiddenBadge = showValue === 'all' || showValue === 'hidden';
+
+  const searchPool = useMemo(() => {
+    if (showValue === 'all') return projects;
+    if (showValue === 'hidden') return projects.filter((p) => p.hidden);
+    return projects.filter((p) => !p.hidden);
+  }, [projects, showValue]);
+
+  const showResultCount = Boolean((rawQuery || '').trim()) || filterClauses.length > 0;
 
   const parsedSortMode = getSortModeFromRawQuery(rawQuery);
   const sortIconName =
@@ -292,7 +301,11 @@ export function Projects() {
             <Icon name={sortIconName} size="md" aria-hidden />
           </button>
         </fieldset>
-        <ProjectSearchBar />
+        <ProjectSearchBar
+          matchedCount={visibleProjects.length}
+          totalCount={searchPool.length}
+          showResultCount={showResultCount}
+        />
         <fieldset className={buildCls(styles.sliderWrap, styles.projectControlsFieldset)}>
           <legend className={styles.projectControlsLegend}>{a11y('project.gridSlider')}</legend>
           <button

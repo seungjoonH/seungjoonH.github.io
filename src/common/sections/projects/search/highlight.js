@@ -1,4 +1,5 @@
 import React from 'react';
+import { tokenizeRichText } from '../utils/richText.jsx';
 import { normalizeStackToken } from './stackMapping.js';
 import { isSingleChoseong, hasHangeul, findPuleossugiMatchRanges, tagMatchesQuery } from './hangul.js';
 
@@ -202,10 +203,50 @@ export function highlightRichText(text, terms, markClassName, renderRichText) {
   const safe = terms.filter((t) => t && String(t).length > 0);
   if (safe.length === 0) return renderRichText(text);
 
-  const parts = highlightText(text, terms, markClassName);
+  const hasRichSyntax = text.includes('**') || text.includes('`') || text.includes('$');
+  if (!hasRichSyntax) return highlightText(text, terms, markClassName);
+
+  return tokenizeRichText(text).map((token, idx) =>
+    renderHighlightedRichToken(token, `hr-${idx}`, terms, markClassName, renderRichText)
+  );
+}
+
+function renderHighlightedPlainText(text, keyPrefix, terms, markClassName, renderRichText) {
+  const value = String(text ?? '');
+  const hasRichSyntax = value.includes('**') || value.includes('`') || value.includes('$');
+  if (hasRichSyntax) {
+    return tokenizeRichText(value).map((token, idx) =>
+      renderHighlightedRichToken(token, `${keyPrefix}-n-${idx}`, terms, markClassName, renderRichText)
+    );
+  }
+
+  const parts = highlightText(value, terms, markClassName);
   return parts.map((part, i) =>
     React.isValidElement(part)
-      ? React.cloneElement(part, { key: `hr-${i}` })
-      : React.createElement(React.Fragment, { key: `hr-${i}` }, renderRichText(part))
+      ? React.cloneElement(part, { key: `${keyPrefix}-p-${i}` })
+      : part
   );
+}
+
+function renderHighlightedRichToken(token, key, terms, markClassName, renderRichText) {
+  switch (token.type) {
+    case 'strong':
+      return React.createElement(
+        'strong',
+        { key },
+        ...renderHighlightedPlainText(token.value, `${key}-s`, terms, markClassName, renderRichText)
+      );
+    case 'code':
+      return React.createElement('code', { key }, token.value);
+    case 'math': {
+      const raw = token.displayMode ? `$$${token.value}$$` : `$${token.value}$`;
+      return React.createElement(React.Fragment, { key }, renderRichText(raw));
+    }
+    default:
+      return React.createElement(
+        React.Fragment,
+        { key },
+        ...renderHighlightedPlainText(token.value, `${key}-t`, terms, markClassName, renderRichText)
+      );
+  }
 }

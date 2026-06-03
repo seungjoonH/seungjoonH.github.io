@@ -44,8 +44,8 @@ const language = {
 };
 
 const version = {
-  number: '1.0.11',
-  buildDate: '20260430',
+  number: '1.0.12',
+  buildDate: '20260603',
 };
 
 const contact = {
@@ -105,9 +105,10 @@ const TYPO_SCALE_MAX = 1.5;
 
 /** @type {{ defaultHash: string, hashes: Record<string, boolean> }} */
 const siteVersions = {
-  defaultHash: 'k9nq7wx',
+  defaultHash: 'v3m8rj2',
   hashes: {
     k9nq7wx: true,
+    mg8ozkj: true,
     v3m8rj2: true,
   },
 };

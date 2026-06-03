@@ -24,7 +24,7 @@ function renderKatex(latex, displayMode, key) {
   }
 }
 
-function tokenizeRichText(s) {
+export function tokenizeRichText(s) {
   const tokens = [];
   let i = 0;
   tokenizeLoop: while (i < s.length) {

@@ -44,6 +44,7 @@ export default {
   },
   project: {
     searchAppliedHint: 'A search filter is applied.',
+    searchResultCount: '{{count}} of {{total}} projects',
     searchEmpty: 'No matching projects',
     deploy: {
       deploy: 'Web',

@@ -44,6 +44,7 @@ export default {
   },
   project: {
     searchAppliedHint: '검색어가 적용된 상태예요!',
+    searchResultCount: '전체 {{total}}개 중 {{count}}개',
     searchEmpty: '결과가 없습니다',
     deploy: {
       deploy: '배포 링크',

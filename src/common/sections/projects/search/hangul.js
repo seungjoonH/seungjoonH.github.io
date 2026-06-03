@@ -200,10 +200,12 @@ export function findPuleossugiMatchRanges(text, query) {
   const queryPul = puleossugi(query);
   if (!queryPul) return [];
   const { pul, pulToOrig } = puleossugiWithMapping(text);
+  const pulLower = pul.toLowerCase();
+  const queryPulLower = queryPul.toLowerCase();
   const ranges = [];
   let pos = 0;
   for (;;) {
-    const idx = pul.indexOf(queryPul, pos);
+    const idx = pulLower.indexOf(queryPulLower, pos);
     if (idx === -1) break;
     let min = pulToOrig[idx];
     let max = pulToOrig[idx];
@@ -234,7 +236,7 @@ export function containsHangeul(text, query) {
   const textPul = puleossugi(text);
   const queryPul = puleossugi(query);
   if (queryPul === '') return text.toLowerCase().includes(query.toLowerCase());
-  return textPul.includes(queryPul);
+  return textPul.toLowerCase().includes(queryPul.toLowerCase());
 }
 
 export function stringContains(text, query) {
@@ -254,7 +256,7 @@ export function tagMatchesQuery(tag, query) {
     const textPul = puleossugi(tag);
     const queryPul = puleossugi(query);
     if (queryPul === '') return tag.toLowerCase().includes(query.toLowerCase());
-    return textPul.includes(queryPul);
+    return textPul.toLowerCase().includes(queryPul.toLowerCase());
   }
   return tag.toLowerCase().includes(query.toLowerCase());
 }

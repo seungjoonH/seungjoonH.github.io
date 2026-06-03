@@ -9,7 +9,7 @@ import { useVersionHash } from '../../../versioning/VersionContext.jsx';
 import { useConfigStore } from '../../../stores/configStore.js';
 import { useAnalytics } from '../../../hooks/useAnalytics.js';
 
-export function ProjectSearchBar() {
+export function ProjectSearchBar({ matchedCount = 0, totalCount = 0, showResultCount = false }) {
   const { t } = useTranslation();
   const a11y = useA11y();
   const { trackSearchSubmit } = useAnalytics();
@@ -58,6 +58,11 @@ export function ProjectSearchBar() {
           </button>
         )}
       </search>
+      {showResultCount && (
+        <p className={styles.searchResultCount} role="status" aria-live="polite">
+          {t('project.searchResultCount', { count: matchedCount, total: totalCount })}
+        </p>
+      )}
       {showTooltip && (
         <div
           className={styles.searchAppliedTooltip}

@@ -156,9 +156,15 @@ function projectMatchesConditions(project, conditions, normalizeStack) {
   return true;
 }
 
+function hasActiveSearchConditions(conditions) {
+  return conditions.some((c) => c.type !== 'show' && c.type !== 'sort');
+}
+
 function injectShowDefault(parsedClauses) {
   const hasShow = parsedClauses?.some((conditions) => conditions.some((c) => c.type === 'show'));
   if (hasShow) return parsedClauses;
+  const hasSearch = parsedClauses?.some((conditions) => hasActiveSearchConditions(conditions));
+  if (hasSearch) return parsedClauses;
   return (parsedClauses || []).map((conditions) => [...conditions, { type: 'show', value: 'public' }]);
 }
 

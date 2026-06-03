@@ -6,7 +6,7 @@ const projects = [
     type: 'group',
     title: '물방울톡',
     status: 'live',
-    period: { start: '2026-01', end: '2026-02' },
+    period: { start: '2025-12', end: '2026-02' },
     summary:
       '가벼운 미니게임으로 시작해 자연스러운 대화로 이어지는 실시간 음성 소셜 서비스',
     tags: [
@@ -294,7 +294,7 @@ const projects = [
   {
     id: 'hgu-glocal',
     teamSize: 4,
-    hidden: false,
+    hidden: true,
     type: 'group',
     title: '한동대학교 글로컬 홈페이지',
     status: 'support-ended',
@@ -408,7 +408,7 @@ const projects = [
     type: 'group',
     title: 'Fitween',
     status: 'support-ended',
-    period: { start: '2023-06', end: '2023-12' },
+    period: { start: '2022-07', end: '2023-12' },
     summary: 'AI 모션 인식과 게임 요소를 활용한 운동 동기부여 어플리케이션',
     tags: ['기획', '개발', '출시', '버전관리'],
     techStack: ['Flutter', 'Dart', 'Firebase'],
