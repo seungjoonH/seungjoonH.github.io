@@ -40,7 +40,7 @@ export function Docs(): ReactNode {
   const { sectionRef, headerRef, contentRef } = useDocsScrollFade();
   const [expanded, setExpanded] = useState<ExpandedFolders>({
     portfolio: true,
-    notion: true,
+    notion: false,
     githubWiki: false,
     tistory: false,
   });

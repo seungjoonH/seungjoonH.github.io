@@ -148,6 +148,20 @@
   color: color-mix(in srgb, var(--color-text) 62%, transparent);
 }
 
+.inlineCode {
+  display: inline;
+  padding: 0.08em 0.35em;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--color-text) 10%, var(--color-bg));
+  border: 1px solid color-mix(in srgb, var(--color-text) 18%, transparent);
+  color: var(--color-text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.92em;
+  font-weight: 500;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
 .colTag {
   display: inline-flex;
   align-items: center;
@@ -272,11 +286,11 @@
 .codeSplit {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 8px;
-  align-items: stretch;
+  gap: 12px;
+  align-items: start;
   min-width: 0;
   min-height: 0;
-  height: 100%;
+  height: auto;
   align-self: stretch;
 }
 
@@ -285,38 +299,51 @@
   flex-direction: column;
   gap: 8px;
   min-width: 0;
-  height: 100%;
+  height: auto;
+  align-self: start;
 }
 
 .codeSplitLeft .codeBlock {
-  flex: 1 1 0;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
-  min-height: 0;
+  min-height: auto;
+  overflow: visible;
 }
 
 .codeSplitRight {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: auto;
+  align-self: start;
 }
 
 .codeSplitRight .codeBlock {
-  flex: 1 1 auto;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  min-height: 0;
+  height: auto;
+  min-height: auto;
+  overflow: visible;
 }
 
 .codeLabel {
   margin: 0 0 6px;
+  padding-inline: 2px;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 0.62rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   opacity: 0.45;
+  overflow: visible;
+  line-height: 1.4;
+}
+
+/* CodeBlock 본문 padding(12px)과 라벨 시작선 맞춤 + 글리프 잘림 방지 */
+.codeBlockEmbed .codeLabel {
+  padding-inline: 12px;
+  box-sizing: border-box;
 }
 
 @media (max-width: 720px) {
@@ -429,15 +456,14 @@
   padding: 10px;
   border-radius: 10px;
   background: color-mix(in srgb, var(--color-text) 10%, transparent);
-  overflow-x: hidden;
-  overflow-y: hidden;
+  overflow: visible;
   box-sizing: border-box;
 }
 
 .codeBlockEmbed {
   padding: 0;
   background: transparent;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .codeBlock :global(pre) {
@@ -449,12 +475,14 @@
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   word-break: break-word;
+  overflow: visible;
 }
 
 .codeBlockEmbed :global(pre) {
-  white-space: pre;
-  overflow-wrap: normal;
-  word-break: normal;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  overflow-x: hidden;
 }
 
 .brokenClose {
@@ -536,6 +564,20 @@
   line-height: 1.5;
 }
 
+.cardModalList {
+  margin: 0;
+  padding: 0 0 0 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: calc(0.9rem * var(--font-scale, 1));
+  line-height: 1.5;
+}
+
+.cardModalList li::marker {
+  color: color-mix(in srgb, var(--color-text) 45%, transparent);
+}
+
 .hitStage {
   position: relative;
   width: 72px;
@@ -545,36 +587,75 @@
   justify-content: center;
 }
 
-.hitVisible {
+/* 비권장 — 보이는 36 = 클릭 36 */
+.hitButtonSame {
+  box-sizing: border-box;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  margin: 0;
+  border: 1.5px dashed color-mix(in srgb, var(--color-text) 55%, transparent);
+  border-radius: 8px;
+  background: var(--color-text);
+  cursor: pointer;
+  color: inherit;
+}
+
+.hitButtonSame:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 3px;
+}
+
+.hitButtonSame:active {
+  filter: brightness(0.85);
+}
+
+/* 권장 — 보이는 36, ::before로 클릭 44 (IconButton과 동일) */
+.hitButtonWide {
+  position: relative;
+  box-sizing: border-box;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+}
+
+.hitButtonWide::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  border: 1.5px solid color-mix(in srgb, var(--color-text) 70%, transparent);
+  background: color-mix(in srgb, var(--color-text) 10%, transparent);
+  box-sizing: border-box;
+}
+
+.hitButtonWideFace {
+  position: relative;
+  z-index: 1;
+  display: block;
   width: 36px;
   height: 36px;
   border-radius: 8px;
   background: var(--color-text);
-  position: relative;
-  z-index: 1;
-}
-
-.hitArea {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 10px;
-  box-sizing: border-box;
   pointer-events: none;
 }
 
-.hitAreaSame {
-  width: 36px;
-  height: 36px;
-  border: 1.5px dashed color-mix(in srgb, var(--color-text) 55%, transparent);
+.hitButtonWide:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 6px;
 }
 
-.hitAreaWide {
-  width: 44px;
-  height: 44px;
-  border: 1.5px solid color-mix(in srgb, var(--color-text) 70%, transparent);
-  background: color-mix(in srgb, var(--color-text) 10%, transparent);
+.hitButtonWide:active .hitButtonWideFace {
+  filter: brightness(0.85);
 }
 
 .hitCaption {
@@ -606,13 +687,21 @@
 .fontCardClip {
   box-sizing: border-box;
   width: 100%;
+  max-width: 22rem;
+  /* 1x 기준 2줄 높이 고정 — 배율을 올려도 박스는 그대로 */
+  height: calc(20px + 2 * 1.35 * 16px);
   padding: 10px 12px;
   border-radius: 10px;
   background: color-mix(in srgb, var(--color-text) 4%, transparent);
+  overflow: hidden;
+}
+
+.fontClamped {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
+  word-break: break-word;
 }
 
 .fontCardGrow {
@@ -670,9 +759,13 @@
 
 .citeList {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
   align-items: start;
+}
+
+.citeListThree {
+  grid-template-columns: minmax(0, 5fr) minmax(0, 4fr) minmax(0, 4fr);
 }
 
 .citeBlock {
@@ -742,7 +835,8 @@
     grid-template-columns: 1fr;
   }
 
-  .citeList {
+  .citeList,
+  .citeListThree {
     grid-template-columns: 1fr;
   }
 }

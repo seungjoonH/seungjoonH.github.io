@@ -48,8 +48,9 @@ const PROJECT_TITLE = '포트폴리오';
 const CARD_MOBILE_SR = `${PROJECT_TITLE}. 처음 누르면 카드 뒤집기, 다시 누르면 상세 창.`;
 const CARD_DESKTOP_SR = `${PROJECT_TITLE}. 상세 창 열기.`;
 const FONT_DEMO_NAME = 'Seungjoon Hyeon';
-const FONT_DEMO_LOREM =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.';
+/** clip/grow 카드용 — 1x·2줄에 들어가고, 배율 올리면 clip 카드에서만 넘침 */
+const FONT_DEMO_CLIP_BODY =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.';
 
 const DEMO_ACTIONS = [
   { name: 'settings' as const, label: '설정 열기' },
@@ -159,11 +160,10 @@ function ProjectCardPreview({
               onClose={() => setModalOpen(false)}
               returnFocusRef={returnFocusRef}
             >
-              <p className={styles.cardModalBody}>
-                {isMobile
-                  ? '모바일: 첫 탭은 뒤집기, 두 번째 탭은 상세 창.'
-                  : '데스크톱: 올리면 뒤집히고, 클릭하면 상세 창.'}
-              </p>
+              <ul className={styles.cardModalList}>
+                <li>포트폴리오 상세 항목</li>
+                <li>포트폴리오 상세 항목</li>
+              </ul>
             </Modal>,
             document.body
           )
@@ -193,6 +193,40 @@ function NativeButton(): ReactNode {
     <button type="button" className={styles.nativeButton} onClick={() => undefined}>
       열기
     </button>
+  );
+}
+
+function HitDemoSame(): ReactNode {
+  return (
+    <div>
+      <div className={styles.hitStage}>
+        <button
+          type="button"
+          className={styles.hitButtonSame}
+          aria-label="클릭 영역 36px 데모"
+          onClick={() => undefined}
+        />
+      </div>
+      <p className={styles.hitCaption}>클릭 영역 36px</p>
+    </div>
+  );
+}
+
+function HitDemoWide(): ReactNode {
+  return (
+    <div>
+      <div className={styles.hitStage}>
+        <button
+          type="button"
+          className={styles.hitButtonWide}
+          aria-label="클릭 영역 44px 데모"
+          onClick={() => undefined}
+        >
+          <span className={styles.hitButtonWideFace} />
+        </button>
+      </div>
+      <p className={styles.hitCaption}>클릭 영역 44px</p>
+    </div>
   );
 }
 
@@ -237,6 +271,12 @@ export function AccessibilityShowcase(): ReactNode {
               <div className={styles.compareRow}>
                 <CompareColumn
                   title="직접 붙이기"
+                  description={
+                    <>
+                      <code className={styles.inlineCode}>aria-label</code>을 호출부마다 반복
+                      작성해야 함
+                    </>
+                  }
                   verdictLabel={VERDICT_AGAINST_PRINCIPLE}
                   preview={(activeIndex) => <ManualIconRow activeIndex={activeIndex} />}
                   srLines={[...PRINCIPLE_SR_LINES]}
@@ -244,6 +284,12 @@ export function AccessibilityShowcase(): ReactNode {
                 />
                 <CompareColumn
                   title="컴포넌트로 강제"
+                  description={
+                    <>
+                      <code className={styles.inlineCode}>IconButton</code>이{' '}
+                      <code className={styles.inlineCode}>aria-label</code>을 항상 요구함
+                    </>
+                  }
                   recommended
                   verdictLabel={VERDICT_FOLLOW_PRINCIPLE}
                   preview={(activeIndex) => <PrincipleIconRow activeIndex={activeIndex} />}
@@ -286,6 +332,7 @@ export function AccessibilityShowcase(): ReactNode {
                 <div className={styles.compareRow}>
                   <CompareColumn
                     title="보이는 글자만"
+                    description="클릭했을 때 무슨 일이 일어나는지 알 수 없음"
                     preview={
                       <button type="button" className={styles.demoChipWrap}>
                         <Chip.Outlined
@@ -301,6 +348,7 @@ export function AccessibilityShowcase(): ReactNode {
                   />
                   <CompareColumn
                     title="하는 일이 읽힘"
+                    description="클릭 결과까지 스크린 리더가 안내함"
                     recommended
                     preview={
                       <SearchChipButton
@@ -349,13 +397,24 @@ export function AccessibilityShowcase(): ReactNode {
               <CiteSection items={CITE_SEMANTIC} />
               <div className={styles.compareRow}>
                 <CompareColumn
-                  title={'span + role="button"'}
+                  title={
+                    <>
+                      <code className={styles.inlineCode}>span</code>에{' '}
+                      <code className={styles.inlineCode}>{`role="button"`}</code> 부여
+                    </>
+                  }
+                  description="키보드, 포커스, 비활성 처리를 모두 직접 구현해야 함"
                   preview={<FakeRoleButton />}
                   srCaption="열기, 버튼"
                   code={CODE_SEMANTIC_FAKE}
                 />
                 <CompareColumn
-                  title="<button>"
+                  title={
+                    <>
+                      네이티브 <code className={styles.inlineCode}>button</code> 사용
+                    </>
+                  }
+                  description="역할, 키보드, 포커스가 기본으로 제공됨"
                   recommended
                   preview={<NativeButton />}
                   srCaption="열기, 버튼"
@@ -370,31 +429,25 @@ export function AccessibilityShowcase(): ReactNode {
               <CiteSection items={CITE_TOUCH} />
               <div className={styles.compareRow}>
                 <CompareColumn
-                  title="클릭 = 보이는 크기"
-                  preview={
-                    <div>
-                      <div className={styles.hitStage}>
-                        <span className={`${styles.hitArea} ${styles.hitAreaSame}`} aria-hidden="true" />
-                        <span className={styles.hitVisible} aria-hidden="true" />
-                      </div>
-                      <p className={styles.hitCaption}>클릭 영역 36px</p>
-                    </div>
-                  }
+                  title="클릭 영역을 보이는 크기와 동일하게"
+                  description="44px 미만이면 터치 실수가 잦아짐"
+                  preview={<HitDemoSame />}
                   code={CODE_TOUCH_SAME}
+                  codeLanguage="css"
                 />
                 <CompareColumn
-                  title="보이는 36, 클릭 44"
+                  title="클릭 영역만 44px로 확장"
+                  description="보이는 크기는 유지하고 터치 영역만 넓힘"
                   recommended
-                  preview={
-                    <div>
-                      <div className={styles.hitStage}>
-                        <span className={`${styles.hitArea} ${styles.hitAreaWide}`} aria-hidden="true" />
-                        <span className={styles.hitVisible} aria-hidden="true" />
-                      </div>
-                      <p className={styles.hitCaption}>클릭 영역 44px (::before)</p>
-                    </div>
-                  }
+                  preview={<HitDemoWide />}
                   code={CODE_TOUCH_EXPAND}
+                  codeLanguage="css"
+                  highlightWords={[
+                    'position: relative',
+                    'position: absolute',
+                    'width: 44px',
+                    'height: 44px',
+                  ]}
                 />
               </div>
             </div>
@@ -420,33 +473,52 @@ export function AccessibilityShowcase(): ReactNode {
               </div>
               <div className={`${styles.compareRow} ${styles.compareRow3}`}>
                 <CompareColumn
-                  title="배율 무시"
+                  title="글자 배율을 아예 반영하지 않음"
+                  description="확대해도 텍스트 크기가 그대로임"
                   preview={
                     <div className={styles.fontCard}>
                       <p className={styles.fontFixed}>{FONT_DEMO_NAME}</p>
                     </div>
                   }
                   code={CODE_FONT_IGNORE}
+                  codeLanguage="css"
+                  highlightWords={['16px']}
                 />
                 <CompareColumn
-                  title="글자만 키움"
+                  title="글자만 키우고 레이아웃은 고정"
+                  description="배율을 올리면 텍스트가 박스에 잘림"
                   preview={
                     <div className={styles.fontCardClip}>
-                      <p className={styles.fontScaled}>{FONT_DEMO_LOREM}</p>
+                      <p className={`${styles.fontScaled} ${styles.fontClamped}`}>
+                        {FONT_DEMO_CLIP_BODY}
+                      </p>
                     </div>
                   }
                   code={CODE_FONT_CLIP}
+                  codeLanguage="css"
+                  highlightWords={[
+                    '-webkit-line-clamp: 2',
+                    'calc(16px * var(--font-scale, 1))',
+                  ]}
                 />
                 <CompareColumn
-                  title="레이아웃까지"
+                  title="글자와 레이아웃을 함께 키움"
+                  description="배율에 맞춰 박스 높이도 함께 늘어남"
                   recommended
                   preview={
                     <div className={styles.fontCardGrow}>
                       <p className={styles.fontName}>{FONT_DEMO_NAME}</p>
-                      <p className={styles.fontScaled}>{FONT_DEMO_LOREM}</p>
+                      <p className={styles.fontScaled}>{FONT_DEMO_CLIP_BODY}</p>
                     </div>
                   }
                   code={CODE_FONT_OK}
+                  codeLanguage="css"
+                  highlightWords={[
+                    'calc(18px * var(--font-scale, 1))',
+                    'calc(16px * var(--font-scale, 1))',
+                    'height: auto',
+                    'min-height: 88px',
+                  ]}
                 />
               </div>
             </div>

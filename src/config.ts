@@ -119,7 +119,7 @@ const language = {
 };
 
 const version: VersionInfo = {
-  number: '1.1.0',
+  number: '1.1.1',
   buildDate: '20260719',
 };
 

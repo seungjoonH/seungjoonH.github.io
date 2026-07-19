@@ -1,14 +1,16 @@
 // 한 열: (화면 | 스크린 리더) 위, 코드 영역(들) 아래
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import CodeBlock from '@components/design/codeBlock/CodeBlock';
+import CodeBlock, { type CodeBlockLanguage } from '@components/design/codeBlock/CodeBlock';
 import { IconButton } from '@components/interactive/icon/IconButton';
-import { CodeSnippet, type CodeSnippetMode } from './CodeSnippet';
 import { buildCls } from '@utils/cssUtil';
 import styles from './accessibility.module.css';
 
 export interface CodeSection {
   label: string;
   code: string;
+  language?: CodeBlockLanguage;
+  /** CodeBlock word highlight. 있으면 syntax 끄고 해당 단어만 강조 */
+  highlightWords?: string[];
 }
 
 export interface CompareColumnProps {
@@ -30,6 +32,8 @@ export interface CompareColumnProps {
   mutedLineMs?: number;
   /** 단일 코드 블록 */
   code?: string;
+  /** 단일 code용 language. 기본 tsx */
+  codeLanguage?: CodeBlockLanguage;
   /** 라벨별 코드 영역 분리 */
   codeSections?: CodeSection[];
   /**
@@ -37,9 +41,7 @@ export interface CompareColumnProps {
    * impl-usage: 왼쪽(정의들) | 오른쪽(마지막=사용부)
    */
   codeLayout?: 'stack' | 'impl-usage';
-  /** 코드 하이라이트 모드. 기본 a11y. highlightWords 있으면 CodeBlock word 모드 */
-  codeMode?: CodeSnippetMode;
-  /** CodeBlock 단어 하이라이트 (있으면 CodeSnippet 대신 CodeBlock) */
+  /** 모든 섹션 공통 word highlight (섹션 값이 있으면 그쪽 우선) */
   highlightWords?: string[];
 }
 
@@ -78,27 +80,25 @@ function VerdictGlyph({ ok }: { ok: boolean }): ReactNode {
 
 function CompareCode({
   code,
-  codeMode,
+  language = 'tsx',
   highlightWords,
   height,
 }: {
   code: string;
-  codeMode: CodeSnippetMode;
+  language?: CodeBlockLanguage;
   highlightWords?: string[];
   height: 'hug' | 'stretch';
 }): ReactNode {
-  if (highlightWords) {
-    return (
-      <CodeBlock
-        code={code}
-        language="tsx"
-        syntaxHighlight={false}
-        highlightWords={highlightWords}
-        height={height}
-      />
-    );
-  }
-  return <CodeSnippet code={code} mode={codeMode} />;
+  const words = highlightWords && highlightWords.length > 0 ? highlightWords : undefined;
+  return (
+    <CodeBlock
+      code={code}
+      language={language}
+      syntaxHighlight={!words}
+      highlightWords={words}
+      height={height}
+    />
+  );
 }
 
 export function CompareColumn({
@@ -112,9 +112,9 @@ export function CompareColumn({
   srPauseMs = 450,
   mutedLineMs = 1400,
   code,
+  codeLanguage = 'tsx',
   codeSections,
   codeLayout = 'stack',
-  codeMode = 'a11y',
   highlightWords,
 }: CompareColumnProps): ReactNode {
   const [muted, setMuted] = useState(true);
@@ -137,10 +137,13 @@ export function CompareColumn({
   const multiLine = (lines?.length ?? 0) > 1;
   const tagText = verdictLabel ?? (recommended ? '권장' : '비권장');
   const sections =
-    codeSections ?? (code != null ? [{ label: '', code }] : []);
+    codeSections ?? (code != null ? [{ label: '', code, language: codeLanguage }] : []);
   const previewNode = typeof preview === 'function' ? preview(activeIndex) : preview;
   const splitCodes = codeLayout === 'impl-usage' && sections.length >= 2;
-  const codeHeight = splitCodes ? 'stretch' : 'hug';
+  const codeHeight = 'hug';
+
+  const sectionWords = (section: CodeSection) =>
+    section.highlightWords ?? highlightWords;
 
   const clearPause = useCallback(() => {
     if (pauseTimerRef.current != null) {
@@ -328,37 +331,29 @@ export function CompareColumn({
               {sections.slice(0, -1).map((section) => (
                 <div
                   key={`${section.label}-${section.code.slice(0, 24)}`}
-                  className={buildCls(
-                    styles.codeBlock,
-                    highlightWords && styles.codeBlockEmbed
-                  )}
+                  className={buildCls(styles.codeBlock, styles.codeBlockEmbed)}
                 >
                   {section.label ? (
                     <p className={styles.codeLabel}>{section.label}</p>
                   ) : null}
                   <CompareCode
                     code={section.code}
-                    codeMode={codeMode}
-                    highlightWords={highlightWords}
+                    language={section.language}
+                    highlightWords={sectionWords(section)}
                     height={codeHeight}
                   />
                 </div>
               ))}
             </div>
             <div className={styles.codeSplitRight}>
-              <div
-                className={buildCls(
-                  styles.codeBlock,
-                  highlightWords && styles.codeBlockEmbed
-                )}
-              >
+              <div className={buildCls(styles.codeBlock, styles.codeBlockEmbed)}>
                 {sections[sections.length - 1].label ? (
                   <p className={styles.codeLabel}>{sections[sections.length - 1].label}</p>
                 ) : null}
                 <CompareCode
                   code={sections[sections.length - 1].code}
-                  codeMode={codeMode}
-                  highlightWords={highlightWords}
+                  language={sections[sections.length - 1].language}
+                  highlightWords={sectionWords(sections[sections.length - 1])}
                   height={codeHeight}
                 />
               </div>
@@ -368,15 +363,15 @@ export function CompareColumn({
           sections.map((section) => (
             <div
               key={`${section.label}-${section.code.slice(0, 24)}`}
-              className={buildCls(styles.codeBlock, highlightWords && styles.codeBlockEmbed)}
+              className={buildCls(styles.codeBlock, styles.codeBlockEmbed)}
             >
               {section.label ? (
                 <p className={styles.codeLabel}>{section.label}</p>
               ) : null}
               <CompareCode
                 code={section.code}
-                codeMode={codeMode}
-                highlightWords={highlightWords}
+                language={section.language}
+                highlightWords={sectionWords(section)}
                 height={codeHeight}
               />
             </div>

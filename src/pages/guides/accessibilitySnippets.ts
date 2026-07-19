@@ -19,7 +19,11 @@ export const PRINCIPLE_SR_LINES = [
   '닫기, 버튼',
 ] as const;
 
-export const CODE_PRINCIPLE_MANUAL_SECTIONS: { label: string; code: string }[] = [
+export const CODE_PRINCIPLE_MANUAL_SECTIONS: {
+  label: string;
+  code: string;
+  highlightWords?: string[];
+}[] = [
   {
     label: '사용부',
     code: `<button
@@ -36,10 +40,19 @@ export const CODE_PRINCIPLE_MANUAL_SECTIONS: { label: string; code: string }[] =
   className={styles.outlined}
   aria-label="닫기"
 ><Icon name="close" /></button>`,
+    highlightWords: [
+      'aria-label="설정 열기"',
+      'aria-label="클립보드에 복사"',
+      'aria-label="닫기"',
+    ],
   },
 ];
 
-export const CODE_PRINCIPLE_ENFORCED_SECTIONS: { label: string; code: string }[] = [
+export const CODE_PRINCIPLE_ENFORCED_SECTIONS: {
+  label: string;
+  code: string;
+  highlightWords?: string[];
+}[] = [
   {
     label: 'IconButton.tsx',
     code: `function IconButton({ ariaLabel }) {
@@ -51,6 +64,7 @@ export const CODE_PRINCIPLE_ENFORCED_SECTIONS: { label: string; code: string }[]
     </button>
   );
 }`,
+    highlightWords: ['aria-label={ariaLabel}'],
   },
   {
     label: 'useA11y.ts',
@@ -72,10 +86,19 @@ export const CODE_PRINCIPLE_ENFORCED_SECTIONS: { label: string; code: string }[]
   name="close"
   ariaLabel={a11y('common.close')}
 />`,
+    highlightWords: [
+      "ariaLabel={a11y('nav.settingsOpen')}",
+      "ariaLabel={a11y('common.copy')}",
+      "ariaLabel={a11y('common.close')}",
+    ],
   },
 ];
 
-export const CODE_CHIP_SURFACE_SECTIONS: { label: string; code: string }[] = [
+export const CODE_CHIP_SURFACE_SECTIONS: {
+  label: string;
+  code: string;
+  highlightWords?: string[];
+}[] = [
   {
     label: '사용부',
     code: `<button type="button">
@@ -88,23 +111,30 @@ export const CODE_CHIP_SURFACE_SECTIONS: { label: string; code: string }[] = [
   },
 ];
 
-export const CODE_CHIP_ACTION_SECTIONS: { label: string; code: string }[] = [
+export const CODE_CHIP_ACTION_SECTIONS: {
+  label: string;
+  code: string;
+  highlightWords?: string[];
+}[] = [
   {
     label: 'SearchShortcutChipButton.tsx',
     code: `<SearchChipButton
   label={resolved.label}
-  ariaLabel={a11y(
-    'project.searchShortcut',
-    { label: resolved.label }
-  )}
+  ariaLabel={a11y('project.searchShortcut', {
+    label: resolved.label,
+  })}
 />`,
+    highlightWords: [
+      "ariaLabel={a11y('project.searchShortcut', {\n    label: resolved.label,\n  })}",
+    ],
   },
   {
     label: 'translations.ts',
     code: `project: {
   searchShortcut:
-    '{{label}}, 눌러서 프로젝트 검색'
+    '{{label}}, 눌러서 프로젝트 검색',
 }`,
+    highlightWords: ["'{{label}}, 눌러서 프로젝트 검색'", 'searchShortcut'],
   },
   {
     label: '사용부',
@@ -115,20 +145,33 @@ export const CODE_CHIP_ACTION_SECTIONS: { label: string; code: string }[] = [
   },
 ];
 
-export const CODE_ANNOUNCE_TITLE_SECTIONS: { label: string; code: string }[] = [
+export const CODE_ANNOUNCE_TITLE_SECTIONS: {
+  label: string;
+  code: string;
+  highlightWords?: string[];
+}[] = [
   {
     label: '사용부',
     code: `ariaLabel={project.title}`,
+    highlightWords: ['ariaLabel={project.title}'],
   },
 ];
 
-export const CODE_ANNOUNCE_HOWTO_SECTIONS: { label: string; code: string }[] = [
+export const CODE_ANNOUNCE_HOWTO_SECTIONS: {
+  label: string;
+  code: string;
+  highlightWords?: string[];
+}[] = [
   {
     label: 'translations.ts',
     code: `cardMobile:
   '{{title}}. 처음 누르면 카드 뒤집기, 다시 누르면 상세 창.'
 cardDesktop:
   '{{title}}. 상세 창 열기.'`,
+    highlightWords: [
+      "'{{title}}. 처음 누르면 카드 뒤집기, 다시 누르면 상세 창.'",
+      "'{{title}}. 상세 창 열기.'",
+    ],
   },
   {
     label: '사용부',
@@ -138,12 +181,11 @@ ariaLabel={a11y(
   \`project.card\${isMobile ? 'Mobile' : 'Desktop'}\`,
   { title: project.title }
 )}`,
+    highlightWords: ['ariaLabel'],
   },
 ];
 
-export const CODE_SEMANTIC_FAKE = `// role로 button을 흉내 내면
-// 키보드·포커스·비활성까지 직접 구현해야 한다.
-<span
+export const CODE_SEMANTIC_FAKE = `<span
   role="button"
   tabIndex={0}
   onClick={onOpen}
@@ -157,8 +199,7 @@ export const CODE_SEMANTIC_FAKE = `// role로 button을 흉내 내면
   열기
 </span>`;
 
-export const CODE_SEMANTIC_NATIVE = `// 네이티브 button — 역할·키보드·포커스가 기본으로 온다.
-<button type="button" onClick={onOpen}>
+export const CODE_SEMANTIC_NATIVE = `<button type="button" onClick={onOpen}>
   열기
 </button>`;
 
@@ -167,10 +208,20 @@ export const CODE_TOUCH_SAME = `.iconButton {
   height: 36px;
 }`;
 
-export const CODE_TOUCH_EXPAND = `/* 보이는 셸은 그대로, 클릭만 ::before로 확장 */
+export const CODE_TOUCH_EXPAND = `.iconButton {
+  position: relative;
+  width: 36px;
+  height: 36px;
+}
+
 .iconButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
   width: 44px;
   height: 44px;
+  transform: translate(-50%, -50%);
 }`;
 
 /** 시맨틱 탭 인용 */
@@ -195,7 +246,7 @@ export const CITE_SEMANTIC: {
       { emph: '그 네이티브 요소를 그대로 사용하라' },
       '.',
     ],
-    source: 'W3C, ARIA 사용 제1원칙',
+    source: 'First Rule of ARIA Use',
     href: 'https://www.w3.org/TR/using-aria/#rule1',
   },
   {
@@ -210,7 +261,7 @@ export const CITE_SEMANTIC: {
       { emph: '그냥 네이티브 HTML button' },
       '을 쓰는 편이 훨씬 낫고 간단하다.',
     ],
-    source: 'W3C, ARIA 사용 제2원칙 (비고)',
+    source: 'Second Rule of ARIA Use',
     href: 'https://www.w3.org/TR/using-aria/#second',
   },
   {
@@ -228,8 +279,8 @@ export const CITE_SEMANTIC: {
       { emph: '그 내용으로 레이블이 정해지는' },
       ' 버튼을 나타낸다.',
     ],
-    source: 'HTML Living Standard, button 요소',
-    href: 'https://html.spec.whatwg.org/multipage/form-controls.html#the-button-element',
+    source: 'The button element',
+    href: 'https://html.spec.whatwg.org/multipage/form-elements.html#the-button-element',
   },
 ];
 
