@@ -1,0 +1,76 @@
+/* FieldCard — Card 위에 아이콘·라벨·값·액션 슬롯을 배치 */
+
+.surface {
+  width: 100%;
+  transition: var(--hover-transition);
+}
+
+.surface:hover {
+  transform: translateY(-2px);
+}
+
+.surface:hover :global([data-card]) {
+  border-color: var(--color-text);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto auto;
+  gap: 10px;
+  align-items: start;
+}
+
+.content {
+  grid-column: 1;
+  grid-row: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  color: inherit;
+  text-decoration: none;
+}
+
+a.content {
+  cursor: pointer;
+}
+
+.content:focus-visible {
+  outline: 2px solid var(--color-text-muted);
+  outline-offset: 2px;
+}
+
+.actionSlot {
+  grid-column: 2;
+  grid-row: 3;
+  align-self: end;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.label {
+  font-size: calc(13.5px * var(--font-scale, 1));
+  font-weight: 400;
+  color: var(--color-text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.value {
+  font-size: calc(13.8px * var(--font-scale, 1));
+  font-weight: 400;
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}

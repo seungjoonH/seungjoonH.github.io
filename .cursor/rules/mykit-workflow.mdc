@@ -1,0 +1,36 @@
+---
+alwaysApply: true
+---
+
+# mykit workflow sync rule
+
+This rule enforces design-to-code synchronization.
+
+## Reference examples
+
+- Read `EXAMPLES.md` before implementation.
+- Apply its concrete Do/Don't behavior during planning, edits, and verification.
+
+## Playbook entry point
+
+- Start from `playbook/PLAYBOOK.index.yaml`.
+- Use `entrypoints` for initial traversal.
+- Use `domainMap` and `editRoutes` to find the exact guideline file for the requested change.
+
+## Required project docs
+
+- `design/design.md`
+- `design/erd.md`
+- `design/architecture.md`
+- `design/api-spec.md`
+
+## Enforcement
+
+- Read these files before planning or implementation.
+- If the code change affects behavior, schema, or architecture, update the relevant design file in the same task.
+- Do not mark tasks complete when design docs and code are inconsistent.
+
+## Architecture expectations
+
+- `design/architecture.md` must include front/backend/db/infra overview.
+- `design/erd.md` should use mermaid ER diagrams when data model exists.

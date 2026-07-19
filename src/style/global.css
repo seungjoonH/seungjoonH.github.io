@@ -189,8 +189,8 @@
   --settings-panel-border: #2a2a2a;
   --settings-panel-bg: rgba(12, 12, 12, 0.68);
   --settings-panel-shadow: 0 8px 32px rgba(255, 255, 255, 0.06);
-  --project-popup-bg: rgba(14, 14, 14, 0.68);
-  --project-popup-border: rgba(255, 255, 255, 0.12);
+  --project-modal-bg: rgba(14, 14, 14, 0.68);
+  --project-modal-border: rgba(255, 255, 255, 0.12);
   --segmented-active-bg: #e0e0e0;
   --color-link: #b8b8b8;
   --color-link-hover: #e8e8e8;
@@ -237,8 +237,8 @@
   --settings-panel-border: #d0d0d0;
   --settings-panel-bg: rgba(255, 255, 255, 0.82);
   --settings-panel-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  --project-popup-bg: var(--color-bg-elevated);
-  --project-popup-border: rgba(0, 0, 0, 0.12);
+  --project-modal-bg: var(--color-bg-elevated);
+  --project-modal-border: rgba(0, 0, 0, 0.12);
 
   --segmented-active-bg: #2a2a2a;
 
@@ -286,8 +286,13 @@ code {
   border: 1px solid var(--color-code-border);
 }
 
+code * {
+  font-family: inherit;
+}
+
 html {
   font-size: calc(16px * var(--font-scale, 1));
+  scroll-behavior: smooth;
 }
 
 html,
@@ -353,4 +358,59 @@ body::-webkit-scrollbar-thumb:hover,
 
 .versionLabel:hover {
   color: var(--color-text-muted);
+}
+/*
+ * 클릭 피드백 (조합)
+ * - .hoverable → ::after 음영만
+ * - .clickable → :active scale만
+ * - 둘 다 → press + shade (TextButton/ChipButton/IconButton 기본)
+ */
+:root {
+  --clickable-active-scale: 0.96;
+  --hoverable-shade-hover: rgba(0, 0, 0, 0.1);
+  --hoverable-shade-active: rgba(0, 0, 0, 0.2);
+}
+
+.hoverable,
+.clickable {
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform var(--hover-duration) ease-in-out,
+    filter var(--hover-duration) ease-in-out,
+    background var(--hover-duration) ease-in-out,
+    opacity var(--hover-duration) ease-in-out,
+    box-shadow var(--hover-duration) ease-in-out,
+    color var(--hover-duration) ease-in-out;
+}
+
+.hoverable::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: transparent;
+  pointer-events: none;
+  transition: background var(--hover-duration) ease-in-out;
+}
+
+.hoverable:hover:not(:disabled):not([aria-disabled='true'])::after {
+  background: var(--hoverable-shade-hover);
+}
+
+.hoverable:active:not(:disabled):not([aria-disabled='true'])::after {
+  background: var(--hoverable-shade-active);
+}
+
+.clickable:active:not(:disabled):not([aria-disabled='true']) {
+  transform: scale(var(--clickable-active-scale));
+}
+
+/*
+ * 가로로 긴 컨트롤 — 균일 scale(0.96)이 폭에 비례해 양옆을 과하게 줄임.
+ * data-width="stretch" | .clickableWide 는 scale 없음 (음영은 .hoverable일 때만).
+ */
+.clickable[data-width='stretch']:active:not(:disabled):not([aria-disabled='true']),
+.clickable.clickableWide:active:not(:disabled):not([aria-disabled='true']) {
+  transform: none;
 }

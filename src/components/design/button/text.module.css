@@ -1,0 +1,70 @@
+/* Text 표면 */
+.text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-sizing: border-box;
+  font: inherit;
+  font-weight: 200;
+  line-height: 1.2;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.square {
+  border-radius: 0;
+}
+
+.full {
+  border-radius: 999px;
+}
+
+.small {
+  padding: 6px 10px;
+  font-size: 0.85em;
+  min-height: 28px;
+}
+
+.medium {
+  padding: 8px 14px;
+  font-size: 1em;
+  min-height: 36px;
+}
+
+.large {
+  padding: 10px 18px;
+  font-size: 1.05em;
+  min-height: 44px;
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  line-height: 0;
+  color: inherit;
+  overflow: hidden;
+}
+
+.label {
+  line-height: 1.2;
+}
+
+/* 링크/인라인 톤 — 패딩·min-height·radius·surface 없음, 색은 부모 inherit */
+.plain {
+  padding: 0;
+  min-height: 0;
+  border-radius: 0;
+  font-weight: inherit;
+  justify-content: flex-start;
+  color: inherit;
+}
+
+.underline .label {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}

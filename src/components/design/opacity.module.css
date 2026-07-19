@@ -1,0 +1,20 @@
+/* Icon / Text / Chip 공통 opacity. 임의 % 금지 — 토큰만. */
+.hidden {
+  opacity: 0;
+}
+
+.faint {
+  opacity: 0.25;
+}
+
+.muted {
+  opacity: 0.5;
+}
+
+.soft {
+  opacity: 0.75;
+}
+
+.full {
+  opacity: 1;
+}

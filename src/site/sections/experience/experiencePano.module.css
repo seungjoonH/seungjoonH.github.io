@@ -1,0 +1,51 @@
+.experiencePanoContainer {
+  display: block;
+  position: relative;
+  --width: 90vw;
+  width: var(--width);
+  height: calc(var(--width) / var(--experience-pano-ratio));
+  overflow: visible;
+}
+
+.panoLine {
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-text);
+  mask-image: url('/assets/images/pano-line-desktop.svg');
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  -webkit-mask-image: url('/assets/images/pano-line-desktop.svg');
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+}
+
+/* config.breakpoints 와 동일 — body[data-breakpoint] (useApp) */
+:global(body[data-breakpoint='mobile']) .panoLine {
+  mask-image: url('/assets/images/pano-line-mobile.svg');
+  -webkit-mask-image: url('/assets/images/pano-line-mobile.svg');
+}
+
+:global(body[data-breakpoint='tablet']) .panoLine {
+  mask-image: url('/assets/images/pano-line-tablet.svg');
+  -webkit-mask-image: url('/assets/images/pano-line-tablet.svg');
+}
+
+:global(body[data-breakpoint='wide']) .panoLine {
+  mask-image: url('/assets/images/pano-line-wide.svg');
+  -webkit-mask-image: url('/assets/images/pano-line-wide.svg');
+}
+
+.panoOver {
+  position: absolute;
+  top: 0;
+  left: var(--pano-over-left, -10%);
+  width: 120%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    var(--color-bg) 5%,
+    var(--color-bg) 95%,
+    transparent 100%
+  );
+}

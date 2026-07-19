@@ -1,0 +1,122 @@
+/* SearchField — 밑줄 입력 + leading icon + clear (텍스트 유무와 높이 고정) */
+
+.root {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  border-bottom: 1px solid var(--color-text-tertiary, currentColor);
+  padding-bottom: 6px;
+  min-width: 0;
+  box-sizing: border-box;
+  color: var(--color-text);
+  font: inherit;
+  /* leading/clear 슬롯과 동일 — 값·클리어 노출과 무관하게 행 높이 유지 */
+  min-height: calc(20px + 6px);
+}
+
+.stretch {
+  width: 100%;
+}
+
+.hug {
+  width: fit-content;
+  max-width: 100%;
+}
+
+.leading,
+.clear {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-tertiary);
+}
+
+.leadingSmall,
+.clear.leadingSmall {
+  width: 14px;
+  height: 14px;
+}
+
+.leadingMedium,
+.clear.leadingMedium {
+  width: 18px;
+  height: 18px;
+}
+
+.leadingLarge,
+.clear.leadingLarge {
+  width: 20px;
+  height: 20px;
+}
+
+.inputWrap {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  /* 오버레이/입력 줄 높이 고정 */
+  height: 1.25em;
+}
+
+.input {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  outline: none;
+  color: var(--color-text);
+  font: inherit;
+  line-height: 1.25;
+  padding: 0 4px;
+  box-sizing: border-box;
+}
+
+.small {
+  font-size: 0.85em;
+  min-height: calc(14px + 6px);
+}
+
+.medium {
+  font-size: inherit;
+  min-height: calc(18px + 6px);
+}
+
+.large {
+  font-size: 1.05em;
+  min-height: calc(20px + 6px);
+}
+
+.input[type='search']::-webkit-search-cancel-button,
+.input[type='search']::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.input::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+:global([data-theme='dark']) .input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+:global([data-theme='light']) .input::placeholder {
+  color: rgba(0, 0, 0, 0.38);
+}
+
+/* 슬롯은 항상 예약 — 빈 값일 때만 시각/포커스만 숨김. IconButton glyph + ::before 44px */
+.clear {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.clearVisible {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+:global([data-theme='light']) .clear {
+  color: var(--color-link);
+}

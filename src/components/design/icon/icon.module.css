@@ -1,0 +1,94 @@
+/* Icon 표면 */
+.shell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  line-height: 0;
+  /* color는 surface.variant만 — inherit 넣으면 secondary가 부모(흰색)로 덮여 아이콘이 사라짐 */
+}
+
+.glyph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  flex-shrink: 0;
+}
+
+.svgFill {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Chip/Text·사이즈 래퍼 안 글리프 — 부모 박스를 채움 */
+.embedded {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: inherit;
+  line-height: 0;
+  flex-shrink: 0;
+}
+
+.embedded .svgFill {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.small {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+}
+
+.small .glyph {
+  width: 16px;
+  height: 16px;
+}
+
+.medium {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+}
+
+.medium .glyph {
+  width: 20px;
+  height: 20px;
+}
+
+.large {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+}
+
+.large .glyph {
+  width: 24px;
+  height: 24px;
+}
+
+/* primary — 표면만 없음. 모서리는 size(rounded) / shape가 담당 */
+.primary {
+  background: transparent;
+  box-shadow: none;
+}
+
+.square {
+  border-radius: 0;
+}
+
+.full {
+  border-radius: 999px;
+}
+
+.iconRootBlock {
+  display: block;
+  width: 100%;
+  height: 100%;
+  line-height: 0;
+}

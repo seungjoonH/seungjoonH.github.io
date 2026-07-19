@@ -1,0 +1,157 @@
+/* Viewport 레이아웃 와이어프레임 — Experience/Projects/Contact 실코드 골격 */
+
+.page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 4px 2px 8px;
+  box-sizing: border-box;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  width: 100%;
+}
+
+.pano {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.panoLine {
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-text);
+  opacity: 0.55;
+  mask-image: var(--pano-mask);
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  -webkit-mask-image: var(--pano-mask);
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+}
+
+.gridToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.columnSliderSlot {
+  margin-left: auto;
+  min-width: 160px;
+  max-width: 220px;
+  flex: 0 1 220px;
+}
+
+/*
+ * experience.module.css .experienceScrollContainer / .experienceScroll 모방
+ * 스크롤 후 손 떼면 scroll-snap + idle snap 으로 카드 중앙 정렬
+ */
+.carouselViewport {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.carouselViewport::-webkit-scrollbar {
+  display: none;
+}
+
+.carouselTrack {
+  display: flex;
+  align-items: stretch;
+  width: max-content;
+  min-width: max-content;
+  box-sizing: content-box;
+  gap: var(--exp-gap, 6%);
+  /* 첫/끝 카드도 중앙에 올 수 있게 — experience.module.css 와 동일 */
+  padding-inline: calc((100% - var(--exp-card-w)) / 2);
+}
+
+.experienceCard,
+.experienceGhost {
+  flex: 0 0 auto;
+  width: var(--exp-card-w, 19%);
+  aspect-ratio: 0.86;
+  border-radius: 10px;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+}
+
+.experienceCard {
+  border: 1px solid color-mix(in srgb, var(--color-text) 28%, transparent);
+  background: color-mix(in srgb, var(--color-text) 5%, transparent);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    opacity 0.2s ease;
+  opacity: 0.55;
+}
+
+.experienceCardFocused {
+  background: color-mix(in srgb, var(--color-text) 18%, transparent);
+  border-color: color-mix(in srgb, var(--color-text) 55%, transparent);
+  opacity: 1;
+}
+
+.experienceGhost {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.projectGrid {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+}
+
+.projectCardSlot {
+  width: 100%;
+  aspect-ratio: 1 / 1.05;
+  min-height: 96px;
+}
+
+.shellFace,
+.shellFaceBack {
+  width: 100%;
+  height: 100%;
+  min-height: 96px;
+  box-sizing: border-box;
+}
+
+.shellFace {
+  background: color-mix(in srgb, var(--color-text) 5%, transparent);
+}
+
+.shellFaceBack {
+  background: color-mix(in srgb, var(--color-text) 12%, transparent);
+}
+
+.contactGrid {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+}
+
+.contactCard {
+  aspect-ratio: 1.4 / 1;
+  min-height: 64px;
+  border: 1px solid color-mix(in srgb, var(--color-text) 28%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--color-text) 5%, transparent);
+  min-width: 0;
+}

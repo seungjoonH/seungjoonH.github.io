@@ -1,0 +1,881 @@
+/* 컴포넌트 갤러리 페이지 레이아웃 */
+
+.page {
+  min-height: 100vh;
+  padding: 48px 80px 120px;
+  box-sizing: border-box;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.header {
+  margin-bottom: 32px;
+}
+
+.title {
+  margin: 0;
+  font-size: calc(2rem * var(--font-scale, 1));
+  font-weight: 600;
+}
+
+.tabsBlock {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 0;
+}
+
+.tabsStack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 0;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--color-bg-card, color-mix(in srgb, var(--color-text) 6%, var(--color-bg)));
+  border: 1px solid var(--color-border);
+}
+
+.bucketTabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0;
+  padding: 12px;
+  border-radius: 12px;
+  background: var(--color-bg-card, color-mix(in srgb, var(--color-text) 6%, var(--color-bg)));
+  border: 1px solid var(--color-border);
+}
+
+/* SegmentedButton hug — 내부 fieldset width:100%를 콘텐츠 폭으로 묶음 */
+.viewToggle {
+  flex: 0 0 auto;
+  width: max-content;
+  max-width: 100%;
+}
+
+.viewToggle > :global(fieldset) {
+  width: max-content;
+  max-width: 100%;
+}
+
+.contentWithToc {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.galleryBody {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.masonryGroup {
+  min-width: 0;
+}
+
+.masonryGroupHeading {
+  margin: 0 0 16px;
+  font-size: calc(0.78rem * var(--font-scale, 1));
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.45;
+}
+
+.masonryColumns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.section {
+  margin: 0;
+  padding: 28px 28px 32px;
+  border-radius: 16px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-card, color-mix(in srgb, var(--color-text) 4%, var(--color-bg)));
+  scroll-margin-top: 88px;
+  min-width: 0;
+  max-width: 100%;
+  width: fit-content;
+  flex: 0 1 auto;
+  box-sizing: border-box;
+}
+
+/* 매트릭스·그리드 등 — 행 전체 차지 */
+.sectionFullWidth {
+  width: 100%;
+  flex: 1 1 100%;
+}
+
+.sectionTitleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.sectionTitleTrailing {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: calc(1.25rem * var(--font-scale, 1));
+  font-weight: 600;
+}
+
+.titleSuffix {
+  font-size: 0.62em;
+  font-weight: 400;
+  opacity: 0.42;
+}
+
+.block {
+  margin-top: 16px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.colStretch {
+  width: 100%;
+  align-items: stretch;
+}
+
+.layoutBoxContent,
+.layoutStackItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 58px;
+  min-height: 42px;
+  padding: 10px 12px;
+  box-sizing: border-box;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.layoutBoxContent {
+  min-width: 132px;
+}
+
+.layoutStackItemTall {
+  min-height: 64px;
+}
+
+.layoutStackFrame,
+.layoutStackNarrowFrame {
+  width: 100%;
+  min-height: 96px;
+  padding: 12px;
+  box-sizing: border-box;
+  border: 1px dashed color-mix(in srgb, var(--color-text) 32%, transparent);
+  border-radius: 8px;
+}
+
+.layoutStackNarrowFrame {
+  max-width: 180px;
+}
+
+.cardPreviewList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  width: 100%;
+  overflow: visible;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  align-items: stretch;
+}
+
+.cardPreviewList > .preview {
+  display: block;
+  flex: 1 1 200px;
+  max-width: 280px;
+  min-width: 0;
+  width: auto;
+}
+
+.cardPreviewItemList {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.iconGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  gap: 16px;
+}
+
+.iconItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.iconBox {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-text) 4%, transparent);
+}
+
+.iconLabel {
+  font-size: 0.75em;
+  opacity: 0.65;
+  text-align: center;
+  word-break: break-all;
+}
+
+.preview {
+  position: relative;
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  box-sizing: border-box;
+  border: 2px dotted transparent;
+  border-radius: 8px;
+  transition: border-color 0.2s ease;
+}
+
+.previewFullWidth {
+  display: block;
+  width: 100%;
+}
+
+.preview:hover {
+  z-index: 20;
+  border-color: color-mix(in srgb, var(--color-text) 35%, transparent);
+}
+
+.dimensionLabel {
+  position: absolute;
+  top: -22px;
+  right: 0;
+  padding: 3px 6px;
+  border-radius: 4px;
+  background: var(--color-text);
+  color: var(--color-text-inverse, var(--color-bg));
+  font-size: 11px;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.15s ease;
+  z-index: 2;
+}
+
+.dimensionLabelVisible {
+  opacity: 1;
+}
+
+/* body portal — 섹션 스택 밖으로 빼서 아래 카드에 가리지 않음 */
+.codeLabel {
+  position: fixed;
+  max-width: min(520px, 85vw);
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #fff;
+  background-color: #000;
+  color: #c8c8c8;
+  /* global `* { font-family: Neue Haas }` 가 span을 덮어씀 → 자식도 inherit */
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Code', Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.45;
+  white-space: pre;
+  pointer-events: none;
+  z-index: 10000;
+}
+
+.codeLabel * {
+  font-family: inherit;
+}
+
+/* grayscale syntax: tag > value > attr > equal */
+.codeTag {
+  color: #fff;
+}
+
+.codeAttr {
+  color: #9a9a9a;
+}
+
+.codeEqual {
+  color: #5c5c5c;
+}
+
+.codeComment {
+  color: #6a6a6a;
+}
+
+.codeValue {
+  color: #d4d4d4;
+}
+
+:global([data-theme='light']) .codeLabel {
+  background-color: #fff;
+  color: #555;
+  border-color: #1a1a1a;
+}
+
+:global([data-theme='light']) .codeTag {
+  color: #111;
+}
+
+:global([data-theme='light']) .codeAttr {
+  color: #6a6a6a;
+}
+
+:global([data-theme='light']) .codeEqual {
+  color: #a0a0a0;
+}
+
+:global([data-theme='light']) .codeValue {
+  color: #333;
+}
+
+:global([data-theme='light']) .codeComment {
+  color: #9a9a9a;
+}
+
+.toc {
+  position: fixed;
+  top: 96px;
+  right: 0;
+  width: 220px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  padding: 20px;
+  border-radius: 12px 0 0 12px;
+  background: var(--color-bg-card, var(--color-bg));
+  border: 1px solid var(--color-border);
+  border-right: none;
+  z-index: 80;
+  opacity: 0.35;
+  transform: translateX(calc(100% - 36px));
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+
+.toc:hover,
+.toc:focus-within {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.tocTitle {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.tocGroup {
+  margin-bottom: 10px;
+}
+
+.tocGroup:last-child {
+  margin-bottom: 0;
+}
+
+.tocGroupHeading {
+  margin: 0 0 4px;
+  padding: 4px 10px 2px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.45;
+}
+
+.tocList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tocLink {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  opacity: 0.7;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.tocDepth1 {
+  padding-left: 22px;
+}
+
+.tocDepth2 {
+  padding-left: 34px;
+}
+
+.tocLink:hover {
+  opacity: 1;
+  background: color-mix(in srgb, var(--color-text) 8%, transparent);
+}
+
+.tocLinkActive {
+  opacity: 1;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--color-text) 12%, transparent);
+}
+
+.relations {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.structure {
+  margin-bottom: 28px;
+  padding: 28px;
+  border-radius: 16px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-card, color-mix(in srgb, var(--color-text) 4%, var(--color-bg)));
+}
+
+.structureTitle {
+  margin: 0;
+  font-size: calc(1.25rem * var(--font-scale, 1));
+  font-weight: 600;
+}
+
+.structureHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px 20px;
+  margin-bottom: 8px;
+}
+
+.edgeLegend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.edgeLegendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.edgeLegendSample {
+  width: 40px;
+  height: 12px;
+  flex: 0 0 auto;
+  overflow: visible;
+}
+
+.edgeLegendLabel {
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--color-text) 62%, transparent);
+}
+
+.structureGraph {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 100px;
+  padding: 28px 0 12px;
+}
+
+.structureRow {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: 12px 16px;
+  align-items: center;
+  padding: 40px 18px 24px;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+  overflow: visible;
+}
+
+.structureRowTier0 {
+  background: color-mix(in srgb, var(--color-text) 3.5%, transparent);
+}
+
+.structureRowTier1 {
+  background: color-mix(in srgb, var(--color-text) 6%, transparent);
+}
+
+.structureRowTier2 {
+  background: color-mix(in srgb, var(--color-text) 8.5%, transparent);
+}
+
+.structureRowTier3 {
+  background: color-mix(in srgb, var(--color-text) 11%, transparent);
+}
+
+.structureRowLabel {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  line-height: 1.35;
+  opacity: 0.55;
+  text-align: left;
+}
+
+.structureLevel {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 64px;
+  row-gap: 40px;
+}
+
+.structureEdges {
+  position: absolute;
+  inset: 0;
+  /* row(z=1)·active node(z=2) 위로 — 화살촉이 패딩/테두리에 가리지 않게 */
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* 간선 위, 노드 row 위 — 오프스크린 목적지 라벨만 */
+.structureEdgeLabels {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.edge {
+  fill: none;
+  stroke-width: 1.5px;
+  transition: opacity 0.2s ease;
+}
+
+/* 점선 = context(구체화)·embed(사용). dash 길이는 동일 — 구분은 outlined/filled로 */
+.edge_context,
+.edge_embed {
+  stroke-dasharray: 5 4;
+}
+
+.edgeLabel {
+  font-size: 0.68rem;
+  font-weight: 600;
+  fill: var(--color-text);
+  stroke: var(--color-bg);
+  stroke-width: 4px;
+  paint-order: stroke fill;
+  pointer-events: none;
+}
+
+.structureNode {
+  display: inline-block;
+  position: relative;
+  min-width: 120px;
+  color: inherit;
+  transform-origin: center;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.structureNode:hover > div {
+  border-color: var(--color-text);
+}
+
+.structureNameLink {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.structureNameLink:hover .structureName {
+  text-decoration: underline;
+}
+
+.structureNodeDimmed {
+  opacity: 0.25;
+}
+
+.structureNodeActive {
+  z-index: 2;
+  transform: scale(1.08);
+}
+
+.structureMuted {
+  font-size: 0.85rem;
+  opacity: 0.55;
+}
+
+.structureName {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.structurePreview {
+  display: flex;
+  align-items: center;
+  min-height: 36px;
+}
+
+.structurePreviewGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modalPreview {
+  position: relative;
+  width: 120px;
+  height: 64px;
+  box-sizing: border-box;
+  padding: 8px 10px;
+  border: 1px solid var(--project-modal-border, rgba(255, 255, 255, 0.12));
+  border-radius: 8px;
+  background: var(--color-bg-card);
+}
+
+.modalPreviewClose {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+}
+
+.flipCardStructurePreview {
+  width: 96px;
+  height: 56px;
+  border-radius: 8px;
+}
+
+.variantTable {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.matrixSplit {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 28px 40px;
+  align-items: start;
+}
+
+/* label | icon+label 쌍 표 — 동일 폭 가로 배치 */
+.matrixPair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 28px 40px;
+  align-items: start;
+}
+
+.matrixGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.matrixGroupLabel {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+
+.opacityRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.sizeMatrix {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px 24px;
+  align-items: start;
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .matrixSplit,
+  .matrixPair {
+    grid-template-columns: 1fr;
+  }
+
+  .sizeMatrix {
+    grid-template-columns: 1fr;
+  }
+}
+
+.variantRow {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.variantRowLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  opacity: 0.65;
+  padding-top: 10px;
+}
+
+.variantCells {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.variantCell {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 96px;
+}
+
+.variantCellFullWidth {
+  width: 100%;
+  min-width: 0;
+  align-self: stretch;
+}
+
+.variantCellLabel {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+
+.variantStack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.variantStackRow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.demoCard {
+  min-width: 160px;
+  min-height: 100px;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  background: color-mix(in srgb, var(--color-text) 5%, transparent);
+  cursor: pointer;
+}
+
+.flipCardDemo {
+  width: 180px;
+  height: 110px;
+  border-radius: 12px;
+}
+
+.experienceSlotCardDemo {
+  width: 280px;
+  flex: 0 0 280px;
+}
+
+.projectSlotCardDemo {
+  width: 340px;
+  flex: 0 0 340px;
+}
+
+.slotDemoProjectMedia {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 4rem;
+  background: color-mix(in srgb, var(--color-text) 6%, transparent);
+  color: var(--color-text-muted);
+  font-size: 0.8em;
+}
+
+.homeLink {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: inherit;
+  opacity: 0.7;
+  font-size: 0.9em;
+}
+
+.homeLink:hover {
+  opacity: 1;
+}
+
+@media (max-width: 1200px) {
+  .toc {
+    display: none;
+  }
+
+  .page {
+    padding: 32px 20px 80px;
+  }
+}

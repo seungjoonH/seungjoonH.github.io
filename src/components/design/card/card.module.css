@@ -1,0 +1,11 @@
+/* 불투명 배경의 범용 카드 컨테이너 — 뒤에 그려지는 요소(예: 그래프 화살표)를 완전히 가린다 */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-card, var(--color-bg));
+  transition: border-color 0.2s ease;
+}

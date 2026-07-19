@@ -1,0 +1,18 @@
+/* TagButton — underline=false 고정, hover 시 true */
+.tagButton {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 0.15em;
+}
+
+.tagButton:hover :global([data-tag]) {
+  text-decoration: underline;
+}

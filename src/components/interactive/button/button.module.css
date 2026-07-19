@@ -1,0 +1,33 @@
+/* TextButton */
+.textButton {
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  line-height: normal;
+  border-radius: 6px;
+}
+
+.square {
+  border-radius: 0;
+}
+
+.full {
+  border-radius: 999px;
+}
+
+.textButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.textButton:focus-visible {
+  outline: 2px solid var(--color-text-muted);
+  outline-offset: 2px;
+}

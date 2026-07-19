@@ -1,0 +1,23 @@
+/* ThemeToggleButton의 실제 테마 밝기별 버튼 색을 고정함 */
+.root {
+  display: inline-flex;
+}
+
+.root :global(button > span > span:first-child) {
+  transition:
+    background-color calc(var(--anim-hover, 160ms) / var(--speed-scale, 1)) ease,
+    color calc(var(--anim-hover, 160ms) / var(--speed-scale, 1)) ease,
+    box-shadow calc(var(--anim-hover, 160ms) / var(--speed-scale, 1)) ease;
+}
+
+.dark :global(button > span > span:first-child) {
+  background: #050505;
+  color: #f2f2f2;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #f2f2f2 28%, transparent);
+}
+
+.light :global(button > span > span:first-child) {
+  background: #f2f2f2;
+  color: #050505;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #050505 18%, transparent);
+}

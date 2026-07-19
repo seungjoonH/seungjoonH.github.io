@@ -1,0 +1,28 @@
+.headingContainer {
+  box-sizing: border-box;
+  color: var(--color-text);
+  font-weight: 200;
+  font-size: calc(48px * var(--font-scale, 1));
+  width: 100%;
+  margin: 0;
+}
+
+.alignLeft {
+  text-align: left;
+}
+
+.alignCenter {
+  text-align: center;
+}
+
+@media (max-width: 1200px) {
+  .headingContainer {
+    font-size: calc(40px * var(--font-scale, 1));
+  }
+}
+
+@media (max-width: 768px) {
+  .headingContainer {
+    font-size: calc(32px * var(--font-scale, 1));
+  }
+}

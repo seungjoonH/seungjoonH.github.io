@@ -1,0 +1,282 @@
+.card {
+  --ratio: 0.8602150538;
+  --padding: 14px;
+
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--ratio);
+  padding: var(--padding);
+  background: var(--color-bg-card);
+  border-radius: 18px;
+  border: 1px solid var(--color-border);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  transition: var(--hover-transition);
+  color: var(--color-text);
+  /* 스크롤 컨테이너 white-space: nowrap 상속 차단 */
+  white-space: normal;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.01) 35%,
+    transparent 68%
+  );
+  pointer-events: none;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-text);
+  box-shadow: 0 20px 38px rgba(0, 0, 0, 0.18);
+}
+
+.card.mobileHovered {
+  transform: translateY(-2px);
+  border-color: var(--color-text);
+  box-shadow: 0 20px 38px rgba(0, 0, 0, 0.18);
+}
+
+.card.mobileHovered .experienceThumbWrap.hasHovered .experienceThumbDefault {
+  opacity: 0;
+}
+
+.card.mobileHovered .experienceThumbWrap.hasHovered .experienceThumbHovered {
+  opacity: 1;
+}
+
+.card img,
+.card .placeholderImage,
+.card .experienceThumbWrap {
+  border-radius: 13px;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  min-height: 3.25rem;
+  margin-bottom: 4px;
+}
+
+.placeholderGraphic {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.experienceThumbWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.experienceThumbDefault,
+.experienceThumbHovered {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.2s ease;
+}
+
+.experienceThumbHovered {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.card:hover .experienceThumbWrap.hasHovered .experienceThumbDefault {
+  opacity: 0;
+}
+
+.card:hover .experienceThumbWrap.hasHovered .experienceThumbHovered {
+  opacity: 1;
+}
+
+.experienceThumbWrap .experienceThumbSvg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  line-height: 0;
+}
+
+.experienceThumbWrap .experienceThumbSvg [role='img'] {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+:global([data-theme="dark"]) .experienceThumbWrap {
+  background: #f2f2f2;
+  --svg-fg: #1a1a1a;
+  --svg-bg: #f2f2f2;
+}
+
+:global([data-theme="light"]) .experienceThumbWrap {
+  background: #1a1a1a;
+  --svg-fg: #f2f2f2;
+  --svg-bg: #1a1a1a;
+}
+
+.card img {
+  object-fit: cover;
+  background: var(--color-bg-subtle);
+}
+
+.placeholderImage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-subtle);
+  color: var(--color-text-muted);
+}
+
+.placeholderImage svg {
+  width: 42%;
+  height: auto;
+  max-height: 70%;
+  object-fit: contain;
+}
+
+.content {
+  width: 100%;
+}
+
+.company {
+  font-size: calc(clamp(14px, 1.25vw, 22px) * var(--font-scale, 1));
+  font-weight: 200;
+  color: var(--color-text);
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+}
+
+.positionRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.position {
+  font-size: calc(clamp(12px, 0.92vw, 16px) * var(--font-scale, 1));
+  font-weight: 200;
+  color: var(--color-text);
+  opacity: 0.85;
+}
+
+.sectionTitles {
+  margin: 8px 0 0;
+  padding-left: 0;
+  font-size: calc(clamp(10px, 0.74vw, 12px) * var(--font-scale, 1));
+  font-weight: 200;
+  color: var(--color-text-muted);
+  line-height: 1.35;
+  list-style: none;
+}
+
+.sectionTitles li {
+  position: relative;
+  margin-top: 2px;
+  padding-left: 1em;
+  min-width: 0;
+}
+
+.sectionTitles li::before {
+  content: '';
+  position: absolute;
+  top: 0.55em;
+  left: 0.2em;
+  width: 0.28em;
+  height: 0.28em;
+  border-radius: 50%;
+  background: var(--color-bullet, var(--color-text-muted));
+}
+
+.gotoSlot {
+  width: fit-content;
+  max-width: 100%;
+  margin-top: auto;
+}
+
+.duration {
+  flex-shrink: 0;
+  font-size: calc(clamp(10px, 0.74vw, 13px) * var(--font-scale, 1));
+  font-weight: 200;
+  color: var(--color-text-muted);
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 900px) {
+  .card {
+    --padding: 12px;
+    border-radius: 16px;
+  }
+
+  .card img,
+  .card .placeholderImage {
+    border-radius: 11px;
+  }
+}
+
+.card > :global(.columnContainer) {
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+@media (max-width: 768px) {
+  .card {
+    /* 세로도 pano 안쪽에 들어오게 약간 납작하게 */
+    --ratio: 0.95;
+    --padding: 12px;
+    --column-gap: 6px;
+    border-radius: 14px;
+    min-height: 0;
+  }
+
+  .card img,
+  .card .placeholderImage,
+  .card .experienceThumbWrap {
+    min-height: 2.25rem;
+    aspect-ratio: 2 / 1;
+    margin-bottom: 0;
+  }
+
+  .company {
+    font-size: calc(clamp(13px, 3.6vw, 16px) * var(--font-scale, 1));
+  }
+
+  .positionRow {
+    flex-wrap: wrap;
+    gap: 2px 8px;
+    align-items: baseline;
+  }
+
+  .position {
+    font-size: calc(clamp(11px, 3vw, 13px) * var(--font-scale, 1));
+    min-width: 0;
+  }
+
+  .sectionTitles {
+    font-size: calc(clamp(10px, 2.6vw, 12px) * var(--font-scale, 1));
+    margin-top: 4px;
+  }
+
+  .duration {
+    font-size: calc(clamp(10px, 2.6vw, 12px) * var(--font-scale, 1));
+    margin-left: auto;
+  }
+
+  .gotoSlot {
+    margin-top: auto;
+    padding-top: 4px;
+  }
+}

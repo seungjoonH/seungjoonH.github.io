@@ -1,0 +1,13 @@
+.box {
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.hug {
+  width: fit-content;
+  max-width: 100%;
+}
+
+.stretch {
+  width: 100%;
+}

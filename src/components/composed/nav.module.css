@@ -1,0 +1,160 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  font-weight: 200;
+  font-size: calc(18px * var(--font-scale, 1));
+  z-index: 1000;
+  background: transparent;
+  pointer-events: none;
+  color: #fff;
+  mix-blend-mode: difference;
+}
+
+:global(html[data-theme="light"]) .navbar {
+  color: #1a1a1a;
+  mix-blend-mode: normal;
+}
+.navbar > * {
+  pointer-events: auto;
+}
+
+.navbarInner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+  width: 100%;
+  max-width: 100vw;
+  padding: 20px 24px 20px 24px;
+  box-sizing: border-box;
+}
+
+.navLinks {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex: 1;
+  min-width: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.navLinks li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.navLinks li a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.navItemPano {
+  flex-shrink: 0;
+}
+
+.settingsWrap {
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+}
+
+.zoomSettingsTooltip {
+  --nav-tooltip-gap: 8px;
+  position: fixed;
+  top: calc(var(--nav-tooltip-top, 0px) + var(--nav-tooltip-gap));
+  right: var(--nav-tooltip-right, 0);
+  width: max-content;
+  max-width: min(400px, 85vw);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--zoom-tooltip-bg);
+  border: 1px solid var(--zoom-tooltip-border);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-size: 0.85em;
+  color: var(--color-text);
+  animation: zoomSettingsTooltipFloat 2.2s ease-in-out infinite;
+  z-index: 1001;
+}
+
+.zoomSettingsTooltipArrow {
+  position: absolute;
+  right: 14px;
+  top: -10px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 10px solid var(--zoom-tooltip-bg);
+  box-sizing: border-box;
+  filter: drop-shadow(0 -1px 0 var(--zoom-tooltip-border));
+}
+
+.zoomSettingsTooltipText {
+  flex: 0 1 auto;
+  min-width: 0;
+  white-space: pre-line;
+}
+
+@keyframes zoomSettingsTooltipFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+
+.navbar a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: var(--hover-transition);
+}
+
+.navbar a:hover {
+  opacity: 1;
+  transform: scale(1.02);
+}
+
+.navbar a:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 768px) {
+  .navbarInner {
+    position: relative;
+    padding: 14px 16px;
+  }
+
+  .navLinks {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .navLinks li {
+    display: none;
+  }
+
+  .navLinks li.navItemPano {
+    display: flex;
+    flex: 0 0 auto;
+  }
+
+  .settingsWrap {
+    right: 16px;
+  }
+}

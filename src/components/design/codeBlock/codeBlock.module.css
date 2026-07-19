@@ -1,0 +1,110 @@
+/* 읽기 전용 코드 블록 — CodeField 표면과 통일 (전역 code 스타일 리셋) */
+
+.root {
+  box-sizing: border-box;
+  margin: 0;
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  padding: 10px 12px;
+  overflow: auto;
+  border: 1px solid color-mix(in srgb, var(--color-text) 18%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--color-text) 6%, var(--color-bg));
+  color: var(--color-text);
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Code', Consolas, monospace;
+  font-size: calc(0.72rem * var(--font-scale, 1));
+  font-weight: 400;
+  line-height: 1.45;
+  white-space: pre;
+  tab-size: 2;
+}
+
+.root:focus {
+  outline: none;
+}
+
+.root:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-text) 40%, transparent);
+  outline-offset: 1px;
+}
+
+.heightStretch {
+  flex: 1 1 auto;
+  min-height: 0;
+  align-self: stretch;
+  height: 100%;
+}
+
+.lineGutter {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  user-select: none;
+  color: color-mix(in srgb, var(--color-text) 35%, transparent);
+  font-variant-numeric: tabular-nums;
+}
+
+.lineNo {
+  min-width: 1.5em;
+}
+
+/* 전역 `code { border, padding, background }` 리셋 */
+.code {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  white-space: inherit;
+}
+
+.code * {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* grayscale: tag > value > attr > equal > comment (CodeField와 동일) */
+.tokTag {
+  color: var(--color-text);
+}
+
+.tokValue {
+  color: color-mix(in srgb, var(--color-text) 78%, transparent);
+}
+
+.tokAttr {
+  color: color-mix(in srgb, var(--color-text) 55%, transparent);
+}
+
+.tokEqual {
+  color: color-mix(in srgb, var(--color-text) 35%, transparent);
+}
+
+.tokComment {
+  color: color-mix(in srgb, var(--color-text) 40%, transparent);
+  font-style: italic;
+}
+
+/* syntaxHighlight=false — 본문 흐림, highlightWords만 흰색 */
+.wordMode {
+  color: color-mix(in srgb, var(--color-text) 40%, transparent);
+}
+
+.wordDim {
+  color: color-mix(in srgb, var(--color-text) 40%, transparent);
+}
+
+.wordHit {
+  color: var(--color-text);
+}

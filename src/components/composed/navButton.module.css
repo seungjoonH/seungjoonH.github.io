@@ -1,0 +1,11 @@
+/* 아이콘-only NavButton — Text.icon(1em)보다 키운 글리프 */
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75em;
+  height: 1.75em;
+  flex-shrink: 0;
+  line-height: 0;
+  color: inherit;
+}

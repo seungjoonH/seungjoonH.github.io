@@ -1,0 +1,42 @@
+/* SettingsModal 본문 레이아웃 */
+.panelBody {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  min-height: 0;
+}
+
+.section {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: none;
+  padding: 0;
+  margin-left: 0;
+  margin-right: 0;
+  min-inline-size: 0;
+}
+
+.section label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.25rem;
+  padding: 0;
+  float: none;
+}
+
+/* Language: 세그먼트가 섹션 너비를 채움 */
+.controlStretch {
+  width: 100%;
+  min-width: 0;
+  align-self: stretch;
+}
+
+/* Theme: IconButton은 버튼 크기만 (section stretch로 가로 확장 방지) */
+.controlHug {
+  width: fit-content;
+  align-self: flex-start;
+}

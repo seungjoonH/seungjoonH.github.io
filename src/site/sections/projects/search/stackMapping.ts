@@ -1,0 +1,116 @@
+// 스택 별칭 정규화 및 아이콘 이름 매핑
+// @ts-nocheck
+const TO_STANDARD = {
+  ts: 'Typescript',
+  typescript: 'Typescript',
+  typescrit: 'Typescript',
+  typesciprt: 'Typescript',
+  typscript: 'Typescript',
+  typsciprt: 'Typescript',
+  tsx: 'Typescript',
+  javascript: 'Javascript',
+  js: 'Javascript',
+  javscript: 'Javascript',
+  javasript: 'Javascript',
+  jscript: 'Javascript',
+  next: 'Next.js',
+  nextjs: 'Next.js',
+  'next.js': 'Next.js',
+  'next-js': 'Next.js',
+  'Next.js': 'Next.js',
+  'Next-js': 'Next.js',
+  nextj: 'Next.js',
+  nest: 'NestJS',
+  nestjs: 'NestJS',
+  'nest.js': 'NestJS',
+  'nest-js': 'NestJS',
+  node: 'NodeJS',
+  nodejs: 'NodeJS',
+  'node.js': 'NodeJS',
+  'node-js': 'NodeJS',
+  nodej: 'NodeJS',
+  react: 'React',
+  reactjs: 'React',
+  'react.js': 'React',
+  'react-js': 'React',
+  reactj: 'React',
+  flutter: 'Flutter',
+  fluter: 'Flutter',
+  dart: 'Dart',
+  firebase: 'Firebase',
+  'fire-base': 'Firebase',
+  'firebase.js': 'Firebase',
+  redis: 'Redis',
+  mysql: 'MySQL',
+  'my-sql': 'MySQL',
+  my_sql: 'MySQL',
+  python: 'Python',
+  py: 'Python',
+  python3: 'Python',
+  numpy: 'NumPy',
+  numpi: 'NumPy',
+  pygame: 'Pygame',
+  'py-game': 'Pygame',
+  java: 'Java',
+  c: 'C',
+  cpp: 'C++',
+  'c++': 'C++',
+  'c-plus-plus': 'C++',
+  html: 'HTML',
+  html5: 'HTML5',
+  css: 'CSS',
+  css3: 'CSS3',
+  git: 'Git',
+  github: 'GitHub',
+  'git-hub': 'GitHub',
+};
+
+const STACK_ICON_NAMES = {
+  typescript: 'typescript',
+  nextjs: 'nextjs',
+  'next.js': 'nextjs',
+  nestjs: 'nestjs',
+  'nest.js': 'nestjs',
+  'node.js': 'nodejs',
+  nodejs: 'nodejs',
+  react: 'react',
+  flutter: 'flutter',
+  dart: 'dart',
+  firebase: 'firebase',
+  mysql: 'mysql',
+  python: 'python',
+  java: 'java',
+  c: 'c',
+  'c++': 'cpp',
+  cpp: 'cpp',
+  html: 'html5',
+  html5: 'html5',
+  css: 'css',
+  javascript: 'javascript',
+  mariadb: 'mariadb',
+  redis: 'redis',
+  spring: 'spring',
+  springboot: 'springboot',
+  'spring-boot': 'springboot',
+  'spring boot': 'springboot',
+  postgresql: 'postgresql',
+  aws: 'aws',
+  s3: 's3',
+  docker: 'docker',
+  'socket.io': 'socketio',
+};
+function toIconKey(name) {
+  if (!name || typeof name !== 'string') return '';
+  return name.trim().toLowerCase().replace(/\./g, '').replace(/\s+/g, '-');
+}
+export function getStackIconName(displayName) {
+  const key = toIconKey(displayName);
+  return STACK_ICON_NAMES[key] ?? (STACK_ICON_NAMES[toIconKey(normalizeStackToken(displayName))] || null);
+}
+
+export function normalizeStackToken(token) {
+  if (!token || typeof token !== 'string') return token || '';
+  const key = token.trim().toLowerCase();
+  return TO_STANDARD[key] ?? token.trim();
+}
+

@@ -1,0 +1,11 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 공식 React 로고 → currentColor. 원본 viewBox를 24칸에 맞춤 -->
+  <g transform="translate(12 12) scale(0.96)">
+    <circle cx="0" cy="0" r="2.05" fill="currentColor" />
+    <g stroke="currentColor" stroke-width="1" fill="none">
+      <ellipse rx="11" ry="4.2" />
+      <ellipse rx="11" ry="4.2" transform="rotate(60)" />
+      <ellipse rx="11" ry="4.2" transform="rotate(120)" />
+    </g>
+  </g>
+</svg>

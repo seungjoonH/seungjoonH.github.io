@@ -1,6 +1,0 @@
-<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M14 8.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5Z" fill="currentColor"/>
-  <ellipse cx="14" cy="14" rx="3.5" ry="10" stroke="currentColor" stroke-width="1.4"/>
-  <ellipse cx="14" cy="14" rx="3.5" ry="10" stroke="currentColor" stroke-width="1.4" transform="rotate(60 14 14)"/>
-  <ellipse cx="14" cy="14" rx="3.5" ry="10" stroke="currentColor" stroke-width="1.4" transform="rotate(120 14 14)"/>
-</svg>

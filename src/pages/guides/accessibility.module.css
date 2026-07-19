@@ -1,0 +1,772 @@
+/* /accessibility 탭 데모 전용 (셸은 responsive.module.css) */
+
+.demoShell {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  gap: 14px;
+  overflow: hidden;
+}
+
+.demoScroll {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  overflow: auto;
+  padding: 0 0 8px;
+}
+
+.exampleStack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.principleShortcut {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.sectionLabel {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.68rem;
+  opacity: 0.5;
+}
+
+.exampleTabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 4px 18px;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-text) 16%, transparent);
+}
+
+.exampleTab {
+  margin: 0;
+  padding: 8px 2px 10px;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  background: transparent;
+  color: color-mix(in srgb, var(--color-text) 48%, transparent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+  cursor: pointer;
+}
+
+.exampleTab:hover {
+  color: color-mix(in srgb, var(--color-text) 78%, transparent);
+}
+
+.exampleTabActive {
+  color: var(--color-text);
+  border-bottom-color: var(--color-text);
+  font-weight: 600;
+}
+
+.compareRow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: auto auto auto;
+  column-gap: 12px;
+  row-gap: 10px;
+  align-items: stretch;
+  min-width: 0;
+}
+
+.compareRow3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.compareCol {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 3;
+  min-width: 0;
+  min-height: 0;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--color-text) 28%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-text) 7%, var(--color-bg));
+  box-sizing: border-box;
+  opacity: 1;
+}
+
+.compareColRecommended {
+  border-color: color-mix(in srgb, var(--color-text) 48%, transparent);
+  background: color-mix(in srgb, var(--color-text) 12%, var(--color-bg));
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-text) 18%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--color-text) 10%, transparent);
+}
+
+.compareColRecommended .colTitle {
+  font-weight: 700;
+}
+
+.colHead {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+.colHeadText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.colTitle {
+  margin: 0;
+  min-width: 0;
+  font-size: calc(0.82rem * var(--font-scale, 1));
+  font-weight: 600;
+}
+
+.colDescription {
+  margin: 0;
+  font-size: calc(0.78rem * var(--font-scale, 1));
+  line-height: 1.45;
+  font-weight: 400;
+  color: color-mix(in srgb, var(--color-text) 62%, transparent);
+}
+
+.colTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  padding: 4px 8px 4px 6px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--color-text) 10%, transparent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.01em;
+  line-height: 1.35;
+  opacity: 0.85;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+
+.colTagGlyph {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+  display: block;
+}
+
+.colTagText {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.colTagBad {
+  opacity: 0.8;
+}
+
+.colTagOk {
+  opacity: 1;
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-text) 14%, transparent);
+}
+
+.compareColRecommended .colTag {
+  opacity: 1;
+  color: var(--color-text);
+}
+
+.iconRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* 잘못된 예시용 — IconButton.Outlined와 비슷하게만 보이게 */
+.demoOutlined {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  line-height: 0;
+  transition:
+    box-shadow 120ms ease,
+    background-color 120ms ease;
+}
+
+.demoOutlinedActive {
+  background: color-mix(in srgb, var(--color-text) 14%, transparent);
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--color-text) 70%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--color-text) 35%, transparent);
+}
+
+.captionList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.captionLine {
+  margin: 0;
+  padding: 1px 4px;
+  border-radius: 4px;
+  font-size: calc(0.8rem * var(--font-scale, 1));
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+  opacity: 0.55;
+  transition:
+    opacity 120ms ease,
+    background-color 120ms ease;
+}
+
+.captionLineActive {
+  opacity: 1;
+  background: color-mix(in srgb, var(--color-text) 12%, transparent);
+}
+
+.codeStack {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  align-self: stretch;
+}
+
+.codeStack .codeBlock {
+  flex: 0 0 auto;
+}
+
+.codeSplit {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+  align-items: stretch;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  align-self: stretch;
+}
+
+.codeSplitLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  height: 100%;
+}
+
+.codeSplitLeft .codeBlock {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.codeSplitRight {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.codeSplitRight .codeBlock {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.codeLabel {
+  margin: 0 0 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.45;
+}
+
+@media (max-width: 720px) {
+  .codeSplit {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fakeButton,
+.nativeButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--color-text) 6%, transparent);
+  color: inherit;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.fakeButton {
+  outline: none;
+}
+
+.topSplit {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 10px;
+  align-items: stretch;
+  align-self: stretch;
+  min-width: 0;
+  height: 100%;
+}
+
+.previewStage {
+  min-height: 72px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--color-text) 8%, transparent);
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.captionBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 0;
+  height: 100%;
+  padding: 6px 8px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--color-text) 9%, transparent);
+  box-sizing: border-box;
+}
+
+.captionHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-shrink: 0;
+  min-height: 28px;
+}
+
+.captionActions {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.captionLabel {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.62rem;
+  opacity: 0.5;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.captionText {
+  margin: 0;
+  padding: 1px 4px;
+  border-radius: 4px;
+  font-size: calc(0.8rem * var(--font-scale, 1));
+  line-height: 1.35;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+
+.captionEmpty {
+  opacity: 0.45;
+  font-style: italic;
+}
+
+.codeBlock {
+  flex: 0 0 auto;
+  margin: 0;
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--color-text) 10%, transparent);
+  overflow-x: hidden;
+  overflow-y: hidden;
+  box-sizing: border-box;
+}
+
+.codeBlockEmbed {
+  padding: 0;
+  background: transparent;
+  overflow: hidden;
+}
+
+.codeBlock :global(pre) {
+  margin: 0;
+  flex: 1 1 auto;
+  max-width: 100%;
+  font-size: calc(0.68rem * var(--font-scale, 1));
+  line-height: 1.45;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.codeBlockEmbed :global(pre) {
+  white-space: pre;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.brokenClose {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--color-text) 6%, transparent);
+  color: inherit;
+  cursor: pointer;
+}
+
+.brokenClose svg {
+  width: 18px;
+  height: 18px;
+}
+
+.demoChipWrap {
+  display: inline-flex;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  line-height: 0;
+}
+
+.cardPreviewSlot {
+  width: min(100%, 168px);
+  height: 168px;
+}
+
+.cardPreviewFace {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--color-text) 28%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-text) 5%, transparent);
+  box-sizing: border-box;
+}
+
+.cardThumb {
+  flex: 1 1 auto;
+  min-height: 0;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--color-text) 12%, transparent);
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: calc(0.9rem * var(--font-scale, 1));
+  font-weight: 600;
+}
+
+.cardBackLead {
+  margin: 0;
+  font-size: calc(0.82rem * var(--font-scale, 1));
+  font-weight: 600;
+}
+
+.cardBackText {
+  margin: 0;
+  font-size: calc(0.78rem * var(--font-scale, 1));
+  line-height: 1.4;
+  opacity: 0.75;
+}
+
+.cardModalBody {
+  margin: 0;
+  font-size: calc(0.9rem * var(--font-scale, 1));
+  line-height: 1.5;
+}
+
+.hitStage {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hitVisible {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--color-text);
+  position: relative;
+  z-index: 1;
+}
+
+.hitArea {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.hitAreaSame {
+  width: 36px;
+  height: 36px;
+  border: 1.5px dashed color-mix(in srgb, var(--color-text) 55%, transparent);
+}
+
+.hitAreaWide {
+  width: 44px;
+  height: 44px;
+  border: 1.5px solid color-mix(in srgb, var(--color-text) 70%, transparent);
+  background: color-mix(in srgb, var(--color-text) 10%, transparent);
+}
+
+.hitCaption {
+  margin: 8px 0 0;
+  text-align: center;
+  font-size: calc(0.78rem * var(--font-scale, 1));
+  line-height: 1.4;
+  opacity: 0.75;
+}
+
+.fontToolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  max-width: 280px;
+}
+
+.fontCard {
+  box-sizing: border-box;
+  width: 100%;
+  height: 88px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--color-text) 4%, transparent);
+  overflow: hidden;
+}
+
+.fontCardClip {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--color-text) 4%, transparent);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.fontCardGrow {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: auto;
+  min-height: 88px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--color-text) 4%, transparent);
+  overflow: visible;
+}
+
+.fontFixed {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.fontName {
+  margin: 0;
+  font-size: calc(18px * var(--demo-font-scale, 1));
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.fontScaled {
+  margin: 0;
+  font-size: calc(16px * var(--demo-font-scale, 1));
+  line-height: 1.35;
+}
+
+.citeSection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-sizing: border-box;
+}
+
+.citeHeading {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.45;
+}
+
+.citeList {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  align-items: start;
+}
+
+.citeBlock {
+  margin: 0;
+  padding: 0 0 0 14px;
+  border: none;
+  border-left: 2px solid color-mix(in srgb, var(--color-text) 42%, transparent);
+}
+
+.citeTitle {
+  margin: 0 0 6px;
+  font-size: calc(0.78rem * var(--font-scale, 1));
+  font-weight: 600;
+  line-height: 1.35;
+  color: color-mix(in srgb, var(--color-text) 58%, transparent);
+}
+
+.citeQuote {
+  margin: 0;
+  font-size: calc(0.88rem * var(--font-scale, 1));
+  line-height: 1.55;
+  font-style: italic;
+  color: color-mix(in srgb, var(--color-text) 72%, transparent);
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+
+.citeQuote::before {
+  content: '“';
+}
+
+.citeQuote::after {
+  content: '”';
+}
+
+.citeMark {
+  font-weight: 600;
+  font-style: italic;
+  padding: 0 0.2em;
+  border-radius: 3px;
+  background: #fff;
+  color: #111;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.citeBold {
+  font-weight: 700;
+  color: color-mix(in srgb, var(--color-text) 48%, transparent);
+}
+
+.citeTranslation {
+  margin: 6px 0 0;
+  font-size: calc(0.8rem * var(--font-scale, 1));
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--color-text) 34%, transparent);
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+}
+
+.citeFooter {
+  margin-top: 8px;
+}
+
+@media (max-width: 1100px) {
+  .compareRow3 {
+    grid-template-columns: 1fr;
+  }
+
+  .citeList {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .compareRow {
+    grid-template-columns: 1fr;
+  }
+
+  .topSplit {
+    grid-template-columns: 1fr;
+  }
+}
+
+@supports not (grid-template-rows: subgrid) {
+  .compareRow {
+    grid-template-rows: none;
+    gap: 12px;
+  }
+
+  .compareCol {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    grid-row: auto;
+  }
+}

@@ -1,0 +1,11 @@
+language: ko
+frontend: react-vite
+css: css-module
+backend: null
+db: []
+infra: []
+docs:
+  - testing
+ai:
+  - all
+autoCommit: true

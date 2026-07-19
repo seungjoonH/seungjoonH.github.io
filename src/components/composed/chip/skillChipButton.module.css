@@ -1,0 +1,31 @@
+/* SkillChipButton — secondary medium. 음영(hoverable) + 살짝 상승 */
+.root {
+  display: inline-flex;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  border-radius: 0.22em;
+  transition: transform var(--hover-duration) ease-in-out;
+}
+
+.root:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.root:active:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.root:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.root:focus-visible {
+  outline: 2px solid var(--color-text-muted, var(--color-text));
+  outline-offset: 2px;
+}

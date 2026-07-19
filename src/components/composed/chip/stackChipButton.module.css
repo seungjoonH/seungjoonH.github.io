@@ -1,0 +1,43 @@
+/* StackChipButton — outlined → hover secondary. translate 없음 */
+.root {
+  display: inline-flex;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  /* 카드 languageLine의 tags 축소를 끊어 Chip design 크기 유지 */
+  font: inherit;
+  font-size: 1rem;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 0.22em;
+}
+
+.root:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.root:focus-visible {
+  outline: 2px solid var(--color-text-muted, var(--color-text));
+  outline-offset: 2px;
+}
+
+.matched {
+  /* secondary 고정 — :not(.matched) hover 전환 억제 마커 */
+}
+
+/* Chip 표면에 전환 — 래퍼에 bg만 칠하면 outlined(투명)라 글자가 묻힘 */
+.chip > * {
+  transition:
+    background var(--hover-duration) ease-in-out,
+    color var(--hover-duration) ease-in-out,
+    box-shadow var(--hover-duration) ease-in-out;
+}
+
+/* matched가 아닐 때만 hover로 secondary. React variant 스왑 없이 CSS 전환 */
+.root:not(.matched):hover:not(:disabled) .chip > * {
+  background: var(--color-text);
+  color: var(--color-text-inverse, var(--color-bg));
+  box-shadow: none;
+}

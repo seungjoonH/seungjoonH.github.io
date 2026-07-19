@@ -26,5 +26,10 @@ dist-ssr
 .env*
 **/.env*
 
-docs/
+/docs/
 .acommit/
+
+scripts/port.sh
+
+*storybook.log
+storybook-static

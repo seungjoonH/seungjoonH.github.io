@@ -1,0 +1,104 @@
+/* TypedExternalLink — type 배지 + 제목 행 */
+
+.root {
+  font-weight: 300;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.2;
+  transition: color var(--hover-duration) var(--hover-ease);
+  color: var(--color-text-muted);
+  max-width: 100%;
+}
+
+a.root {
+  cursor: pointer;
+}
+
+a.root:hover {
+  color: var(--color-text);
+}
+
+:global([data-theme='light']) a.root {
+  color: var(--color-link);
+}
+
+:global([data-theme='light']) a.root:hover {
+  color: var(--color-link-hover);
+}
+
+.disabled {
+  cursor: default;
+  opacity: 0.72;
+}
+
+.glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+.type {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  flex-shrink: 0;
+  min-height: 1.65em;
+  border: 1px solid rgba(242, 242, 242, 0.22);
+  border-radius: 999px;
+  padding: 0 0.6em;
+  font-size: calc(clamp(9px, 2.8cqw, 11px) * var(--font-scale, 1));
+  color: var(--color-gray-7);
+  letter-spacing: 0.02em;
+  background-color: transparent;
+  transition:
+    background-color var(--hover-duration) var(--hover-ease),
+    color var(--hover-duration) var(--hover-ease),
+    border-color var(--hover-duration) var(--hover-ease);
+}
+
+:global([data-theme='light']) .type {
+  border-color: var(--color-border);
+}
+
+a.root:hover .type {
+  background-color: color-mix(in srgb, var(--color-text) 14%, transparent);
+  border-color: color-mix(in srgb, var(--color-text) 22%, transparent);
+  color: var(--color-text-secondary);
+}
+
+:global([data-theme='light']) a.root:hover .type {
+  background-color: color-mix(in srgb, var(--color-text) 8%, transparent);
+  border-color: color-mix(in srgb, var(--color-text) 14%, transparent);
+  color: var(--color-text-muted);
+}
+
+.title {
+  flex: 1 1 0%;
+  min-width: 0;
+  color: var(--color-gray-5);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: color-mix(in srgb, currentColor 32%, transparent);
+  text-underline-offset: 2px;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  font-weight: 300;
+}
+
+:global([data-theme='light']) .title {
+  color: var(--color-text-muted);
+}
+
+a.root:hover .title {
+  color: inherit;
+}
+
+.sep {
+  opacity: 0.55;
+}

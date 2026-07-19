@@ -1,0 +1,41 @@
+// UI 크롬·액션 아이콘 이름 상수 (assets/icons/ui/{outline,fill} 1:1)
+export const Icons = {
+  angleLeft: 'angle-left',
+  angleRight: 'angle-right',
+  caretDown: 'caret-down',
+  caretRight: 'caret-right',
+  check: 'check',
+  close: 'close',
+  copy: 'copy',
+  deploy: 'deploy',
+  dirClose: 'dir-close',
+  dirOpen: 'dir-open',
+  document: 'document',
+  email: 'email',
+  expand: 'expand',
+  eyeOff: 'eye-off',
+  eyeOpen: 'eye-open',
+  grid: 'grid',
+  link: 'link',
+  minus: 'minus',
+  plus: 'plus',
+  resizeCorner: 'resize-corner',
+  moon: 'moon',
+  sun: 'sun',
+  person: 'person',
+  pointer: 'pointer',
+  search: 'search',
+  settings: 'settings',
+  sortOldest: 'sort-oldest',
+  sortRecent: 'sort-recent',
+  sortStatus: 'sort-status',
+  tel: 'tel',
+  volumeOff: 'volume-off',
+  volumeOn: 'volume-on',
+  play: 'play',
+  stop: 'stop',
+} as const;
+
+export type IconName = (typeof Icons)[keyof typeof Icons];
+
+export const ICON_NAMES = Object.values(Icons);

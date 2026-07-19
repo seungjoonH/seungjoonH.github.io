@@ -1,0 +1,88 @@
+/* GotoButton — 밑줄 라벨 + chevron translate */
+
+.root {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  cursor: pointer;
+  line-height: normal;
+  transition: color var(--hover-duration) var(--hover-ease);
+  box-sizing: border-box;
+}
+
+.hug {
+  width: fit-content;
+}
+
+.stretch {
+  width: 100%;
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.small {
+  font-size: calc(clamp(11px, 0.85vw, 13px) * var(--font-scale, 1));
+}
+
+.medium {
+  font-size: calc(clamp(12px, 0.95vw, 15px) * var(--font-scale, 1));
+}
+
+.large {
+  font-size: calc(clamp(14px, 1.15vw, 18px) * var(--font-scale, 1));
+}
+
+.label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.root:hover {
+  color: var(--color-text);
+}
+
+.root:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.root:focus-visible {
+  outline: 2px solid var(--color-text-muted);
+  outline-offset: 2px;
+}
+
+:global([data-theme='light']) .root {
+  color: var(--color-link);
+}
+
+:global([data-theme='light']) .root:hover {
+  color: var(--color-link-hover);
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  line-height: 0;
+  color: inherit;
+  transition: transform var(--hover-duration) var(--hover-ease);
+}
+
+.root:hover .icon {
+  transform: translateX(4px);
+}

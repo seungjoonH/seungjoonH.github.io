@@ -1,0 +1,245 @@
+version: 0.1.0
+generatedAt: 2026-07-13T08:43:27.317Z
+selection:
+  language: ko
+  frontend: react-vite
+  css: css-module
+  backend: null
+  db: []
+  infra: []
+  docs:
+    - testing
+  ai:
+    - all
+  autoCommit: true
+catalog:
+  availableOptions:
+    frontend:
+      - nextjs
+      - react-vite
+      - vue-nuxt
+      - sveltekit
+      - vanilla-js
+    css:
+      - tailwindcss
+      - css-module
+    backend:
+      - express
+      - nestjs
+      - spring
+    db:
+      - postgres
+      - mysql
+      - mongodb
+      - redis
+      - supabase
+    infra:
+      - aws
+      - gcp
+      - azure
+      - vercel
+      - kubernetes
+    docs:
+      - security
+      - testing
+    ai:
+      - agents
+      - claude
+      - cursor-rules
+      - examples
+    language:
+      - en
+      - ko
+  templatePaths:
+    core:
+      - playbook/core/readability.md
+      - playbook/core/code-style.md
+      - playbook/core/code-hygiene.md
+      - playbook/core/naming.md
+      - playbook/core/performance.md
+      - playbook/core/error-handling.md
+      - playbook/core/data-design.md
+    frontend:
+      common:
+        - playbook/frontend/styling/theme.md
+        - playbook/frontend/ui/component.md
+        - playbook/frontend/ui/accessibility.md
+        - playbook/frontend/ui/svg-icon.md
+        - playbook/frontend/data/react-query.md
+        - playbook/frontend/content/i18n.md
+        - playbook/frontend/content/seo.md
+      stacks:
+        - playbook/frontend/stacks/nextjs.md
+        - playbook/frontend/stacks/react-vite.md
+        - playbook/frontend/stacks/vue-nuxt.md
+        - playbook/frontend/stacks/sveltekit.md
+        - playbook/frontend/stacks/vanilla-js.md
+      styling:
+        - playbook/frontend/styling/tailwindcss.md
+        - playbook/frontend/styling/css-module.md
+    backend:
+      - playbook/backend/express.md
+      - playbook/backend/nestjs.md
+      - playbook/backend/spring.md
+    database:
+      - playbook/database/postgres.md
+      - playbook/database/mysql.md
+      - playbook/database/mongodb.md
+      - playbook/database/redis.md
+      - playbook/database/supabase.md
+    infra:
+      - playbook/infra/aws.md
+      - playbook/infra/gcp.md
+      - playbook/infra/azure.md
+      - playbook/infra/vercel.md
+      - playbook/infra/kubernetes.md
+    crossCutting:
+      - playbook/security.md
+      - playbook/testing.md
+entrypoints:
+  preferredLanguage: ko
+  globalStart:
+    - playbook/PLAYBOOK.index.yaml
+    - PLAYBOOK.md
+  claude:
+    - CLAUDE.md
+    - playbook/PLAYBOOK.index.yaml
+    - design/design.md
+    - design/architecture.md
+    - design/erd.md
+    - design/api-spec.md
+  codex:
+    - AGENTS.md
+    - playbook/PLAYBOOK.index.yaml
+    - design/design.md
+    - design/architecture.md
+    - design/erd.md
+    - design/api-spec.md
+domainMap:
+  core:
+    readability: playbook/core/readability.md
+    codeStyle: playbook/core/code-style.md
+    codeHygiene: playbook/core/code-hygiene.md
+    naming: playbook/core/naming.md
+    performance: playbook/core/performance.md
+    errorHandling: playbook/core/error-handling.md
+    dataDesign: playbook/core/data-design.md
+  frontend:
+    stack: playbook/frontend/stacks/react-vite.md
+    styling:
+      - playbook/frontend/styling/css-module.md
+      - playbook/frontend/styling/theme.md
+    ui:
+      - playbook/frontend/ui/component.md
+      - playbook/frontend/ui/accessibility.md
+      - playbook/frontend/ui/svg-icon.md
+    data: playbook/frontend/data/react-query.md
+    content:
+      - playbook/frontend/content/i18n.md
+      - playbook/frontend/content/seo.md
+  backend: null
+  database: []
+  infra: []
+  crossCutting:
+    - playbook/testing.md
+  design:
+    - design/design.md
+    - design/erd.md
+    - design/architecture.md
+    - design/api-spec.md
+editRoutes:
+  - id: requirements-scope-change
+    when: 요구사항/유저 플로우/범위 변경
+    open:
+      - design/design.md
+      - design/architecture.md
+    thenRead:
+      - playbook/core/readability.md
+      - playbook/core/code-style.md
+  - id: api-contract-change
+    when: API 스펙/에러 포맷/요청 응답 스키마 변경
+    open:
+      - design/api-spec.md
+      - playbook/core/error-handling.md
+    thenRead:
+      - playbook/testing.md
+  - id: data-model-change
+    when: 엔터티/테이블/인덱스/관계 변경
+    open:
+      - design/erd.md
+      - playbook/core/data-design.md
+    thenRead:
+      - design/api-spec.md
+  - id: frontend-ui-change
+    when: 컴포넌트 구조/접근성/SVG 아이콘 변경
+    open:
+      - playbook/frontend/stacks/react-vite.md
+      - playbook/frontend/ui/component.md
+      - playbook/frontend/ui/accessibility.md
+      - playbook/frontend/ui/svg-icon.md
+    thenRead:
+      - playbook/core/naming.md
+      - playbook/core/code-style.md
+  - id: frontend-style-theme-change
+    when: Tailwind/CSS Module/테마 변경
+    open:
+      - playbook/frontend/stacks/react-vite.md
+      - playbook/frontend/styling/css-module.md
+      - playbook/frontend/styling/theme.md
+    thenRead:
+      - playbook/core/performance.md
+  - id: frontend-data-fetch-change
+    when: React Query 캐시/동기화/로딩 전략 변경
+    open:
+      - playbook/frontend/stacks/react-vite.md
+      - playbook/frontend/data/react-query.md
+    thenRead:
+      - playbook/core/error-handling.md
+      - playbook/testing.md
+  - id: i18n-seo-change
+    when: 번역 키/locale/SEO 메타데이터 변경
+    open:
+      - playbook/frontend/content/i18n.md
+      - playbook/frontend/content/seo.md
+      - playbook/testing.md
+    thenRead:
+      - playbook/core/naming.md
+  - id: security-testing-policy-change
+    when: 보안 정책/테스트 기준 변경
+    open:
+      - playbook/testing.md
+    thenRead:
+      - playbook/frontend/stacks/react-vite.md
+  - id: infra-deployment-change
+    when: 배포/인프라/런타임 설정 변경
+    open:
+      - design/architecture.md
+    thenRead:
+      - playbook/testing.md
+files:
+  - playbook/core/readability.md
+  - playbook/core/code-style.md
+  - playbook/core/code-hygiene.md
+  - playbook/core/naming.md
+  - playbook/core/performance.md
+  - playbook/core/error-handling.md
+  - playbook/core/data-design.md
+  - playbook/frontend/styling/theme.md
+  - playbook/frontend/ui/component.md
+  - playbook/frontend/ui/accessibility.md
+  - playbook/frontend/ui/svg-icon.md
+  - playbook/frontend/data/react-query.md
+  - playbook/frontend/content/i18n.md
+  - playbook/frontend/content/seo.md
+  - playbook/frontend/styling/css-module.md
+  - playbook/frontend/stacks/react-vite.md
+  - playbook/testing.md
+  - design/design.md
+  - design/erd.md
+  - design/architecture.md
+  - design/api-spec.md
+  - AGENTS.md
+  - CLAUDE.md
+  - .cursor/rules/mykit-workflow.mdc
+  - .cursor/rules/karpathy-guidelines.mdc
+  - EXAMPLES.md

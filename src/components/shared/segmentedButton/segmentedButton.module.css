@@ -1,0 +1,56 @@
+.segmentedFieldset {
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  border: none;
+}
+
+.segmentedLegend {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.segmentedButton {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.segmentRow {
+  display: inline-flex;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+.segment {
+  flex: 1 1 auto;
+  min-width: 0;
+  border-radius: 0 !important;
+}
+
+.segment + .segment {
+  box-shadow: inset 1px 0 0 var(--color-border);
+}
+
+/* Text 패딩을 세그먼트에 맞춤 — TextButton 안 Text에 적용 */
+.segment :global([class*='text']) {
+  width: 100%;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  min-height: 0;
+  border-radius: 0;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.segmentActive :global([class*='text']) {
+  font-weight: 500;
+}

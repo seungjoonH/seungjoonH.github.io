@@ -1,0 +1,66 @@
+/* IconButton — 보이는 크기(border/음영)는 셸 그대로, 터치만 ::before 44px (docs/a11y-writeup/03) */
+.iconButton {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  line-height: normal;
+  border-radius: 6px;
+}
+
+.square {
+  border-radius: 0;
+}
+
+.full {
+  border-radius: 999px;
+}
+
+/* 레이아웃은 부모 슬롯 — Icon 셸(28/36/44)을 쓰지 않음 */
+.glyph {
+  width: 100%;
+  height: 100%;
+  color: inherit;
+}
+
+.face {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  line-height: 0;
+  min-width: 0;
+  min-height: 0;
+}
+
+/*
+ * 히트 확장 (::before) — 보이는 박스보다 큼.
+ * 음영(::after)은 전역 .hoverable inset:0 = border/셸과 동일. 히트와 섞지 않음.
+ */
+.iconButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+}
+
+.iconButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.iconButton:focus-visible {
+  outline: 2px solid var(--color-text-muted);
+  outline-offset: 2px;
+}

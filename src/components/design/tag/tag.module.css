@@ -1,0 +1,18 @@
+/* Tag — Text 래퍼. 패딩 없이 #라벨만 */
+.tag > span {
+  padding: 0;
+  min-height: 0;
+  border-radius: 0;
+  font-weight: 500;
+  text-decoration: inherit;
+}
+
+.tag {
+  text-decoration: none;
+  text-underline-offset: 0.15em;
+  transition: text-decoration-color var(--hover-duration) ease-in-out;
+}
+
+.underline {
+  text-decoration: underline;
+}

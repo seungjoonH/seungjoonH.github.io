@@ -1,0 +1,305 @@
+/* /responsive — Viewport 메인 + CSS/TS 사이드 */
+
+.page {
+  position: relative;
+  height: 100dvh;
+  max-height: 100dvh;
+  padding: 20px 24px 20px;
+  box-sizing: border-box;
+  background: var(--color-bg);
+  color: var(--color-text);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.homeLink {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: inherit;
+  opacity: 0.7;
+  font-size: 0.9em;
+  flex-shrink: 0;
+}
+
+.homeLink:hover {
+  opacity: 1;
+}
+
+.title {
+  margin: 0 0 12px;
+  font-size: calc(1.75rem * var(--font-scale, 1));
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.rule {
+  max-width: 1480px;
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-text) 3%, var(--color-bg));
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.ruleLine {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 12px;
+  align-items: baseline;
+  font-size: calc(0.88rem * var(--font-scale, 1));
+  line-height: 1.45;
+}
+
+.ruleKey {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.78em;
+  letter-spacing: 0.04em;
+  opacity: 0.55;
+  text-transform: uppercase;
+}
+
+.ruleValue {
+  opacity: 0.88;
+}
+
+.inlineCode {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.92em;
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--color-text) 10%, transparent);
+}
+
+.board {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 460px);
+  gap: 14px;
+  align-items: stretch;
+  max-width: 1480px;
+  flex: 1;
+  min-height: 0;
+}
+
+.panel {
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: var(--color-bg-card, color-mix(in srgb, var(--color-text) 4%, var(--color-bg)));
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+.panelHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: calc(0.72rem * var(--font-scale, 1));
+  opacity: 0.55;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+}
+
+.panelBody {
+  padding: 14px 14px 16px;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.codeColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 0;
+  max-height: none;
+  height: 100%;
+}
+
+.codePanel {
+  flex: 1 1 0;
+}
+
+.codePanel .codeLine {
+  font-size: calc(0.72rem * var(--font-scale, 1));
+  line-height: 1.5;
+}
+
+.codeLine {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: calc(0.8rem * var(--font-scale, 1));
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow: visible;
+  color: var(--color-text);
+}
+
+.codeLine * {
+  font-family: inherit;
+}
+
+/* 주석 < 일반 코드 < 반응형 관련 코드 */
+.codeComment {
+  opacity: 0.32;
+}
+
+.codePlain {
+  opacity: 0.58;
+}
+
+.codeResponsive {
+  opacity: 1;
+}
+
+.viewportPanel {
+  min-height: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
+.viewportBody {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.viewportMeta {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.focusBar {
+  flex-shrink: 0;
+}
+
+.viewportValue {
+  font-size: calc(1.25rem * var(--font-scale, 1));
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.stageShell {
+  width: 100%;
+  min-width: 0;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: flex-start;
+  overflow: hidden;
+}
+
+.stageWrap {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.stage {
+  box-sizing: border-box;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 12px 10px 32px;
+  background: color-mix(in srgb, var(--color-text) 3%, var(--color-bg));
+  overflow: auto;
+  max-width: 100%;
+  display: block;
+}
+
+.resizeHandle {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  width: 48px;
+  height: 48px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: nwse-resize;
+  touch-action: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.resizeArrow {
+  display: flex;
+  width: 28px;
+  height: 28px;
+  margin: 0 6px 6px 0;
+  color: var(--color-text);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.resizeArrow :global(svg) {
+  width: 100%;
+  height: 100%;
+}
+
+.resizeArrowHint {
+  animation: resizeNudge 1.5s ease-in-out infinite;
+}
+
+@keyframes resizeNudge {
+  0%,
+  100% {
+    transform: translate(0, 0);
+    opacity: 0.28;
+  }
+  50% {
+    transform: translate(6px, 6px);
+    opacity: 0.6;
+  }
+}
+
+@media (max-width: 960px) {
+  .page {
+    padding: 16px 16px 16px;
+    height: 100dvh;
+    overflow: auto;
+  }
+
+  .board {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .codeColumn {
+    max-height: none;
+  }
+
+  .codePanel {
+    flex: 0 0 auto;
+    max-height: 280px;
+  }
+
+  .stageShell {
+    min-height: 0;
+  }
+}

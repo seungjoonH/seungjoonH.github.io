@@ -1,0 +1,194 @@
+/* CodeField — highlight 오버레이 + 줄번호 + 커스텀 resize (className prop 없음) */
+
+.shell {
+  --code-field-base-height: calc(var(--code-field-rows, 12) * 1.45em + 20px);
+  position: relative;
+  display: flex;
+  box-sizing: border-box;
+  height: var(--code-field-height, var(--code-field-base-height));
+  min-height: var(--code-field-base-height);
+  border: 1px solid color-mix(in srgb, var(--color-text) 18%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--color-text) 6%, var(--color-bg));
+  overflow: hidden;
+}
+
+.stretch {
+  width: 100%;
+}
+
+.hug {
+  width: fit-content;
+  max-width: 100%;
+}
+
+.invalid {
+  border-color: color-mix(in srgb, var(--color-text) 55%, transparent);
+}
+
+.shell:focus-within {
+  outline: 2px solid color-mix(in srgb, var(--color-text) 40%, transparent);
+  outline-offset: 1px;
+}
+
+.gutter {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 10px 0 10px 10px;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-align: right;
+  user-select: none;
+  pointer-events: none;
+  color: color-mix(in srgb, var(--color-text) 35%, transparent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: calc(0.72rem * var(--font-scale, 1));
+  line-height: 1.45;
+  white-space: pre;
+  border-right: 1px solid color-mix(in srgb, var(--color-text) 10%, transparent);
+  min-width: 2.25em;
+}
+
+.gutterInner {
+  display: block;
+  padding-right: 8px;
+}
+
+.editor {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+}
+
+.highlight,
+.input {
+  margin: 0;
+  padding: 10px 12px;
+  padding-bottom: 28px;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: calc(0.72rem * var(--font-scale, 1));
+  line-height: 1.45;
+  white-space: pre;
+  tab-size: 2;
+  overflow: auto;
+}
+
+.highlight {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  background: transparent;
+  color: var(--color-text);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.highlight * {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.input {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  resize: none;
+  background: transparent;
+  color: transparent;
+  caret-color: var(--color-text);
+  -webkit-text-fill-color: transparent;
+}
+
+.input::selection {
+  background: color-mix(in srgb, var(--color-text) 22%, transparent);
+  color: transparent;
+}
+
+.input:focus {
+  outline: none;
+}
+
+.input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.shell:has(.input:disabled) {
+  opacity: 0.5;
+}
+
+/* grayscale: tag > value > attr > equal > comment */
+.tokTag {
+  color: var(--color-text);
+}
+
+.tokValue {
+  color: color-mix(in srgb, var(--color-text) 78%, transparent);
+}
+
+.tokAttr {
+  color: color-mix(in srgb, var(--color-text) 55%, transparent);
+}
+
+.tokEqual {
+  color: color-mix(in srgb, var(--color-text) 35%, transparent);
+}
+
+.tokComment {
+  color: color-mix(in srgb, var(--color-text) 40%, transparent);
+}
+
+.tokPlain {
+  color: color-mix(in srgb, var(--color-text) 70%, transparent);
+}
+
+.resizeHandle {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: ns-resize;
+  touch-action: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  color: color-mix(in srgb, var(--color-text) 45%, transparent);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.resizeHandle:hover,
+.resizeHandle:focus-visible {
+  color: var(--color-text);
+}
+
+.resizeHandle:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--color-text) 40%, transparent);
+  outline-offset: -2px;
+}
+
+.resizeIcon {
+  display: flex;
+  width: 14px;
+  height: 14px;
+  margin: 0 6px 6px 0;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.resizeIcon :global(svg) {
+  width: 100%;
+  height: 100%;
+}

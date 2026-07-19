@@ -1,0 +1,65 @@
+/* Chip 표면 — size는 rem 기준(부모 font에 안 끌림). 아이콘은 1em으로 동반 스케일 */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  border-radius: 0.25em;
+  font: inherit;
+  font-weight: 400;
+  white-space: nowrap;
+  flex-shrink: 0;
+  line-height: 1.2;
+  box-sizing: border-box;
+}
+
+.square {
+  border-radius: 0;
+}
+
+.full {
+  border-radius: 999px;
+}
+
+.small {
+  font-size: calc(0.75rem * var(--font-scale, 1));
+  padding: calc(0.2rem * var(--font-scale, 1)) calc(0.5rem * var(--font-scale, 1));
+  min-height: calc(1.5rem * var(--font-scale, 1));
+}
+
+/* StackChip / StatusChip 등 small — 모바일에서 카드 폭에 맞춤 */
+@media (max-width: 860px) {
+  .small {
+    font-size: calc(0.625rem * var(--font-scale, 1));
+    padding: calc(0.12rem * var(--font-scale, 1)) calc(0.35rem * var(--font-scale, 1));
+    min-height: calc(1.25rem * var(--font-scale, 1));
+  }
+}
+
+.medium {
+  font-size: calc(0.875rem * var(--font-scale, 1));
+  padding: calc(0.28rem * var(--font-scale, 1)) calc(0.6rem * var(--font-scale, 1));
+  min-height: calc(1.875rem * var(--font-scale, 1));
+}
+
+.large {
+  font-size: calc(1rem * var(--font-scale, 1));
+  padding: calc(0.35rem * var(--font-scale, 1)) calc(0.75rem * var(--font-scale, 1));
+  min-height: calc(2.25rem * var(--font-scale, 1));
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  color: inherit;
+  line-height: 0;
+  overflow: hidden;
+}
+
+.label {
+  font-size: 1em;
+  line-height: 1.2;
+}
