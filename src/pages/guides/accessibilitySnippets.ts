@@ -3,10 +3,10 @@ export type A11yFocus = 'principle' | 'announce' | 'semantic' | 'touch' | 'font'
 
 export const A11Y_FOCUS_OPTIONS: { value: A11yFocus; label: string }[] = [
   { value: 'semantic', label: '시맨틱 태그 사용' },
+  { value: 'font', label: '저시력자를 위한 글자 크기 조정' },
+  { value: 'touch', label: '넓은 터치 영역' },
   { value: 'principle', label: '컴포넌트 원칙 준수' },
   { value: 'announce', label: '상세한 기능 설명' },
-  { value: 'touch', label: '넓은 터치 영역' },
-  { value: 'font', label: '저시력자를 위한 글자 크기 조정' },
 ];
 
 export const VERDICT_AGAINST_PRINCIPLE = '컴포넌트 설계 원칙을 따르지 않음';
@@ -304,6 +304,29 @@ export const CITE_TOUCH: {
     ],
     source: 'WCAG 2.2 · Success Criterion 2.5.5 Target Size (Enhanced) AAA',
     href: 'https://www.w3.org/WAI/WCAG22/Understanding/target-size-enhanced.html',
+  },
+];
+
+/** 글자 크기 조정 탭 인용 */
+export const CITE_FONT: {
+  quote: (string | { emph: string })[];
+  translation: (string | { emph: string })[];
+  source: string;
+  href: string;
+}[] = [
+  {
+    quote: [
+      'Except for captions and images of text, text can be resized without assistive technology up to ',
+      { emph: '200 percent' },
+      ' without loss of content or functionality.',
+    ],
+    translation: [
+      '캡션과 텍스트 이미지를 제외하고, 텍스트는 보조 기술 없이 ',
+      { emph: '200%까지' },
+      ' 확대해도 콘텐츠나 기능 손실 없이 크기를 조정할 수 있어야 한다.',
+    ],
+    source: 'WCAG 2.1 · Success Criterion 1.4.4 Resize Text (AA)',
+    href: 'https://www.w3.org/WAI/WCAG21/Understanding/resize-text.html',
   },
 ];
 

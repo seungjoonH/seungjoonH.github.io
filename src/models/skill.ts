@@ -6,7 +6,7 @@ export interface SkillModelInput {
 }
 
 /**
- * 표시 이름 → `src/assets/icons/{iconName}.svg` 파일명.
+ * 표시 이름 → `src/assets/icons/brand/{iconName}.svg` 파일명.
  * @param name - 데이터에 적힌 스킬 이름 (예: Next.js)
  * @returns 아이콘 파일 stem (예: nextjs)
  */
@@ -21,7 +21,7 @@ export function skillIconName(name: string): string {
 export default class SkillModel {
   category: string;
   name: string;
-  /** `Icon` 컴포넌트용 이름 (`src/assets/icons` 기준) */
+  /** `Icon` 컴포넌트용 이름 (`assets/icons/brand` 기준) */
   iconName: string;
 
   constructor({ category, name }: SkillModelInput) {

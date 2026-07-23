@@ -6,9 +6,9 @@ import styles from './nav.module.css';
 import { useA11y } from '@hooks/useA11y';
 import { IconButton } from '@components/interactive/icon/IconButton';
 import { SettingsButton } from '@components/feature/SettingsButton';
-import { NavButton } from '@components/composed/NavButton';
+import { NavButton } from '@components/composed/nav/NavButton';
 import { useZoomHintStore } from '@stores/zoomHintStore';
-import '../../i18n';
+import '../../../i18n';
 
 export function Nav(): ReactNode {
   const { t } = useTranslation();

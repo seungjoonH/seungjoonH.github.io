@@ -1,6 +1,6 @@
 // 섹션 lazy 로드·Nav·CursorRing을 묶는 포트폴리오 사이트 셸
 import { lazy, Suspense, useEffect, useMemo, useRef } from 'react';
-import { Nav } from '@components/composed/Nav';
+import { Nav } from '@components/feature/nav/Nav';
 import { CursorRing } from '@components/interactive/cursor/CursorRing';
 import { useApp } from '@hooks/useApp';
 import { loadSection, useVersion } from '@versioning';

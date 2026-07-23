@@ -21,7 +21,7 @@ import { parseQuery } from '@sections/projects/search/parseQuery';
 import { isStackMatchedByQuery } from '@sections/projects/search/filterProjects';
 import { getStackIconName, normalizeStackToken } from '@sections/projects/search/stackMapping';
 import { highlightText, getHighlightTerms, getEffectiveTagsSorted, getEffectiveStacksSorted } from '@sections/projects/search/highlight';
-import styles from '@sections/projects/projectCard.module.css';
+import styles from '@components/composed/card/projectCard.module.css';
 
 interface ProjectCardProps {
   project: ProjectModel;

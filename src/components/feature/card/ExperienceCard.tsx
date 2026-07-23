@@ -1,6 +1,7 @@
 // ExperienceModel을 ExperienceSlotCard 슬롯에 매핑하는 Feature 카드
 import type { ReactNode } from 'react';
 import { useA11y } from '@hooks/useA11y';
+import { useResponsive } from '@hooks/useResponsive';
 import { ExperienceSlotCard } from '@components/composed/card/ExperienceSlotCard';
 import { TwoLineText } from '@components/composed/text/TwoLineText';
 import { ExperienceThumbnail } from '@sections/experience/ExperienceThumbnail';
@@ -16,6 +17,7 @@ interface ExperienceCardProps {
 
 export function ExperienceCard({ experience, mobileHovered = false }: ExperienceCardProps): ReactNode {
   const a11y = useA11y();
+  const { isMobile } = useResponsive();
   const imageUrl = experience.getImageUrl();
   const sections = experience.sections;
   const hasProjectShortcut = experience.hasProjectShortcut;
@@ -45,7 +47,7 @@ export function ExperienceCard({ experience, mobileHovered = false }: Experience
               const title = sec.title ?? '';
               return (
                 <li key={i} title={title}>
-                  <TwoLineText text={title} />
+                  <TwoLineText text={title} forceSingleLine={isMobile} />
                 </li>
               );
             })}

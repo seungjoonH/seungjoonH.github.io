@@ -3,7 +3,7 @@ import { useMemo, type MouseEvent } from 'react';
 import ProjectModel from '../../../models/project';
 import { useTranslation } from 'react-i18next';
 import { useA11y } from '@hooks/useA11y';
-import cardStylesModule from './projectCard.module.css';
+import cardStylesModule from '@components/composed/card/projectCard.module.css';
 import { buildCls } from '@utils/cssUtil';
 import { Icon } from '@components/design/icon/Icon';
 import { StackChipButton } from '@components/composed/chip/StackChipButton';

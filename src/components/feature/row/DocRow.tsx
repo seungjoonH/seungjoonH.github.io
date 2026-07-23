@@ -28,16 +28,17 @@ export function DocRow({ doc, onChipClick, onNavigate }: DocRowProps): ReactNode
           ariaLabel={a11y('docs.chipNavigate', { chip: doc.chipLabel })}
         />
       )}
-      <GotoButton
-        href={doc.link}
-        external={doc.external ?? true}
-        width="stretch"
-        size="large"
-        ariaLabel={doc.title ?? doc.id}
-        onClick={() => onNavigate(doc.id)}
-      >
-        {doc.title}
-      </GotoButton>
+      <span className={styles.docGotoWrap} onClick={() => onNavigate(doc.id)}>
+        <GotoButton
+          href={doc.link}
+          external={doc.external ?? true}
+          width="stretch"
+          size="large"
+          ariaLabel={doc.title ?? doc.id}
+        >
+          {doc.title}
+        </GotoButton>
+      </span>
     </div>
   );
 }

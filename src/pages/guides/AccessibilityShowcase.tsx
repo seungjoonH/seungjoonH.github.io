@@ -20,6 +20,7 @@ import { CompareColumn } from './CompareColumn';
 import { CiteSection } from './CiteSection';
 import {
   A11Y_FOCUS_OPTIONS,
+  CITE_FONT,
   CITE_SEMANTIC,
   CITE_TOUCH,
   CODE_ANNOUNCE_HOWTO_SECTIONS,
@@ -248,7 +249,6 @@ export function AccessibilityShowcase(): ReactNode {
         <div className={shell.focusBar}>
           <SegmentedButton
             ariaLabel="접근성 예시"
-            width="stretch"
             value={focus}
             options={A11Y_FOCUS_OPTIONS.map(({ value, label }) => ({ value, label }))}
             onChange={(value) => setFocus(value as A11yFocus)}
@@ -455,6 +455,7 @@ export function AccessibilityShowcase(): ReactNode {
 
           {focus === 'font' && (
             <div className={styles.exampleStack} style={demoStyle}>
+              <CiteSection items={CITE_FONT} />
               <div className={styles.fontToolbar}>
                 <ControlSlider
                   size="small"

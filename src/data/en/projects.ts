@@ -166,6 +166,7 @@ const projects = [
           'Managed **light/dark mode** state globally via `useConfigStore` and applied a **consistent design system** using grouped **CSS variable sets** per mode',
           'Exposed a **Font Scale** setting and used `clamp` / `cq` so the **layout holds even when text size is cranked up**',
         ],
+        links: [{ type: 'doc', id: 'portfolio-accessibility-design' }],
       },
       {
         title: '**User experience**: user-friendly UI/UX',
@@ -180,12 +181,13 @@ const projects = [
           'Defined **four breakpoints — mobile, tablet, desktop, and wide** — with grid columns and typography tuned so nothing breaks at any size',
           'Built a `useResponsive` hook to track the active breakpoint and apply it to **grid column counts and visible tag/stack counts inside cards**',
         ],
+        links: [{ type: 'doc', id: 'portfolio-responsive-design' }],
       },
       {
         title: '**Project search**: Hangul jamo decomposition and choseong matching',
         searchChip: { label: 'Extify', searchQuery: 'title:Extify show:all' },
         items: [
-          'Ported **Hangul jamo decomposition and choseong matching algorithms** from Extify into JavaScript to enable typo-tolerant search UX',
+          'Ported **Hangul jamo decomposition and choseong matching algorithms** into JavaScript to enable typo-tolerant search UX',
           'Layered on query normalization, stack/tag alias mapping, and result highlighting to make **results easy to find and scan**',
         ],
       },

@@ -1,6 +1,7 @@
-/* GotoButton — 밑줄 라벨 + chevron translate */
+/* GotoButton — 밑줄 라벨 + chevron. 터치는 ::before 최소 44px */
 
 .root {
+  position: relative;
   display: inline-flex;
   flex-direction: row;
   align-items: center;
@@ -17,6 +18,16 @@
   line-height: normal;
   transition: color var(--hover-duration) var(--hover-ease);
   box-sizing: border-box;
+}
+
+.root::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, 44px);
+  height: max(100%, 44px);
+  transform: translate(-50%, -50%);
 }
 
 .hug {

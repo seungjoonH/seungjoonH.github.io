@@ -4,7 +4,7 @@ import { FlipCard } from '@components/interactive/card/FlipCard';
 import { CursorRing } from '@components/interactive/cursor/CursorRing';
 import { buildCls } from '@utils/cssUtil';
 import { useStackChipsOverflow } from '@sections/projects/hooks/useStackChipsOverflow';
-import styles from '@sections/projects/projectCard.module.css';
+import styles from './projectCard.module.css';
 
 export interface ProjectSlotCardProps {
   media?: ReactNode;

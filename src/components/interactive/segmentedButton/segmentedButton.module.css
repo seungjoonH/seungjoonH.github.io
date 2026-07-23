@@ -84,23 +84,31 @@
 }
 
 /* width=stretch — 세그먼트·내부 버튼이 행을 균등 분할 */
+.stretch .segmentRow {
+  flex-wrap: wrap;
+}
+
 .stretch .segment {
   flex: 1 1 0;
+  min-width: 0;
 }
 
 .stretch .segment > button,
 .stretch .segment > a {
   flex: 1 1 0;
   width: 100%;
+  min-width: 0;
 }
 
 .stretch .segment > button > span,
 .stretch .segment > a > span {
   flex: 1 1 0;
   width: 100%;
+  min-width: 0;
 }
 
 .stretch .segment > button > span > span,
 .stretch .segment > a > span > span {
   width: 100%;
+  min-width: 0;
 }

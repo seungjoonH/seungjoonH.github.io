@@ -44,14 +44,15 @@
 /*
  * 히트 확장 (::before) — 보이는 박스보다 큼.
  * 음영(::after)은 전역 .hoverable inset:0 = border/셸과 동일. 히트와 섞지 않음.
+ * 작은 아이콘은 44×44, 이미 더 크면 시각 박스 이상을 유지.
  */
 .iconButton::before {
   content: '';
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 44px;
-  height: 44px;
+  width: max(100%, 44px);
+  height: max(100%, 44px);
   transform: translate(-50%, -50%);
 }
 

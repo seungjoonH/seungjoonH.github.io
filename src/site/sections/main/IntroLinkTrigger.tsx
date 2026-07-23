@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import styles from './introLinkTrigger.module.css';
 import { buildCls } from '@utils/cssUtil';
-import { Icon } from '@components/design/icon/Icon';
+import { ChipButton } from '@components/interactive/chip/ChipButton';
 import { SearchShortcutChipButton } from '@components/feature/chip/SearchShortcutChipButton';
 import { useProjectSearchStore } from '@stores/projectSearchStore';
 import { useIntroLinkDefinition } from '@versioning';
@@ -121,17 +121,15 @@ export function IntroLinkTrigger({ linkId, label }: IntroLinkTriggerProps): Reac
                 );
               }
               return (
-                <button
+                <ChipButton.Outlined
                   key={`${linkId}-${i}`}
-                  type="button"
-                  className={styles.rowPill}
+                  label={rowLabel}
+                  iconName={row.icon ?? 'document'}
+                  size="small"
+                  shape="full"
+                  ariaLabel={rowLabel}
                   onClick={() => applyRowAction(row)}
-                >
-                  <span className={styles.rowPillIcon} aria-hidden="true">
-                    <Icon.Primary name={row.icon ?? 'document'} embedded />
-                  </span>
-                  <span className={styles.rowPillLabel}>{rowLabel}</span>
-                </button>
+                />
               );
             })}
           </div>

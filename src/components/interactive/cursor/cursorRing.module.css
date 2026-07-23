@@ -18,7 +18,7 @@
   mix-blend-mode: difference;
 }
 
-.ring.visible {
+.ring[data-visible] {
   display: flex;
 }
 

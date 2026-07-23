@@ -119,8 +119,8 @@ const language = {
 };
 
 const version: VersionInfo = {
-  number: '1.1.1',
-  buildDate: '20260719',
+  number: '1.1.2',
+  buildDate: '20260723',
 };
 
 const contact: ContactInfo = {
@@ -166,12 +166,13 @@ const projectCard: ProjectCardConfig = {
 };
 
 const siteVersions: SiteVersions = {
-  defaultHash: 'n7q4k2w',
+  defaultHash: 'q9fxr3m',
   hashes: {
     k9nq7wx: true,
     mg8ozkj: true,
     v3m8rj2: true,
     n7q4k2w: true,
+    q9fxr3m: true,
   },
 };
 

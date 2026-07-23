@@ -1,5 +1,6 @@
-/* TagButton — underline=false 고정, hover 시 true */
+/* TagButton — underline=false 고정, hover 시 true. 터치는 ::before 최소 44px */
 .tagButton {
+  position: relative;
   display: inline-flex;
   align-items: center;
   margin: 0;
@@ -13,6 +14,30 @@
   border-radius: 0.15em;
 }
 
+/*
+ * 히트 확장 — 보이는 태그는 그대로, 클릭/터치만 최소 44×44.
+ * 넓은 컨트롤은 시각 박스 이상을 덮고, 작은 컨트롤은 44px까지 키운다.
+ */
+.tagButton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, 44px);
+  height: max(100%, 44px);
+  transform: translate(-50%, -50%);
+}
+
 .tagButton:hover :global([data-tag]) {
   text-decoration: underline;
+}
+
+.tagButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.tagButton:focus-visible {
+  outline: 2px solid var(--color-text-muted);
+  outline-offset: 2px;
 }

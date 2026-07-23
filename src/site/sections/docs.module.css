@@ -156,6 +156,12 @@
   border-radius: 4px;
 }
 
+.docGotoWrap {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+}
+
 .docRowLink {
   flex: 1;
   min-width: 0;

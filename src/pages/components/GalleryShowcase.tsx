@@ -52,7 +52,8 @@ import { LanguageSegmentedButton } from '@components/feature/control/LanguageSeg
 import { Tag } from '@components/design/tag/Tag';
 import { TagButton } from '@components/interactive/tag/TagButton';
 import { Heading } from '@components/design/heading/Heading';
-import { NavButton } from '@components/composed/NavButton';
+import { NavButton } from '@components/composed/nav/NavButton';
+import { Nav } from '@components/feature/nav/Nav';
 import { SettingsButton } from '@components/feature/SettingsButton';
 import { SettingsModal } from '@components/feature/SettingsModal';
 import { CursorRing } from '@components/interactive/cursor/CursorRing';
@@ -698,6 +699,14 @@ export function GalleryShowcase(): ReactNode {
       body: (
         <ComponentPreview code={`<SettingsButton />`}>
           <SettingsButton />
+        </ComponentPreview>
+      ),
+    },
+    nav: {
+      fullWidth: true,
+      body: (
+        <ComponentPreview code={`<Nav />`}>
+          <Nav />
         </ComponentPreview>
       ),
     },

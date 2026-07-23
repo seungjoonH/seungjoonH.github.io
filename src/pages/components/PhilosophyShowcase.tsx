@@ -86,7 +86,7 @@ const LAYER_CHAIN = [
     id: 'feature',
     label: 'Feature',
     def: '특정 화면과 도메인 맥락에 묶인 완결 컴포넌트',
-    examples: ['SettingsButton', 'ProjectSearchField'],
+    examples: ['SettingsButton', 'Nav', 'ProjectSearchField'],
   },
 ] as const;
 
@@ -869,7 +869,7 @@ function RelationsTab(): ReactNode {
       <SearchChipButton
         label={doc.chipLabel} onClick={(e) => onChipClick(e, doc)}
       />
-      <GotoButton href={doc.link} onClick={() => onNavigate(doc.id)}>
+      <GotoButton href={doc.link} external={doc.external ?? true}>
         {doc.title}
       </GotoButton>
     </div>

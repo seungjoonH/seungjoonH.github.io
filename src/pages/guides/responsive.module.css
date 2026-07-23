@@ -4,13 +4,21 @@
   position: relative;
   height: 100dvh;
   max-height: 100dvh;
-  padding: 20px 24px 20px;
+  padding: 48px 64px;
   box-sizing: border-box;
   background: var(--color-bg);
   color: var(--color-text);
   overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+
+/* Accessibility 페이지 — 내부 중첩 스크롤 대신 페이지 전체가 스크롤되도록 */
+.pageScroll {
+  height: auto;
+  min-height: 100dvh;
+  max-height: none;
+  overflow: visible;
 }
 
 .homeLink {
@@ -280,7 +288,7 @@
 
 @media (max-width: 960px) {
   .page {
-    padding: 16px 16px 16px;
+    padding: 24px 20px;
     height: 100dvh;
     overflow: auto;
   }

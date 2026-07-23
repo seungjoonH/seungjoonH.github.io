@@ -33,7 +33,7 @@ import { FieldCard } from '@components/composed/card/FieldCard';
 import { ProjectSortButton } from '@components/feature/icon/ProjectSortButton';
 import { CopyIconButton } from '@components/feature/icon/CopyIconButton';
 import { SearchShortcutChipButton } from '@components/feature/chip/SearchShortcutChipButton';
-import { NavButton } from '@components/composed/NavButton';
+import { NavButton } from '@components/composed/nav/NavButton';
 import { ProjectSearchField } from '@components/feature/field/ProjectSearchField';
 import { ContactFieldCard } from '@components/feature/card/ContactFieldCard';
 import { ExperienceSlotCard } from '@components/composed/card/ExperienceSlotCard';

@@ -130,48 +130,50 @@ const projects = [
     ],
     sections: [
       {
-        title: '**Accessibility improvements**: semantic structure and ARIA design',
+        title: '**Accessibility**: semantic structure and ARIA design',
         items: [
-          'Structured the page with **semantic tags** such as `header`, `nav`, `main`, `section`, and `article`, and supplemented them with **ARIA roles, names, and states** where tags alone were insufficient. Reviewed unclear guidance copy directly and aligned **assistive text and focus order** with the visual UI through screen reader testing',
-          'Managed **light/dark mode** state globally via the `useConfigStore` hook and applied **a consistent design system** using a dedicated set of **CSS variables** per mode',
-          'Provided a **Font Scale** setting and used `clamp` / `cq` to ensure **layout stability even at larger text sizes**',
+          'Built page structure with **semantic tags** (`header`, `nav`, `main`, `section`, `article`) and filled gaps with **ARIA roles, names, and states**. Reviewed unclear copy firsthand and aligned **screen reader announcements and focus order** with the visual UI',
+          'Managed **light/dark mode** state globally via `useConfigStore` and applied a **consistent design system** using grouped **CSS variable sets** per mode',
+          'Exposed a **Font Scale** setting and used `clamp` / `cq` so the **layout holds even when text size is cranked up**',
+        ],
+        links: [{ type: 'doc', id: 'portfolio-accessibility-design' }],
+      },
+      {
+        title: '**User experience**: user-friendly UI/UX',
+        items: [
+          'Added **tooltips** on non-obvious UI to nudge users toward the next action or the right setting',
+          'Gave buttons, links, and inputs clear labels and helper text so their **purpose is obvious at a glance**, with `title` and ARIA for added context',
         ],
       },
       {
-        title: '**User experience improvements**: user-friendly UI/UX design',
+        title: '**Responsive layout**: breakpoint-based adaptation',
         items: [
-          'Added **tooltips** to UI elements that were hard to understand at a glance, guiding users toward the next action or the relevant settings path',
-          'Applied labels and helper text to buttons, links, and inputs for **immediately clear roles**, and reinforced context with `title` and ARIA attributes',
+          'Defined **four breakpoints — mobile, tablet, desktop, and wide** — with grid columns and typography tuned so nothing breaks at any size',
+          'Built a `useResponsive` hook to track the active breakpoint and apply it to **grid column counts and visible tag/stack counts inside cards**',
         ],
-      },
-      {
-        title: '**Responsive layout design**: breakpoint-based screen adaptation',
-        items: [
-          'Defined **four breakpoints — mobile, tablet, desktop, and wide** — and designed grid columns and typography to remain stable across all sizes',
-          'Implemented a `useResponsive` hook to detect the active breakpoint and apply it to **grid column counts and the number of visible tags/stacks inside cards**',
-        ],
+        links: [{ type: 'doc', id: 'portfolio-responsive-design' }],
       },
       {
         title: '**Project search**: Hangul jamo decomposition and choseong matching',
         searchChip: { label: 'Extify', searchQuery: 'title:Extify show:all' },
         items: [
-          'Drew on development experience from **Extify** to port **Hangul jamo decomposition and choseong-matching algorithms** to JavaScript, enabling typo-tolerant search UX',
-          'Improved search discoverability and result scanability through query normalization, stack/tag alias mapping, and result highlighting',
+          'Ported **Hangul jamo decomposition and choseong matching algorithms** into JavaScript to enable typo-tolerant search UX',
+          'Layered on query normalization, stack/tag alias mapping, and result highlighting to make **results easy to find and scan**',
         ],
       },
       {
-        title: '**Internationalization**: react-i18next resource structure design',
+        title: '**Multilingual support**: react-i18next resource structure',
         items: [
-          'Used `react-i18next` for UI strings, and organized project/career domain data into **`ko` / `en` directories** sharing the same schema',
-          'Applied consistent key naming and **`{{variable}}` interpolation** for dynamic values; grouped accessibility-only copy under an **`a11y` subtree** so screen reader text also reflects the active language',
+          'Loaded UI strings via `react-i18next` and split **domain data (projects, experiences, etc.) into `ko` / `en` directories** under a shared schema',
+          'Used consistent key naming and `{{variable}}` interpolation for dynamic values, and grouped accessibility-only copy under an **`a11y` subtree** so screen reader text tracks the active language',
         ],
       },
       {
-        title: '**Interaction design**: animation-based feedback',
+        title: '**Interactions**: animation-driven feedback',
         items: [
-          'Used scroll-triggered **fade-in/out** to convey scroll progress, and implemented **parallax scrolling** in the hero section',
-          'Enabled **smooth scrolling** to sections from header navigation buttons',
-          'Added a **flip animation** on project card **hover/focus** and transition animations on modals and popups for **immediate feedback** on both mouse and keyboard interactions',
+          'Added scroll-based **fade-in/out** for a sense of progress, and set up **parallax scrolling** in the hero section',
+          'Wired header nav buttons to trigger **smooth scrolling** to each section',
+          'Built a **card flip animation** on hover/focus and added modal **transition animations** for snappy feedback on both mouse and keyboard interactions',
         ],
       },
     ],

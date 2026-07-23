@@ -40,7 +40,7 @@ export function Projects(): ReactNode {
     rowsContainerRef,
     handleChangeColumn,
   } = useProjectsGrid();
-  useProjectCardFlipOutside(rowsContainerRef);
+  useProjectCardFlipOutside();
 
   const style = {
     '--project-columns': columns,
@@ -140,7 +140,7 @@ export function Projects(): ReactNode {
         {visibleProjects.length === 0 && (rawQuery || '').trim() && (
           <p className={styles.searchEmpty}>{t('project.searchEmpty')}</p>
         )}
-        <div className={styles.rows} ref={rowsContainerRef} style={style}>
+        <div className={styles.rows} ref={rowsContainerRef} data-project-rows="" style={style}>
           {rows.map((row, rowIndex) => (
             <div
               key={`row-${rowIndex}`}

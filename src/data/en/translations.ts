@@ -16,7 +16,7 @@ export default {
   },
   main: {
     title: "Seungjoon\nHyeon's\nPortfolio",
-    introduction: "Focused on continuously improving UX and DX,\n**Frontend** developer @[Seungjoon Hyeon].\n\n- So anyone can use services without friction, I pursue @(portfolio)[an inclusive UX].\n- @(ai)[Using AI to clear development bottlenecks], I improve collaboration to build @(dx)[a better DX].\n- I @(renderer)[reflect and learn deeply] about how technology works, and capture insights in @(docs)[notes and docs].",
+    introduction: "Thinking in UX and DX, improving through principles and structure.\n**Frontend** developer, @[Seungjoon Hyeon].\n\n- So anyone can use services without friction, I pursue @(portfolio)[an inclusive UX].\n- @(ai)[Using AI to clear development bottlenecks], I improve collaboration to build @(dx)[a better DX].\n- I @(renderer)[reflect and learn deeply] about how technology works, and capture insights in @(docs)[notes and docs].",
     introLink: {
       modalLead: 'Spoiler',
       rowPortfolio: 'Personal portfolio',

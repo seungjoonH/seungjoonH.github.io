@@ -113,6 +113,14 @@ export const catalogItems: CatalogItem[] = [
     depth: 2,
     children: ['icon-button', 'settings-modal'],
   },
+  {
+    id: 'nav',
+    title: 'Nav',
+    layer: 'feature',
+    domain: 'text',
+    depth: 3,
+    children: ['nav-button', 'settings-button'],
+  },
 
   { id: 'text', title: 'Text', layer: 'design', domain: 'text', depth: 0, children: ['icon'] },
   { id: 'heading', title: 'Heading', layer: 'design', domain: 'text', depth: 0 },

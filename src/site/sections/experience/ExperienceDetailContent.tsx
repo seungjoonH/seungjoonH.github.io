@@ -8,7 +8,7 @@ import { getLinkTypeLabel } from '@sections/projects/utils/linkLabels';
 import { formatExperienceDateFull } from '@utils/dateFormat';
 import { buildCls } from '@utils/cssUtil';
 import ExperienceModel, { type ExperienceLink } from '../../../models/experience';
-import cardStyles from '@sections/projects/projectCard.module.css';
+import cardStyles from '@components/composed/card/projectCard.module.css';
 
 interface ExperienceDetailContentProps {
   experience: ExperienceModel;

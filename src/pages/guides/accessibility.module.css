@@ -3,28 +3,22 @@
 .demoShell {
   display: flex;
   flex-direction: column;
-  flex: 1 1 0;
-  min-height: 0;
   width: 100%;
-  gap: 14px;
-  overflow: hidden;
+  gap: 36px;
 }
 
 .demoScroll {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  flex: 1 1 0;
-  min-height: 0;
   width: 100%;
-  overflow: auto;
   padding: 0 0 8px;
 }
 
 .exampleStack {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 24px;
   min-width: 0;
 }
 

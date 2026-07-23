@@ -8,6 +8,7 @@ import {
   I18nVersionBridge,
 } from '@versioning';
 import '../../i18n';
+import { buildCls } from '@utils/cssUtil';
 import styles from './responsive.module.css';
 
 const GUIDE_TITLES: Record<string, string> = {
@@ -47,10 +48,12 @@ function GuidesChrome({ children }: { children: ReactNode }): ReactNode {
     };
   }, [location.pathname]);
 
+  const isAccessibility = location.pathname === '/accessibility';
+
   return (
     <>
       <style dangerouslySetInnerHTML={configStyleProps} />
-      <div className={styles.page}>
+      <div className={buildCls(styles.page, isAccessibility && styles.pageScroll)}>
         <Link className={styles.homeLink} to={`/${getDefaultSiteHash()}`}>
           ← Portfolio
         </Link>
