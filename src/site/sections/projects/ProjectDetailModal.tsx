@@ -23,6 +23,7 @@ export function ProjectDetailModal({ project, onClose, returnFocusRef }: Project
       onClose={onClose}
       returnFocusRef={returnFocusRef}
       closeDelayMs={getModalCloseDelayMs()}
+      size="default"
     >
       <ProjectDetailContent project={project} variant="modal" />
     </Modal>

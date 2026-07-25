@@ -1,5 +1,6 @@
 // 경력 상세 팝업 본문(메타·섹션·링크)을 렌더하는 컴포넌트
 import { type MouseEvent } from 'react';
+import { LineFitText } from '@components/composed/text/LineFitText';
 import { SvgIcon } from '@components/design/icon/Icon';
 import { TypedExternalLink } from '@components/composed/link/TypedExternalLink';
 import { typedExternalLinkStyles as linkStyles } from '@components/composed/link/TypedExternalLink';
@@ -30,7 +31,6 @@ export function ExperienceDetailContent({ experience }: ExperienceDetailContentP
   return (
     <>
       <div className={cardStyles.modalHead}>
-        <div className={cardStyles.modalTitle}>{experience.position}</div>
         <div className={cardStyles.modalCompanyWrap}>
           {imageUrl && (
             <span className={cardStyles.modalBrandIcon}>
@@ -39,8 +39,9 @@ export function ExperienceDetailContent({ experience }: ExperienceDetailContentP
               </span>
             </span>
           )}
-          <span className={cardStyles.modalCompany}>{experience.company}</span>
+          <span className={cardStyles.modalTitle}>{experience.company}</span>
         </div>
+        <div className={cardStyles.modalCompany}>{experience.position}</div>
         {topLinks.length > 0 && (
           <div className={cardStyles.backMetaBlock}>
             <div className={cardStyles.links}>
@@ -65,11 +66,17 @@ export function ExperienceDetailContent({ experience }: ExperienceDetailContentP
         <div className={cardStyles.sections}>
           {sections.map((section) => (
             <article key={section.title} className={cardStyles.section}>
-              <h5>{section.title}</h5>
+              <h5>
+                <LineFitText text={section.title ?? ''} lineCount={2} />
+              </h5>
               <ul>
                 {(section.items || []).map((item, idx) => (
                   <li key={`${section.title}-${idx}`}>
-                    {typeof item === 'string' ? renderRichText(item) : item}
+                    {typeof item === 'string' ? (
+                      <LineFitText text={item} lineCount={0} renderLine={renderRichText} />
+                    ) : (
+                      item
+                    )}
                   </li>
                 ))}
               </ul>

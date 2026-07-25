@@ -4,10 +4,10 @@ import { isRecord } from '@utils/parse';
 
 const STORAGE_KEYS = {
   clientId: 'portfolio_client_id',
-  siteViewSentPrefix: 'ana:site-view:',
 } as const;
 const API_URL = import.meta.env.VITE_ANALYTICS_API_URL || '';
 const DEFAULT_COOLDOWN_MS = 600;
+const SITE_VIEW_COOLDOWN_MS = 1000;
 const CLIENT_ID_PATTERN = /^[a-z0-9_-]{8,64}$/;
 const lastSentAtByKey = new Map<string, number>();
 
@@ -173,26 +173,20 @@ export function buildSearchSubmitMeta(rawQuery: unknown): SearchSubmitMeta {
 }
 
 /**
- * 세션당 사이트 뷰 이벤트를 한 번만 전송한다.
+ * 사이트 뷰 이벤트를 전송한다. 새로고침마다 누적 집계된다.
+ * (React Strict Mode 이중 mount 방지를 위해 짧은 쿨다운만 둔다.)
  * @param options.versionHash - 사이트 버전 해시. 없으면 config 기본 해시.
  * @param options.locale - 현재 locale
  * @returns 없음
  */
 export function trackSiteView({ versionHash, locale }: { versionHash?: string; locale?: string }): void {
   const v = trimString(versionHash, 32) || getDefaultVersionHash();
-  const onceKey = `${STORAGE_KEYS.siteViewSentPrefix}${v}`;
-  try {
-    if (window.sessionStorage.getItem(onceKey) === '1') return;
-    window.sessionStorage.setItem(onceKey, '1');
-  } catch {
-    // ignore storage errors and still attempt one send
-  }
 
   trackEvent({
     event: 'site:view',
     versionHash: v,
     locale,
-    cooldownMs: 0,
+    cooldownMs: SITE_VIEW_COOLDOWN_MS,
     dedupeKey: `site:view:${v}`,
   });
 }

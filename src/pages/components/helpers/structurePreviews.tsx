@@ -37,7 +37,7 @@ import { NavButton } from '@components/composed/nav/NavButton';
 import { ProjectSearchField } from '@components/feature/field/ProjectSearchField';
 import { ContactFieldCard } from '@components/feature/card/ContactFieldCard';
 import { ExperienceSlotCard } from '@components/composed/card/ExperienceSlotCard';
-import { TwoLineText } from '@components/composed/text/TwoLineText';
+import { LineFitText } from '@components/composed/text/LineFitText';
 import slotStyles from '@components/composed/card/experienceSlotCard.module.css';
 import { ExperienceCard } from '@components/feature/card/ExperienceCard';
 import { ProjectSlotCard } from '@components/composed/card/ProjectSlotCard';
@@ -365,10 +365,10 @@ export function structurePreview(id: string, state: StructurePreviewState): Reac
             content={
               <ul className={slotStyles.sectionTitles}>
                 <li>
-                  <TwoLineText text="Payment pipeline redesign" />
+                  <LineFitText text="Payment pipeline redesign" />
                 </li>
                 <li>
-                  <TwoLineText text="Search latency -40%" />
+                  <LineFitText text="Search latency -40%" />
                 </li>
               </ul>
             }

@@ -136,6 +136,7 @@ export const catalogItems: CatalogItem[] = [
     children: ['icon'],
   },
   { id: 'nav-button', title: 'NavButton', layer: 'composed', domain: 'text', depth: 2, children: ['text-button'] },
+  { id: 'line-fit-text', title: 'LineFitText', layer: 'composed', domain: 'text', depth: 1 },
 
   { id: 'tag', title: 'Tag', layer: 'design', domain: 'tag', depth: 0, children: ['text'] },
   { id: 'tag-button', title: 'TagButton', layer: 'interactive', domain: 'tag', depth: 1, children: ['tag'] },

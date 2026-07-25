@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { useA11y } from '@hooks/useA11y';
 import { useResponsive } from '@hooks/useResponsive';
 import { ExperienceSlotCard } from '@components/composed/card/ExperienceSlotCard';
-import { TwoLineText } from '@components/composed/text/TwoLineText';
+import { LineFitText } from '@components/composed/text/LineFitText';
 import { ExperienceThumbnail } from '@sections/experience/ExperienceThumbnail';
 import { GotoProjects } from '@sections/experience/GotoProjects';
 import { formatExperienceDateShort } from '@utils/dateFormat';
@@ -47,7 +47,7 @@ export function ExperienceCard({ experience, mobileHovered = false }: Experience
               const title = sec.title ?? '';
               return (
                 <li key={i} title={title}>
-                  <TwoLineText text={title} forceSingleLine={isMobile} />
+                  <LineFitText text={title} lineCount={isMobile ? 1 : 2} />
                 </li>
               );
             })}

@@ -47,9 +47,6 @@ const experiences = [
     endDate: '2024-12-31',
     shortcut: '#foodrain',
     projectSearchQuery: 'title:"Foodrain" | title:"Extify" show:all',
-    links: [
-      { type: 'external', title: 'Foodrain 서비스', href: 'https://foodrain.com/main' },
-    ],
     details: {
       sections: [
         {
@@ -59,9 +56,6 @@ const experiences = [
             '상품 상세 페이지 **이미지 돋보기 확대 인터랙션 구현** 및 클라이언트 요구 기반 사용자 탐색 경험 개선',
             '관리자 페이지 등록 이미지가 사용자 페이지에 즉시 반영되는 **광고 팝업 운영 기능 구현**',
             '백엔드 API 연동·신규 화면 개발·클라이언트 요구사항 반영 및 운영 단계 버그 수정/성능 보완'
-          ],
-          links: [
-            { type: 'external', title: 'Foodrain 서비스', href: 'https://foodrain.com/main' },
           ],
         },
         {

@@ -16,7 +16,7 @@ import { normalizeStackToken, getStackIconName } from './search/stackMapping';
 import { getHighlightTerms, getEffectiveTagsSorted, getEffectiveStacksSorted, highlightText, highlightRichText } from './search/highlight';
 import { useDocs } from '@sections/docs/useDocs';
 import { isStackMatchedByQuery } from './search/filterProjects';
-import { TwoLineText } from '@components/composed/text/TwoLineText';
+import { LineFitText } from '@components/composed/text/LineFitText';
 import { useResponsive } from '@hooks/useResponsive';
 import { useConfigStore } from '@stores/configStore';
 import config from '../../../config';
@@ -242,7 +242,7 @@ export function ProjectDetailContent({ project, variant }: ProjectDetailContentP
 
       <div className={styles.backMetaBlock}>
       <p className={styles.summary}>
-        <TwoLineText
+        <LineFitText
           text={project.summary || ''}
           renderLine={(line) =>
             descTerms.length

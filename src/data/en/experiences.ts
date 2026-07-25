@@ -47,9 +47,6 @@ const experiences = [
     endDate: '2024-12-31',
     shortcut: '#foodrain',
     projectSearchQuery: 'title:"Foodrain" | title:"Extify" show:all',
-    links: [
-      { type: 'external', title: 'Foodrain Service', href: 'https://foodrain.com/main' },
-    ],
     details: {
       sections: [
         {
@@ -60,9 +57,6 @@ const experiences = [
             'Implemented an **ad modal management feature** where admin-uploaded images reflect on the user-facing page instantly',
             'Integrated backend APIs, built new screens, and addressed production bugs and performance issues throughout the internship',
           ],
-          links: [
-            { type: 'external', title: 'Foodrain Service', href: 'https://foodrain.com/main' },
-          ]
         },
         {
           title: 'Internal Flutter utility package',

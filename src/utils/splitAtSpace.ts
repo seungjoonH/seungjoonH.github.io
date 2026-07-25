@@ -1,6 +1,6 @@
-// 공백 분할: 폭 우선 → L1≥L2(50~70%) → 불가 시 wrap 모드
+// 공백 분할: 폭 우선 → L1≥L2(50~70%) → 불가 시 multi 모드
 
-export type SplitAtSpaceMode = 'single' | 'split' | 'wrap';
+export type SplitAtSpaceMode = 'single' | 'double' | 'multi';
 
 export interface SplitAtSpaceResult {
   mode: SplitAtSpaceMode;
@@ -43,7 +43,7 @@ function pickClosestRatio(cands: SpaceCandidate[], preferRatio: number): SplitAt
       bestDist = dist;
     }
   }
-  return { mode: 'split', first: best.first, second: best.second };
+  return { mode: 'double', first: best.first, second: best.second };
 }
 
 /**
@@ -75,15 +75,41 @@ export function splitAtSpaceNearRatio(text: string, ratio = 0.65): SplitAtSpaceR
   const first = trimmed.slice(0, best).trimEnd();
   const second = trimmed.slice(best + 1).trimStart();
   if (!first || !second) return { mode: 'single', first: trimmed };
-  return { mode: 'split', first, second };
+  return { mode: 'double', first, second };
+}
+
+/**
+ * 공백 기준 그리디 줄바꿈으로, 이 텍스트가 maxWidth에서 자연스럽게 몇 줄이 되는지 센다.
+ * 잘림 없이 "몇 줄이 필요한가"만 알고 싶을 때 사용 (예: 정확히 2줄일 때만 비율 분할 적용).
+ */
+export function countNaturalWrapLines(
+  text: string,
+  measure: (s: string) => number,
+  maxWidth: number,
+): number {
+  const words = text.trim().split(/\s+/).filter(Boolean);
+  if (words.length === 0) return 1;
+
+  let lines = 1;
+  let currentLine = words[0]!;
+  for (let i = 1; i < words.length; i += 1) {
+    const candidate = `${currentLine} ${words[i]}`;
+    if (measure(candidate) <= maxWidth) {
+      currentLine = candidate;
+    } else {
+      lines += 1;
+      currentLine = words[i]!;
+    }
+  }
+  return lines;
 }
 
 /**
  * 우선순위
  * 1. 카드 폭 — L1(또는 1줄 전체)이 maxWidth를 넘기면 안 됨
  * 2. 1줄로 충분하면 single
- * 3. 넘치면 공백 분할. L1≥L2, 목표는 ~65%(60~70). 폭이 줄면 50:50까지 허용
- * 4. L1≥50% 이면서 폭에 들어가는 분할이 없으면 wrap (CSS text-wrap + 2줄 ellipsis)
+ * 3. 넘치면 공백 분할. L1≥L2, 목표는 preferRatio(±5%p 대역). 폭이 줄면 50:50까지 허용
+ * 4. L1≥50% 이면서 폭에 들어가는 분할이 없으면 multi (CSS wrap + line-clamp)
  */
 export function splitAtSpaceFittingWidth(
   text: string,
@@ -93,7 +119,7 @@ export function splitAtSpaceFittingWidth(
 ): SplitAtSpaceResult {
   const trimmed = text.trim();
   if (!trimmed) return { mode: 'single', first: '' };
-  if (maxWidth <= 0) return { mode: 'wrap', first: trimmed };
+  if (maxWidth <= 0) return { mode: 'multi', first: trimmed };
 
   // 1줄로 충분
   if (measure(trimmed) <= maxWidth) return { mode: 'single', first: trimmed };
@@ -103,16 +129,20 @@ export function splitAtSpaceFittingWidth(
   const fitting = longer.filter((c) => measure(c.first) <= maxWidth);
 
   if (fitting.length === 0) {
-    // 50:50조차 폭에 못 넣음 → 일반 줄바꿈 + 2줄 ellipsis
-    return { mode: 'wrap', first: trimmed };
+    // 50:50조차 폭에 못 넣음 → 일반 줄바꿈 + line-clamp
+    return { mode: 'multi', first: trimmed };
   }
 
-  // 60~70% 대역 우선, 없으면 50~70% 전체에서 preferRatio에 가깝게
-  const inBand = fitting.filter((c) => c.ratio >= 0.6 && c.ratio <= 0.7);
-  if (inBand.length > 0) return pickClosestRatio(inBand, preferRatio);
+  // preferRatio 대역(±5%p) 우선, 없으면 50%~대역 상단에서 preferRatio에 가깝게
+  const clampedRatio = Math.min(0.95, Math.max(0.5, preferRatio));
+  const bandLow = Math.max(0.5, clampedRatio - 0.05);
+  const bandHigh = clampedRatio + 0.05;
 
-  const towardHalf = fitting.filter((c) => c.ratio >= 0.5 && c.ratio <= 0.7);
-  if (towardHalf.length > 0) return pickClosestRatio(towardHalf, preferRatio);
+  const inBand = fitting.filter((c) => c.ratio >= bandLow && c.ratio <= bandHigh);
+  if (inBand.length > 0) return pickClosestRatio(inBand, clampedRatio);
 
-  return pickClosestRatio(fitting, preferRatio);
+  const towardHalf = fitting.filter((c) => c.ratio >= 0.5 && c.ratio <= bandHigh);
+  if (towardHalf.length > 0) return pickClosestRatio(towardHalf, clampedRatio);
+
+  return pickClosestRatio(fitting, clampedRatio);
 }

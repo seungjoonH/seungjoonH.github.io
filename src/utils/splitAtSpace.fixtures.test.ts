@@ -25,36 +25,36 @@ export const EXPERIENCE_TITLE_FIXTURES = {
 } as const;
 
 describe('experience title fixtures', () => {
-  it('짧은 폭에서도 L1은 maxWidth를 넘지 않거나 wrap이다', () => {
+  it('짧은 폭에서도 L1은 maxWidth를 넘지 않거나 multi이다', () => {
     for (const title of [...EXPERIENCE_TITLE_FIXTURES.ko, ...EXPERIENCE_TITLE_FIXTURES.en]) {
       for (const w of [12, 18, 24, 40, 80]) {
         const r = splitAtSpaceFittingWidth(title, measure, w, 0.65);
         if (r.mode === 'single') {
           expect(measure(r.first)).toBeLessThanOrEqual(w);
-        } else if (r.mode === 'split') {
+        } else if (r.mode === 'double') {
           expect(measure(r.first)).toBeLessThanOrEqual(w);
           expect(r.first.length).toBeGreaterThanOrEqual(r.second!.length);
         } else {
-          expect(r.mode).toBe('wrap');
+          expect(r.mode).toBe('multi');
           expect(r.first).toBe(title);
         }
       }
     }
   });
 
-  it('KO Vanilla DOM — 넉넉한 폭에서 L1≥60% split', () => {
+  it('KO Vanilla DOM — 넉넉한 폭에서 L1≥60% double', () => {
     const title = EXPERIENCE_TITLE_FIXTURES.ko[4];
     const r = splitAtSpaceFittingWidth(title, measure, 50, 0.65);
-    expect(r.mode).toBe('split');
+    expect(r.mode).toBe('double');
     expect(r.first.length / title.length).toBeGreaterThanOrEqual(0.6);
     expect(r.first.length).toBeGreaterThanOrEqual(r.second!.length);
     expect(r.second).toBe('이어지는 DOM 렌더링 흐름 이해');
   });
 
-  it('KO Zustand — 넉넉한 폭에서 L1이 더 긴 split', () => {
+  it('KO Zustand — 넉넉한 폭에서 L1이 더 긴 double', () => {
     const title = EXPERIENCE_TITLE_FIXTURES.ko[5];
     const r = splitAtSpaceFittingWidth(title, measure, 40, 0.65);
-    expect(r.mode).toBe('split');
+    expect(r.mode).toBe('double');
     expect(r.first.length).toBeGreaterThanOrEqual(r.second!.length);
     expect(r.first).toContain('Zustand');
     expect(r.second).toBe('이어지는 상태 관리 흐름 이해');

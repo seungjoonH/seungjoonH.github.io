@@ -31,7 +31,8 @@ import {
   CONTACT_FIELD_KEYS,
 } from '@components/feature/card/ContactFieldCard';
 import { ExperienceSlotCard } from '@components/composed/card/ExperienceSlotCard';
-import { TwoLineText } from '@components/composed/text/TwoLineText';
+import { LineFitText } from '@components/composed/text/LineFitText';
+import { LineFitTextPlayground } from './helpers/LineFitTextPlayground';
 import slotStyles from '@components/composed/card/experienceSlotCard.module.css';
 import { ExperienceCard } from '@components/feature/card/ExperienceCard';
 import { ProjectSlotCard } from '@components/composed/card/ProjectSlotCard';
@@ -1014,6 +1015,10 @@ export function GalleryShowcase(): ReactNode {
         </div>
       ),
     },
+    'line-fit-text': {
+      fullWidth: true,
+      body: <LineFitTextPlayground />,
+    },
     tag: {
       body: (
         <PropGroup label="underline">
@@ -1736,10 +1741,10 @@ export function GalleryShowcase(): ReactNode {
               content={
                 <ul className={slotStyles.sectionTitles}>
                   <li>
-                    <TwoLineText text="Payment pipeline redesign" />
+                    <LineFitText text="Payment pipeline redesign" />
                   </li>
                   <li>
-                    <TwoLineText text="Search latency -40%" />
+                    <LineFitText text="Search latency -40%" />
                   </li>
                 </ul>
               }

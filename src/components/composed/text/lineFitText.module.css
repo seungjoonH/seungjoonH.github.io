@@ -1,4 +1,4 @@
-/* TwoLineText — 1줄 / 공백 2줄 split / wrap+2줄 ellipsis */
+/* LineFitText — lineCount에 따른 1줄 / 공백 2줄 / clamp / 무제한 wrap */
 .root {
   display: block;
   min-width: 0;
@@ -20,12 +20,19 @@
   overflow-wrap: normal;
 }
 
-.wrap {
+.clamp {
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
   overflow: hidden;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  text-wrap: pretty;
+}
+
+.flow {
+  display: block;
+  overflow: visible;
   white-space: normal;
   word-break: keep-all;
   overflow-wrap: break-word;

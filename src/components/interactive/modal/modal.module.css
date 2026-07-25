@@ -60,15 +60,15 @@
 }
 
 .panel {
-  --modal-width: min(88vw, 46rem);
+  --modal-width: min(88vw, 36rem);
   --panel-padding-x: clamp(1.5rem, 2vw, 2rem);
   position: relative;
   margin: 0;
   width: var(--modal-width);
-  max-width: 50rem;
-  height: min(85vh, 45rem);
-  max-height: min(85vh, 45rem);
-  max-inline-size: 50rem;
+  max-width: 38rem;
+  height: min(82vh, 38rem);
+  max-height: min(82vh, 38rem);
+  max-inline-size: 38rem;
   box-sizing: border-box;
   overflow: visible;
   border: 1px solid var(--project-modal-border, rgba(255, 255, 255, 0.12));
@@ -109,16 +109,16 @@
 }
 
 .panelContentFit {
-  height: min(85vh, 45rem);
-  max-height: min(85vh, 45rem);
+  height: min(82vh, 38rem);
+  max-height: min(82vh, 38rem);
 }
 
 .panelCompact {
   --modal-width: 100%;
   width: 100%;
-  max-width: 420px;
-  height: 520px;
-  max-height: min(520px, 88vh);
+  max-width: 520px;
+  height: 560px;
+  max-height: min(560px, 88vh);
   background: var(--settings-panel-bg);
   border: 1px solid var(--settings-panel-border);
   box-shadow: var(--settings-panel-shadow);
@@ -127,8 +127,8 @@
 
 /* embedded: 부모 hug에 width:100%가 접히지 않도록 고정 폭 */
 .modalRootEmbedded .panelCompact {
-  width: 420px;
-  min-width: min(420px, 100%);
+  width: 520px;
+  min-width: min(520px, 100%);
   max-width: 100%;
 }
 
@@ -219,11 +219,15 @@
     padding: 12px;
   }
   .panel:not(.panelContentFit) {
-    height: min(72vh, 32rem);
-    max-height: min(72vh, 32rem);
+    height: min(78vh, 34rem);
+    max-height: min(78vh, 34rem);
   }
   .panelContentFit {
-    height: min(72vh, 32rem);
-    max-height: min(72vh, 32rem);
+    height: min(78vh, 34rem);
+    max-height: min(78vh, 34rem);
+  }
+  .panelCompact {
+    height: min(500px, 70vh);
+    max-height: min(500px, 70vh);
   }
 }

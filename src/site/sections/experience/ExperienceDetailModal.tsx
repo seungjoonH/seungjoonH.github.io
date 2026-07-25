@@ -27,6 +27,7 @@ export function ExperienceDetailModal({
       onClose={onClose}
       returnFocusRef={returnFocusRef}
       closeDelayMs={getModalCloseDelayMs()}
+      size="compact"
       fitContent
     >
       <ExperienceDetailContent experience={experience} />
