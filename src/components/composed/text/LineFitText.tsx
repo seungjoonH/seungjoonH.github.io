@@ -32,7 +32,12 @@ export interface LineFitTextProps {
   splitRatio?: number;
   /** @deprecated `lineCount={1}` 사용 */
   forceSingleLine?: boolean;
-  /** 줄 단위 커스텀 렌더 (하이라이트 등) */
+  /**
+   * 줄 단위 커스텀 렌더 (하이라이트, 마크업 파싱 등).
+   * 공백 분할(`lineCount=2` 또는 `0`의 2줄 케이스)은 원문을 물리적으로 두 조각으로 잘라
+   * 각각 따로 렌더하므로, `**bold**` 같은 인라인 마크업이 분할 지점을 가로지르면 깨질 수 있다.
+   * 그래서 `renderLine`이 있으면 분할 모드를 쓰지 않고 원문 전체를 한 번에 넘긴다.
+   */
   renderLine?: (line: string) => ReactNode;
 }
 
@@ -73,11 +78,12 @@ function resolveAutoFlowLayout(
   measure: (s: string) => number,
   width: number,
   splitRatio: number,
+  hasRenderLine: boolean,
 ): Layout {
   const trimmed = text.trim();
   if (measure(trimmed) <= width) return { kind: 'one', text: trimmed };
 
-  if (countNaturalWrapLines(trimmed, measure, width) === 2) {
+  if (!hasRenderLine && countNaturalWrapLines(trimmed, measure, width) === 2) {
     const result = splitAtSpaceFittingWidth(trimmed, measure, width, splitRatio);
     if (result.mode === 'double') {
       return { kind: 'split', first: result.first, second: result.second ?? '' };
@@ -97,6 +103,7 @@ function resolveLayout(
   width: number,
   lineCount: number,
   splitRatio: number,
+  hasRenderLine: boolean,
 ): Layout {
   const trimmed = text.trim();
   if (lineCount === 1) return { kind: 'one', text: trimmed };
@@ -106,6 +113,8 @@ function resolveLayout(
   }
 
   if (lineCount === 2) {
+    // renderLine이 있으면 원문을 물리적으로 자르지 않는다 (인라인 마크업 보존)
+    if (hasRenderLine) return { kind: 'clamp', text: trimmed, lines: 2 };
     return layoutFromSplit(
       splitAtSpaceFittingWidth(trimmed, measure, width, splitRatio),
       2,
@@ -126,6 +135,7 @@ export function LineFitText({
 }: LineFitTextProps): ReactNode {
   const rootRef = useRef<HTMLSpanElement | null>(null);
   const effectiveCount = resolveLineCount(lineCount, forceSingleLine);
+  const hasRenderLine = renderLine !== undefined;
 
   useEffect(() => {
     if (import.meta.env.DEV && splitRatio !== undefined && effectiveCount !== 2 && effectiveCount !== 0) {
@@ -160,18 +170,20 @@ export function LineFitText({
       const measure = measureWithCanvas(font);
 
       if (effectiveCount === 0) {
-        setLayout(resolveAutoFlowLayout(text, measure, width, splitRatio ?? 0.65));
+        setLayout(resolveAutoFlowLayout(text, measure, width, splitRatio ?? 0.65, hasRenderLine));
         return;
       }
 
-      setLayout(resolveLayout(text, measure, width, effectiveCount, splitRatio ?? 0.65));
+      setLayout(
+        resolveLayout(text, measure, width, effectiveCount, splitRatio ?? 0.65, hasRenderLine),
+      );
     };
 
     recompute();
     const ro = new ResizeObserver(recompute);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [text, effectiveCount, splitRatio]);
+  }, [text, effectiveCount, splitRatio, hasRenderLine]);
 
   const paint = (line: string) => (renderLine ? renderLine(line) : line);
 

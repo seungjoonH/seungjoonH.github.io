@@ -1,9 +1,11 @@
 // Responsive — 원칙 + Viewport + CSS만/TS만 예시
 import { useCallback, useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent, type ReactNode } from 'react';
-import config, { type ScreenSizeType } from '../../config';
+import config, { getDefaultSiteHash, type ScreenSizeType } from '../../config';
 import { Chip } from '@components/design/chip/Chip';
 import { Icon } from '@components/design/icon/Icon';
 import { SegmentedButton } from '@components/interactive/segmentedButton/SegmentedButton';
+import { trackEvent } from '@analytics';
+import { useConfigStore } from '@stores/configStore';
 import { CodeSnippet } from './CodeSnippet';
 import {
   buildSnippet,
@@ -72,6 +74,7 @@ export function ResponsiveShowcase(): ReactNode {
   const [focus, setFocus] = useState<GuideFocus>('pano');
   const [projectCols, setProjectCols] = useState(4);
   const prevMaxColsRef = useRef<number | null>(null);
+  const language = useConfigStore((s) => s.language);
 
   const type = useMemo(() => resolveBreakpoint(logicalW), [logicalW]);
   const pano = useMemo(() => resolvePano(logicalW), [logicalW]);
@@ -80,6 +83,18 @@ export function ResponsiveShowcase(): ReactNode {
     [logicalW, type],
   );
   const example = getGuideExample(focus);
+
+  useEffect(() => {
+    trackEvent({
+      event: 'guide:tab',
+      versionHash: getDefaultSiteHash(),
+      locale: language,
+      entityId: `responsive:${focus}`,
+      meta: { page: 'responsive', tab: focus },
+      dedupeKey: `guide:tab:responsive:${focus}`,
+      cooldownMs: 500,
+    });
+  }, [focus, language]);
 
   // useProjectsGrid와 동일 — bounds 확대 시 max로, 그 외엔 clamp
   useEffect(() => {

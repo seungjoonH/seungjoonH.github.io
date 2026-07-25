@@ -1,8 +1,9 @@
-// 스킬 섹션 — SkillChipButton으로 검색 단축어 주입
+// 스킬 섹션 — SkillChipButton으로 검색 단축어 주입 + skill:click 트래킹
 import type { ReactNode } from 'react';
 import { Heading } from '@components/design/heading/Heading';
 import { SkillChipButton } from '@components/composed/chip/SkillChipButton';
 import { useA11y } from '@hooks/useA11y';
+import { useAnalytics } from '@hooks/useAnalytics';
 import { useProjectSearchStore } from '@stores/projectSearchStore';
 import styles from './skills.module.css';
 import { useSkillsData } from './skills/useSkillsData';
@@ -11,6 +12,7 @@ import { useSkillsScrollReveal } from './skills/useSkillsScrollReveal';
 export function Skills(): ReactNode {
   const a11y = useA11y();
   const skills = useSkillsData();
+  const { trackSkillClick } = useAnalytics();
   const setQueryFromShortcut = useProjectSearchStore((s) => s.setQueryFromShortcut);
 
   const groupedSkills = skills.reduce<Record<string, typeof skills>>((acc, skill) => {
@@ -46,7 +48,10 @@ export function Skills(): ReactNode {
                         label={skill.name}
                         iconName={skill.iconName}
                         ariaLabel={a11y('skills.tagSearch', { name: skill.name })}
-                        onClick={() => setQueryFromShortcut(`stack:"${skill.name}"`)}
+                        onClick={() => {
+                          trackSkillClick(skill.name);
+                          setQueryFromShortcut(`stack:"${skill.name}"`);
+                        }}
                       />
                     ))}
                   </div>

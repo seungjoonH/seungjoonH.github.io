@@ -1,5 +1,5 @@
 // /accessibility 원칙 + 탭별 나란히 비교 데모
-import { useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { SegmentedButton } from '@components/interactive/segmentedButton/SegmentedButton';
 import { Icon } from '@components/design/icon/Icon';
@@ -11,10 +11,13 @@ import { Modal } from '@components/interactive/modal/Modal';
 import { ControlSlider } from '@components/interactive/controlSlider/ControlSlider';
 import { GotoButton } from '@components/interactive/button/GotoButton';
 import { useResponsive } from '@hooks/useResponsive';
+import { trackEvent } from '@analytics';
+import { useConfigStore } from '@stores/configStore';
 import {
   SCALE_SLIDER_STEP,
   TYPO_SCALE_MAX,
   TYPO_SCALE_MIN,
+  getDefaultSiteHash,
 } from '../../config';
 import { CompareColumn } from './CompareColumn';
 import { CiteSection } from './CiteSection';
@@ -236,10 +239,23 @@ export function AccessibilityShowcase(): ReactNode {
   const [announceExample, setAnnounceExample] = useState<AnnounceExample>('chip');
   const [fontScale, setFontScale] = useState(1);
   const { isMobile } = useResponsive();
+  const language = useConfigStore((s) => s.language);
   const cardHowtoSr = isMobile ? CARD_MOBILE_SR : CARD_DESKTOP_SR;
   const demoStyle = {
     ['--demo-font-scale' as string]: String(fontScale),
   } as CSSProperties;
+
+  useEffect(() => {
+    trackEvent({
+      event: 'guide:tab',
+      versionHash: getDefaultSiteHash(),
+      locale: language,
+      entityId: `accessibility:${focus}`,
+      meta: { page: 'accessibility', tab: focus },
+      dedupeKey: `guide:tab:accessibility:${focus}`,
+      cooldownMs: 500,
+    });
+  }, [focus, language]);
 
   return (
     <>

@@ -7,6 +7,7 @@ import {
   VersionProvider,
   I18nVersionBridge,
 } from '@versioning';
+import { trackEvent } from '@analytics';
 import '../../i18n';
 import { buildCls } from '@utils/cssUtil';
 import styles from './responsive.module.css';
@@ -14,6 +15,11 @@ import styles from './responsive.module.css';
 const GUIDE_TITLES: Record<string, string> = {
   '/responsive': 'Responsive',
   '/accessibility': 'Accessibility',
+};
+
+const GUIDE_PAGE_BY_PATH: Record<string, 'responsive' | 'accessibility'> = {
+  '/responsive': 'responsive',
+  '/accessibility': 'accessibility',
 };
 
 function GuidesChrome({ children }: { children: ReactNode }): ReactNode {
@@ -47,6 +53,19 @@ function GuidesChrome({ children }: { children: ReactNode }): ReactNode {
       document.title = prev;
     };
   }, [location.pathname]);
+
+  useEffect(() => {
+    const page = GUIDE_PAGE_BY_PATH[location.pathname];
+    if (!page) return;
+    trackEvent({
+      event: 'guide:view',
+      versionHash: getDefaultSiteHash(),
+      locale: language,
+      entityId: page,
+      dedupeKey: `guide:view:${page}`,
+      cooldownMs: 1000,
+    });
+  }, [location.pathname, language]);
 
   const isAccessibility = location.pathname === '/accessibility';
 

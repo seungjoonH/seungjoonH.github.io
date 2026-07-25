@@ -78,5 +78,23 @@ export function useAnalytics() {
     trackExperienceClick(experienceId: unknown) {
       trackById('experience:click', experienceId);
     },
+    trackGuideView(page: 'responsive' | 'components' | 'accessibility') {
+      send('guide:view', {
+        entityId: page,
+        dedupeKey: `guide:view:${page}`,
+        cooldownMs: 1000,
+      });
+    },
+    trackGuideTab(page: 'responsive' | 'components' | 'accessibility', tab: unknown) {
+      const cleanTab = entityId(tab);
+      if (!cleanTab) return;
+      const id = `${page}:${cleanTab}`;
+      send('guide:tab', {
+        entityId: id,
+        meta: { page, tab: cleanTab },
+        dedupeKey: `guide:tab:${id}`,
+        cooldownMs: 500,
+      });
+    },
   };
 }
