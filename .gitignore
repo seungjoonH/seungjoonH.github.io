@@ -33,3 +33,5 @@ scripts/port.sh
 
 *storybook.log
 storybook-static
+
+.claude/worktrees/

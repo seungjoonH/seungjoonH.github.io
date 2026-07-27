@@ -25,6 +25,14 @@ export const docs = {
       chipLabel: '포트폴리오',
       external: false,
     },
+    {
+      id: 'portfolio-performance-optimization',
+      link: '/performance',
+      title: '아이콘 로딩 아키텍처 변경',
+      source: { type: 'project', searchQuery: 'title:"포트폴리오" show:all' },
+      chipLabel: '포트폴리오',
+      external: false,
+    },
   ],
 
   tistory: [

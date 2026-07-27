@@ -25,6 +25,14 @@ export const docs = {
       chipLabel: 'Portfolio',
       external: false,
     },
+    {
+      id: 'portfolio-performance-optimization',
+      link: '/performance',
+      title: 'Icon loading architecture change',
+      source: { type: 'project', searchQuery: 'title:"Portfolio" show:all' },
+      chipLabel: 'Portfolio',
+      external: false,
+    },
   ],
 
   tistory: [

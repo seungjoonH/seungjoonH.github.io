@@ -14,6 +14,7 @@ import { GalleryShowcase } from './pages/components/GalleryShowcase';
 import { GuidesLayout } from './pages/guides/GuidesLayout';
 import { ResponsiveShowcase } from './pages/guides/ResponsiveShowcase';
 import { AccessibilityShowcase } from './pages/guides/AccessibilityShowcase';
+import { PerformanceShowcase } from './pages/guides/PerformanceShowcase';
 
 function VersionedRoute() {
   const { versionHash } = useParams();
@@ -49,6 +50,9 @@ export default function App() {
       </Route>
       <Route path="/accessibility" element={<GuidesLayout />}>
         <Route index element={<AccessibilityShowcase />} />
+      </Route>
+      <Route path="/performance" element={<GuidesLayout />}>
+        <Route index element={<PerformanceShowcase />} />
       </Route>
       <Route path="/" element={<Navigate to={`/${defaultHash}`} replace />} />
       <Route path="/:versionHash" element={<VersionedRoute />} />

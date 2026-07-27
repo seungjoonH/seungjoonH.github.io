@@ -15,11 +15,13 @@ import styles from './responsive.module.css';
 const GUIDE_TITLES: Record<string, string> = {
   '/responsive': 'Responsive',
   '/accessibility': 'Accessibility',
+  '/performance': 'Performance',
 };
 
-const GUIDE_PAGE_BY_PATH: Record<string, 'responsive' | 'accessibility'> = {
+const GUIDE_PAGE_BY_PATH: Record<string, 'responsive' | 'accessibility' | 'performance'> = {
   '/responsive': 'responsive',
   '/accessibility': 'accessibility',
+  '/performance': 'performance',
 };
 
 function GuidesChrome({ children }: { children: ReactNode }): ReactNode {
@@ -67,12 +69,13 @@ function GuidesChrome({ children }: { children: ReactNode }): ReactNode {
     });
   }, [location.pathname, language]);
 
-  const isAccessibility = location.pathname === '/accessibility';
+  const needsPageScroll =
+    location.pathname === '/accessibility' || location.pathname === '/performance';
 
   return (
     <>
       <style dangerouslySetInnerHTML={configStyleProps} />
-      <div className={buildCls(styles.page, isAccessibility && styles.pageScroll)}>
+      <div className={buildCls(styles.page, needsPageScroll && styles.pageScroll)}>
         <Link className={styles.homeLink} to={`/${getDefaultSiteHash()}`}>
           ← Portfolio
         </Link>

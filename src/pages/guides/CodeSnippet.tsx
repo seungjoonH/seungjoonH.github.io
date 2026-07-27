@@ -21,6 +21,10 @@ const A11Y_RE =
 const CONTRACT_RE =
   /style=\{\{\s*width:\s*"100%"\s*\}\}|className=\{styles\.card\}|className\b|style\b|CSSProperties\b/y;
 
+/** 성능 개선 전후의 런타임 fetch·빌드타임 번들링 핵심 */
+const PERFORMANCE_RE =
+  /import\.meta\.glob\b|eager:\s*true|query:\s*'\?react'|UI_ICONS\b|SvgComponent\b|useEffect\b|fetchSvgContent\b|fetch\b|\/assets\/icons\/|\.svg\b|dangerouslySetInnerHTML\b|createElement\("path"/y;
+
 function tokenizeGuideCode(code: string, highlightRe: RegExp | null): GuideCodeToken[] {
   const tokens: GuideCodeToken[] = [];
   let i = 0;
@@ -79,7 +83,7 @@ const TOKEN_CLASS: Record<GuideCodeKind, string> = {
   responsive: styles.codeResponsive,
 };
 
-export type CodeSnippetMode = 'responsive' | 'a11y' | 'contract' | 'plain';
+export type CodeSnippetMode = 'responsive' | 'a11y' | 'contract' | 'performance' | 'plain';
 
 interface CodeSnippetProps {
   code: string;
@@ -89,6 +93,7 @@ interface CodeSnippetProps {
 function highlightReFor(mode: CodeSnippetMode): RegExp | null {
   if (mode === 'a11y') return A11Y_RE;
   if (mode === 'contract') return CONTRACT_RE;
+  if (mode === 'performance') return PERFORMANCE_RE;
   if (mode === 'plain') return null;
   return RESPONSIVE_RE;
 }
