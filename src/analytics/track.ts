@@ -4,6 +4,7 @@ import { isRecord } from '@utils/parse';
 
 const STORAGE_KEYS = {
   clientId: 'portfolio_client_id',
+  disabledForSession: 'portfolio_analytics_disabled',
 } as const;
 const API_URL = import.meta.env.VITE_ANALYTICS_API_URL || '';
 const DEFAULT_COOLDOWN_MS = 600;
@@ -78,6 +79,19 @@ function getOrCreateClientId(): string {
   }
 }
 
+function isAnalyticsDisabledForSession(): boolean {
+  if (typeof window === 'undefined') return false;
+
+  const disabledByUrl = new URLSearchParams(window.location.search).get('analytics') === 'off';
+
+  try {
+    if (disabledByUrl) window.sessionStorage.setItem(STORAGE_KEYS.disabledForSession, '1');
+    return disabledByUrl || window.sessionStorage.getItem(STORAGE_KEYS.disabledForSession) === '1';
+  } catch {
+    return disabledByUrl;
+  }
+}
+
 function shouldSkipByCooldown(key: string, cooldownMs: number): boolean {
   if (!cooldownMs || cooldownMs <= 0) return false;
   const now = getNow();
@@ -112,6 +126,7 @@ async function sendAnalytics(body: AnalyticsRequestBody): Promise<void> {
  */
 export function trackEvent(payload: AnalyticsTrackInput): void {
   if (!API_URL || typeof window === 'undefined') return;
+  if (isAnalyticsDisabledForSession()) return;
   if (!payload || typeof payload !== 'object') return;
 
   const event = trimString(payload.event, 64);
